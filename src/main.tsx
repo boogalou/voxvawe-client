@@ -4,7 +4,5 @@ import Im from './app/im'
 import './app/index.scss'
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <React.StrictMode>
-    <Im />
-  </React.StrictMode>,
+    <Im/>,
 )

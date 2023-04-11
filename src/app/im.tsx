@@ -13,10 +13,8 @@ function Im() {
       <div className={cx('app')}>
         <div className={cx('container')}>
 
-          <Sidebar
-              className={cx('left-panel')}
+          <Sidebar className={cx('left-panel', {'left-panel--active': openChat})}
           >
-            {console.log('left-panel rerender')}
             <Button
                 className={cx('main__button')}
                 disabled={false}
@@ -25,8 +23,10 @@ function Im() {
             />
           </Sidebar>
 
-          <main className={cx('main', {'main--active': openChat}, {'main--close': openInfo})}>
-            {console.log('main rerender')}
+          <main className={cx('main', {
+            'main--active': openChat,
+            'main--close': !openChat
+          })}>
             <Button
                 className={cx('main__button')}
                 disabled={false}
@@ -44,7 +44,6 @@ function Im() {
           </main>
 
           <Sidebar className={cx('right-panel', {'right-panel--active': openInfo})}>
-            {console.log('right-panel rerender')}
             <Button
                 className={cx('main__button')}
                 disabled={false}
