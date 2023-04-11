@@ -1,0 +1,15 @@
+/**
+ * Миксин для задания позиции элемента.
+ * @param {string} $position - Значение свойства position. По умолчанию "absolute".
+ * @param {string} $top - Значение свойства top. По умолчанию "auto".
+ * @param {string} $left - Значение свойства left. По умолчанию "auto".
+ * @param {string} $right - Значение свойства right. По умолчанию "auto".
+ * @param {string} $bottom - Значение свойства bottom. По умолчанию "auto".
+ */
+@mixin element-position($position: absolute, $top: auto, $left: auto, $right: auto, $bottom: auto) {
+  position: $position;
+  top: $top;
+  left: $left;
+  right: $right;
+  bottom: $bottom;
+}

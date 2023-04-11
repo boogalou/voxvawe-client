@@ -6,31 +6,52 @@ import {Button, Sidebar} from "shared/ui";
 const cx = cnBind.bind(styles);
 
 function Im() {
-  const [isActive, setIsActive] = useState(false)
+  const [openChat, setIsActive] = useState(false);
+  const [openInfo, setOpenInfo] = useState(false);
+  console.log('IM rerender')
   return (
       <div className={cx('app')}>
         <div className={cx('container')}>
+
           <Sidebar
-              className={cx('left-panel', {'left-panel--active': isActive})}
+              className={cx('left-panel')}
           >
+            {console.log('left-panel rerender')}
             <Button
                 className={cx('main__button')}
                 disabled={false}
-                text={'push me'}
+                text={'open chat'}
                 onClick={() => setIsActive(prevState => !prevState)}
             />
           </Sidebar>
 
-          <main className={cx('main', {'main--active': isActive})}>
+          <main className={cx('main', {'main--active': openChat}, {'main--close': openInfo})}>
+            {console.log('main rerender')}
             <Button
                 className={cx('main__button')}
                 disabled={false}
-                text={'push me'}
+                text={'back <--'}
                 onClick={() => setIsActive(prevState => !prevState)}
             />
-            this is main page
+            <Button
+                className={cx('main__button')}
+                disabled={false}
+                text={'open info'}
+                onClick={() => setOpenInfo(prevState => !prevState)}
+            />
+
+            this is chat window
           </main>
-          <Sidebar className={cx('right-panel')}/>
+
+          <Sidebar className={cx('right-panel', {'right-panel--active': openInfo})}>
+            {console.log('right-panel rerender')}
+            <Button
+                className={cx('main__button')}
+                disabled={false}
+                text={'back <--'}
+                onClick={() => setOpenInfo(prevState => !prevState)}
+            />
+          </Sidebar>
 
         </div>
       </div>
