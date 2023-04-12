@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import styles from './app.module.scss';
+import "animate.css";
 import cnBind from "classnames/bind";
 import {Button, Sidebar} from "shared/ui";
 
@@ -24,9 +25,10 @@ function Im() {
           </Sidebar>
 
           <main className={cx('main', {
-            'main--active': openChat,
-            'main--close': !openChat
-          })}>
+                'main--active': openChat,
+                'main--close': !openChat
+              }
+          )}>
             <Button
                 className={cx('main__button')}
                 disabled={false}

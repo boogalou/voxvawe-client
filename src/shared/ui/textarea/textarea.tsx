@@ -1,6 +1,6 @@
 import { ChangeEvent, DetailedHTMLProps, ForwardedRef, forwardRef, HTMLAttributes } from "react";
 import cnBind from "classnames/bind";
-import styles from "./Textarea.module.scss"
+import styles from "./textarea.module.scss"
 
 const cx = cnBind.bind(styles);
 export interface TextareaProps extends DetailedHTMLProps<HTMLAttributes<HTMLTextAreaElement>, HTMLTextAreaElement> {

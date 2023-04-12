@@ -1,8 +1,6 @@
-import React, {ChangeEvent, DetailedHTMLProps, FC, ForwardedRef, forwardRef, HTMLAttributes, ReactNode} from 'react';
+import React, {DetailedHTMLProps, ForwardedRef, forwardRef, HTMLAttributes} from 'react';
 import cnBind from "classnames/bind";
-import styles from "./Input.module.scss";
-import {Icon} from "../index";
-import {IconType} from "../Icon";
+import styles from "./input.module.scss";
 
 
 export interface InputProps extends DetailedHTMLProps<HTMLAttributes<HTMLInputElement>, HTMLInputElement>{

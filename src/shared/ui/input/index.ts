@@ -1,2 +1,2 @@
-export { Input as default } from "./Input"
-export * from "./Input";
+export { Input as default } from "./input"
+export * from "./icon-input";

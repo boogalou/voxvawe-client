@@ -1,8 +1,10 @@
 import {ForwardedRef, forwardRef} from "react";
-import {InputProps} from "../Input";
+import {InputProps} from "../input";
 import cnBind from "classnames/bind";
 import styles from './icon-input.module.scss';
-import {Icon, IconType} from "../../Icon";
+import { IconType } from "@/shared/ui/icon";
+import { Icon } from "@/shared/ui";
+
 
 const cx = cnBind.bind(styles)
 
