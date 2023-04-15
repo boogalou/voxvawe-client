@@ -9,7 +9,7 @@ export interface ISidebarProps {
   children?: ReactNode;
 }
 
-export const Sidebar: FC<ISidebarProps> = ({children, className}): JSX.Element => {
+export const Sidebar: FC<ISidebarProps> = ({children, className}) => {
   return (
       <div className={cx(className)}>
         {children}

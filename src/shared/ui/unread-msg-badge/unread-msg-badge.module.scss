@@ -1,0 +1,11 @@
+.unread-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-badge);
+  border-radius: 0.75rem;
+  height: 1.4rem;
+  min-width: 0.9rem;
+  padding: 0.21rem 0.5rem;
+  color: var(--color-chat-selected-font)
+}

@@ -1,4 +1,4 @@
-@import './index';
+@import '../../app/index';
 
 .app {
   width: 100%;
@@ -13,8 +13,17 @@
 }
 
 .left-panel {
-  background-color: #009FBD;
   grid-column: 1 ;
+  padding: 4px;
+  background-color: var(--color-primary);
+
+  &__header {
+    display: flex;
+    align-items: center;
+    -webkit-box-shadow: 0px 21px 46px -30px rgba(0,0,0,0.35);
+    -moz-box-shadow: 0px 21px 46px -30px rgba(0,0,0,0.35);
+    box-shadow: 0px 21px 46px -30px rgba(0,0,0,0.35);
+  }
 }
 
 .main {
@@ -23,6 +32,7 @@
   width: 100%;
   height: 100%;
   transition: transform 0.5s ease-out;
+  z-index: 1;
 
   &--active {
     transform: translateX(-100%);
@@ -35,6 +45,7 @@
   width: 100%;
   transition: transform 0.5s ease-out;
   transform: translateX(100%);
+  z-index: 2;
 
   &--active {
     transform: translateX(0%);
@@ -44,7 +55,12 @@
 @include respond-to("tablet") {
   .container {
     display: grid;
-    grid-template-columns: 350px  1fr;
+    grid-template-columns: 400px  1fr;
+  }
+
+  .left-panel {
+    grid-column: 1 / 2;
+
   }
 
   .main {
@@ -79,7 +95,8 @@
 
   .main {
     all: initial;
-    background-color: #8F43EE;
+    background: url("src/shared/assets/wallpapers/wallhaven-z8ewmo.png");
+    background-size: auto 40%;
   }
 }
 

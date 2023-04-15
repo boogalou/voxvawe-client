@@ -1,8 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import Im from './app/im'
-import './app/index.scss'
+import App from "app/app";
 
-ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-    <Im/>,
-)
+ReactDOM.createRoot(document
+    .getElementById('root') as HTMLElement)
+    .render(<App/>);

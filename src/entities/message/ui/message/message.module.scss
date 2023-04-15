@@ -1,0 +1,116 @@
+@import "src/app/index";
+
+.message {
+  $this: &;
+  display: flex;
+  flex-direction: row;
+
+
+  &__inner {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    max-width: 35em;
+    column-gap: 10px;
+  }
+
+  &__avatar {
+    grid-column: 1 /  2;
+    width: 35px;
+    height: 35px;
+    background-color: cornflowerblue;
+    border-radius: 50%;
+    align-self: end;
+  }
+
+  &__body {
+    display: grid;
+    position: relative;
+    grid-template-rows: repeat(2, auto);
+    column-gap: 10px;
+    background-color: #DEDEDE;
+    padding: 10px 10px 3px;
+    border-radius: 16px 16px 16px 0;
+    z-index: 1;
+
+
+    &:before {
+      content: "";
+      position: absolute;
+      width: 0;
+      height: 0;
+      left: -7px;
+      bottom: 0;
+      border-style: solid;
+      border-width: 0 0 25px 25px;
+      border-color: transparent transparent #DEDEDE transparent;
+      z-index: -1;
+    }
+  }
+
+  .body__text {
+    grid-column: 1 / -1;
+    grid-row: 1 / 1;
+    margin: 0;
+    font-size: 15px;
+  }
+
+  .body__info {
+    grid-row: 2 / 3;
+    display: flex;
+    column-gap: 5px;
+    justify-self: end;
+    font-size: 11px;
+    align-items: center;
+  }
+
+  .info__status {
+    display: none;
+  }
+
+  &--out {
+    transform: scaleX(-1);
+
+    #{$this}__avatar {
+      display: none;
+    }
+
+    #{$this}__body {
+      background-color: #F7DEAD;
+      &:before {
+        border-color: transparent transparent #F7DEAD transparent;
+      }
+    }
+
+    .body__text, .info {
+      transform: scaleX(-1);
+    }
+
+    .info {
+      justify-self: start;
+
+      &__status {
+        display: block;
+
+        svg {
+          width: 16px;
+          height: 16px;
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 576px) {
+  .message__avatar {
+    display: none;
+  }
+}
+
+@media (min-width: 800px) {
+  .message__avatar {
+    display: inline-block;
+  }
+}
+
+
+

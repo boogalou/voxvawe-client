@@ -1,4 +1,4 @@
-import React, {ButtonHTMLAttributes, DetailedHTMLProps, FC, ReactNode} from 'react';
+import React, {ButtonHTMLAttributes, DetailedHTMLProps, ForwardedRef, forwardRef, ReactNode} from 'react';
 import cnBind from "classnames/bind"
 import styles from "./button.module.scss";
 import {IconType} from "shared/ui/icon";
@@ -10,30 +10,27 @@ export interface IButtonProps extends DetailedHTMLProps<ButtonHTMLAttributes<HTM
   className?: string;
   typeIcon?: IconType;
   text?: string;
-  onClick?: () => void;
   children?: ReactNode;
+  onClick?: (evt: React.MouseEvent) => void;
+
 }
 
 
-export const Button: FC<IButtonProps> = (
+export const Button = forwardRef((
     {
-      className,
-      typeIcon,
-      text,
-      children,
-      onClick,
-      ...restProps
-    }
+      className, typeIcon, text, children, onClick, ...restProps
+    }: IButtonProps, ref: ForwardedRef<HTMLButtonElement>
 ) => {
 
   return (
       <button
-          className={cx('button', className)}
+          className={cx(className)}
           onClick={onClick}
+          ref={ref}
           {...restProps}
       >
         <span>{text}</span>
         <span>{children}</span>
       </button>
   );
-};
+});
