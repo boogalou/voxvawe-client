@@ -12,9 +12,7 @@ export interface IButtonProps extends DetailedHTMLProps<ButtonHTMLAttributes<HTM
   text?: string;
   children?: ReactNode;
   onClick?: (evt: React.MouseEvent) => void;
-
 }
-
 
 export const Button = forwardRef((
     {

@@ -1,7 +1,7 @@
 import Sidebar from "./sidebar";
 import Header from "./header";
 import Button from "./button";
-import { IconButton } from "./button";
+import {IconButton} from "./button";
 import Icon from "./icon";
 import Textarea from "./textarea";
 import Input from "./input";
@@ -10,6 +10,7 @@ import Avatar from "./avatar";
 import List from "./list";
 import UnreadMsgBadge from "./unread-msg-badge";
 import Dropdown from "./dropdown";
+import Toggle from "./toggle";
 
 export {
   Sidebar,
@@ -24,4 +25,5 @@ export {
   List,
   UnreadMsgBadge,
   Dropdown,
+  Toggle,
 }
