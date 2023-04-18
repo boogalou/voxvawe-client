@@ -2,8 +2,9 @@ import React, {useRef, useState} from 'react';
 import style from './main-menu.module.scss';
 import cnBind from "classnames/bind";
 import {useOnClickOutside} from "usehooks-ts";
-import {Dropdown, Icon, IconButton, Toggle} from "shared/ui";
-import {useToggleTheme} from "@/shared/hooks/use-toggle-theme";
+import {Dropdown, Icon, IconButton} from "shared/ui";
+import { ThemeSwitcher } from "features/theme-switch";
+
 
 
 const cx = cnBind.bind(style);
@@ -51,18 +52,7 @@ export const MainMenu = () => {
     evt.stopPropagation()
   }
 
-  const handleToggleSwitch = (evt: React.ChangeEvent<HTMLInputElement>) => {
-    if(evt.target.checked) {
-      handleToggleTheme()
-    }
-    handleToggleTheme()
-  }
-
-  const [handleToggleTheme] = useToggleTheme('light-theme');
-
   useOnClickOutside(dropdownRef, handleOutsideClick);
-
-
 
   return (
       <div className={cx('main-menu')}>
@@ -76,12 +66,7 @@ export const MainMenu = () => {
           <Dropdown
               ref={dropdownRef}
               items={menuItems}
-              children={
-            <Toggle
-                name={'theme'}
-                onChange={handleToggleSwitch}
-            />
-          }
+              children={<ThemeSwitcher />}
               onClickMenuItem={handleMenuItemClick}
               onClickToggle={handleToggleClick}
           />

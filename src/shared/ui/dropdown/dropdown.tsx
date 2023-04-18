@@ -2,7 +2,7 @@ import React, {ForwardedRef, ReactNode, RefAttributes} from 'react';
 import cnBind from "classnames/bind";
 import styles from './dropdown.module.scss';
 import {List} from "shared/ui";
-import {IMenuItems} from "@/features/main-menu/main-menu";
+import {IMenuItems} from "@/widgets/main-menu/main-menu";
 
 const cx = cnBind.bind(styles);
 

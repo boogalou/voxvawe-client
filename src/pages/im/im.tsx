@@ -5,7 +5,7 @@ import {Dialogs, dialogsFetchThunk} from "@/entities/dialog";
 import {Button, Header, Sidebar} from "@/shared/ui";
 import {useAppDispatch} from "@/shared/hooks";
 import {Search} from "@/features/search";
-import {MainMenu} from "@/features/main-menu/main-menu";
+import {MainMenu} from "@/widgets/main-menu/main-menu";
 import {ChatBox} from "@/entities/message/ui/chat-box/chat-box";
 
 

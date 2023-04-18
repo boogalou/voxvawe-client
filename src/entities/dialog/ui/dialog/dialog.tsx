@@ -54,7 +54,7 @@ export const Dialog: FC<IDialogProps> = (
           className={cx('dialog', {"dialog--selected": userId === selectedId})}
           onClick={onClickHandler}
       >
-        <a href="#" className={cx("dialog__link")}>
+
           <div className={cx("dialog__container")}>
             <div className={cx("dialog__avatar")}>
               <Avatar avatarImg={userPic}/>
@@ -70,7 +70,6 @@ export const Dialog: FC<IDialogProps> = (
               <UnreadMsgBadge count={unreadCount}/>
             </div>
           </div>
-        </a>
       </li>
   );
 };

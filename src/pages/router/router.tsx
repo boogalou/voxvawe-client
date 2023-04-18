@@ -6,6 +6,9 @@ export const router = createBrowserRouter([
   {
     path: routes.IM_PAGE,
     element: <Im/>,
+    children: [
+
+    ]
   },
   {
     path: routes.AUTH_PAGE,
