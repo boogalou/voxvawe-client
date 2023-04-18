@@ -6,7 +6,6 @@ import {Button, Header, Sidebar} from "@/shared/ui";
 import {useAppDispatch} from "@/shared/hooks";
 import {Search} from "@/features/search";
 import {MainMenu} from "@/features/main-menu/main-menu";
-import Layout from "@/shared/ui/layout";
 import {ChatBox} from "@/entities/message/ui/chat-box/chat-box";
 
 
@@ -25,7 +24,7 @@ export const Im = () => {
   const [openInfo, setOpenInfo] = useState(false);
   console.log('IM rerender')
   return (
-      <div className={cx('im')}>
+      <div className={cx('im' , 'dark-theme')}>
         <div className={cx('container')}>
           <Sidebar className={cx('left-panel', {'left-panel--active': openChat})}>
             <Header className={cx('left-panel__header')}>

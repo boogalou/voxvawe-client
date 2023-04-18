@@ -1,4 +1,4 @@
-import React, { ForwardedRef, forwardRef} from 'react';
+import React from 'react';
 import cnBind from "classnames/bind";
 import styles from './toggle.module.scss';
 
@@ -9,10 +9,10 @@ export interface IToggleProps {
   className?: string;
   name: string;
   onChange?: (React.ChangeEventHandler<HTMLInputElement>);
-  check?: boolean;
+  checked?: boolean;
 }
 
-export const Toggle = ({className, name, check, onChange}: IToggleProps) => {
+export const Toggle = ({className, name, checked, onChange}: IToggleProps) => {
   return (
       <label htmlFor={name} className={cx('toggle')}>
         <input
@@ -20,9 +20,8 @@ export const Toggle = ({className, name, check, onChange}: IToggleProps) => {
             id={name}
             name={name}
             type="checkbox"
-            checked={check}
+            checked={checked}
             onChange={onChange}
-
         />
         <span className={cx('toggle__slider')}></span>
       </label>

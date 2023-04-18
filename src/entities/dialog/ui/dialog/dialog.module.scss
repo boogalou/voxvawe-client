@@ -28,6 +28,7 @@
     grid-row: 1 / 2;
     font-size: 16px;
     font-weight: 600;
+    color: var(--color-primary-font)
   }
 
   &__time-date {
@@ -60,10 +61,9 @@
     color: var(--color-chat-selected-font);
     border-radius: 6px;
 
-    #{$this}__last-message, #{$this}__time-date {
+    #{$this}__last-message, #{$this}__time-date, #{$this}__name  {
       color: var(--color-chat-selected-font);
     }
-
 
   }
 }

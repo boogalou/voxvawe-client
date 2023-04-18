@@ -13,22 +13,29 @@
     width: 100%;
     height: 45px;
     border-radius: 25px;
-    border: solid 1px #969696;
-    outline: #265df2;
+    border: solid 1px var(--color-search-input-bg);
     font-size: 16px;
     padding-left: 20px;
     padding-right: 40px;
+    background-color: var(--color-search-input-bg);
+    &:focus {
+      outline-color: var(--color-chat-selected);
+    }
   }
 
   &__icon {
     position: absolute;
-    top: 50%;
+    top: 55%;
     transform: translateY(-50%);
     left: calc(100% - 35px);
     svg {
       width: 24px;
       height: 24px;
-      stroke: var(--color-icon-secondary);
+      stroke: var(--color-icon-primary);
     }
+  }
+
+  &__input:focus + &__icon svg {
+    stroke: var(--color-chat-selected);
   }
 }

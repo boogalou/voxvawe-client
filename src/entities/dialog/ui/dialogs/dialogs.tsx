@@ -1,10 +1,9 @@
-import React, {FC, useEffect, useState} from 'react';
+import React, {FC, useState} from 'react';
 import cnBind from "classnames/bind";
 import styles from "./dilogs.module.scss";
 
-import { Dialog } from "entities/dialog";
-import {useAppDispatch, useAppSelector} from "shared/hooks";
-import { dialogsFetchThunk } from "@/entities/dialog/model/dialogsFetch.thunk";
+import {Dialog} from "entities/dialog";
+import {useAppSelector} from "shared/hooks";
 
 const cx = cnBind.bind(styles);
 

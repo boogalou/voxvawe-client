@@ -1,5 +1,4 @@
 import React, {FC} from 'react';
-import { Link } from 'react-router-dom';
 import styles from './dialog.module.scss';
 import cnBind from 'classnames/bind';
 import {Avatar, UnreadMsgBadge} from 'shared/ui';

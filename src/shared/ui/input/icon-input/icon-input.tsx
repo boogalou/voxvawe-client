@@ -11,12 +11,12 @@ const cx = cnBind.bind(styles)
 interface IconInputProps extends InputProps {
   icon: IconType;
   iconClassName?: string;
-
+  onClick?: () => void;
 }
 
 export const IconInput = forwardRef(
     ({
-       className, name, type, value, error, icon, iconClassName, ...restProps
+       className, name, type, value, error, icon, iconClassName, onClick, ...restProps
      }: IconInputProps, ref: ForwardedRef<HTMLInputElement>): JSX.Element => {
 
       return (
@@ -29,7 +29,11 @@ export const IconInput = forwardRef(
                 ref={ref}
                 {...restProps}
             />
-            <Icon typeIcon={icon} className={cx('input__icon', iconClassName)} />
+            <Icon
+                className={cx('input__icon', iconClassName)}
+                onClick={onClick}
+                typeIcon={icon}
+            />
           </div>
       );
     });

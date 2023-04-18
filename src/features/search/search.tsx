@@ -9,6 +9,10 @@ export const Search = () => {
 
   const [inputValue, setInputValue] = useState('');
 
+  const handleInputFieldClear = () => {
+    setInputValue('');
+  }
+
   const handleOnChange = (evt: ChangeEvent<HTMLInputElement>) => {
     setInputValue(evt.target.value);
   }
@@ -19,8 +23,9 @@ export const Search = () => {
           <IconInput
               type='text'
               placeholder='Поиск'
+              onClick={handleInputFieldClear}
               onChange={handleOnChange}
-              icon='search'
+              icon={!inputValue ? 'search' : 'clear'}
               value={inputValue}
               className={cx('search__input')}
               iconClassName={cx('search__icon')}

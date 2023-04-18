@@ -1,6 +1,7 @@
 //colors
 :root {
   --color-primary: #ffffff;
+  --color-primary-opacity: rgba(255,255,255, 0.75);
   --color-search-input-bg: #f4f4f5;
   --color-chat-input-bg: #ffffff;
   --color-chat-bg: #2e2e2e;
@@ -18,15 +19,16 @@
   --color-link: #3390ec;
   --color-badge: #C4C9CCFF;
 
-  --color-primary-opacity: rgba(80,162,233,0.25098);
-  --color-primary-opacity-hover: rgba(80,162,233,0.14902);
-  --color-background-compact-menu: rgba(255,255,255,0.733333);
-  --color-background-compact-menu-reactions: rgba(255,255,255,0.921569);
+  //--color-primary-opacity: rgba(80,162,233,0.25098);
+  //--color-primary-opacity-hover: rgba(80,162,233,0.14902);
+  //--color-background-compact-menu: rgba(255,255,255,0.733333);
+  //--color-background-compact-menu-reactions: rgba(255,255,255,0.921569);
   --color-background-compact-menu-hover: rgba(0,0,0,0.0666667);
 }
 
 .light-theme {
   --color-primary: #ffffff;
+  --color-primary-opacity: rgba(255,255,255, 0.75);
   --color-search-input-bg: #f4f4f5;
   --color-chat-input-bg: #ffffff;
   --color-chat-bg: #2e2e2e;
@@ -47,6 +49,7 @@
 
 .dark-theme {
   --color-primary: #282828;
+  --color-primary-opacity: rgba(50,50,50);
   --color-search-input-bg: #363838;
   --color-chat-input-bg: #3d3c3c;
   --color-chat-bg: #2e2e2e;
