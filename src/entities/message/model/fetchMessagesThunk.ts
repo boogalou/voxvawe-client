@@ -1,11 +1,13 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import {IMessage} from "@/entities/message/model/message.slice";
+import { IMessage } from "@/entities/message/model/message.slice";
 
-export const messagesThunk = createAsyncThunk<IMessage[], undefined, { rejectValue: string }>(
+const baseUrl = 'https://643e9d42c72fda4a0bfbf51b.mockapi.io/'
+
+export const messagesThunk = createAsyncThunk<IMessage[], string, { rejectValue: string }>(
     "messages/fetchMessages",
-    async () => {
-      const response = await axios.get('https://60db4f3f801dcb0017291069.mockapi.io/api/v1/contacts');
+    async (userId) => {
+      const response = await axios.get(baseUrl + userId);
       return response.data
     }
 );
