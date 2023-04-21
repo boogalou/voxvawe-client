@@ -11,7 +11,7 @@ export const useToggleTheme = (initialState: string) => {
   }
 
   useEffect(() => {
-    const body = document.querySelector('.im')!
+    const body = document.querySelector('.app')!
     if (body) {
       body.classList.toggle(styles['light-theme'], theme === 'light-theme');
       body.classList.toggle(styles['dark-theme'], theme === 'dark-theme');

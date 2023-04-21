@@ -1,1 +1,2 @@
-export { Message } from "./ui/message/";
+export * from "./ui/message/";
+export * from './model'

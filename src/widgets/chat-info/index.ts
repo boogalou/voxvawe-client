@@ -1,1 +1,1 @@
-export { CurrentChatInfo } from './CurrentChatInfo';
+export { ChatInfo } from './chat-info';

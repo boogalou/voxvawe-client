@@ -1,5 +1,4 @@
-import React, {useEffect, useState} from 'react';
-
+import React from 'react';
 import {withProviders} from "@/app/providers/with-providers";
 import {RouterProvider} from "react-router";
 import {router} from "pages/router";

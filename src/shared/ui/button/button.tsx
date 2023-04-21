@@ -1,7 +1,8 @@
 import React, {ButtonHTMLAttributes, DetailedHTMLProps, ForwardedRef, forwardRef, ReactNode} from 'react';
 import cnBind from "classnames/bind"
 import styles from "./button.module.scss";
-import {IconType} from "shared/ui/icon";
+import {IconType, Icon} from "shared/ui/icon";
+
 
 
 const cx = cnBind.bind(styles);
@@ -27,8 +28,8 @@ export const Button = forwardRef((
           ref={ref}
           {...restProps}
       >
-        <span>{text}</span>
-        <span>{children}</span>
+          {typeIcon && <Icon typeIcon={typeIcon}/>}
+          <span>{children}</span>
       </button>
   );
 });

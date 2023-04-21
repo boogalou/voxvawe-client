@@ -1,7 +1,8 @@
 import React, { FC } from 'react';
 import styles from "./message.module.scss";
 import cnBind from "classnames/bind";
-import { Avatar, Icon } from "../../../../shared";
+import {Avatar, Icon} from "@/shared/ui";
+
 
 const cx = cnBind.bind(styles);
 
@@ -15,24 +16,22 @@ export interface MessageProps {
   attachments?: [];
 }
 
-export const Message: FC<MessageProps> = ({ text, userId }) => {
+export const Message: FC<MessageProps> = ({ text, userId, isRead }) => {
 
   const hostId: number = 100;
 
   return (
-      <div className={cx("message", { "message--out": userId === hostId })}>
+      <div className={cx("message", { "message--you": userId === hostId })}>
         <div className={cx("message__inner")}>
           <div className={cx("message__avatar")}>
-            <Avatar avatarImg={"hello"}/>
+            <Avatar avatarImg={"hello"} />
           </div>
-          <div className={cx("message__body", "body")}>
-            <p className={cx("body__text")}>
-              { text }
-            </p>
-            <div className={cx("body__info", "info")}>
-              <div className={cx("info__time")}>12:15</div>
-              <div className={cx("info__status")}>
-                <Icon className={cx("info__status-icon")} typeIcon={"msg-status"} />
+          <div className={cx("message__body")}>
+            <p className={cx("message__text")}>{text}</p>
+            <div className={cx("message__info")}>
+              <div className={cx("message__time")}>12:15</div>
+              <div className={cx("message__status", { "message__status--read": isRead })}>
+                <Icon className={cx("message__status-icon")} typeIcon={"msg-status"} />
               </div>
             </div>
           </div>

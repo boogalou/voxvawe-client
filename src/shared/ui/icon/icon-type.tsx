@@ -17,6 +17,8 @@ import {ReactComponent as Moon} from 'shared/assets/icons/moon_.svg';
 import {ReactComponent as Profile} from 'shared/assets/icons/profile_.svg';
 import {ReactComponent as Warning} from 'shared/assets/icons/warning_.svg';
 import {ReactComponent as Settings} from 'shared/assets/icons/setting_.svg';
+import {ReactComponent as Close} from 'shared/assets/icons/close_.svg';
+import {ReactComponent as ArrowLeft} from 'shared/assets/icons/arrow-long-left_.svg';
 
 
 export type IconType =
@@ -38,6 +40,8 @@ export type IconType =
     | 'profile'
     | 'warning'
     | 'settings'
+    | 'close'
+    | 'arrow-left'
 
 export const iconTypes = new Map([
   ['send', <Send key={getKey()}/>],
@@ -58,6 +62,8 @@ export const iconTypes = new Map([
   ['profile', <Profile key={getKey()}/>],
   ['warning', <Warning key={getKey()}/>],
   ['settings', <Settings key={getKey()}/>],
+  ['close', <Close key={getKey()}/>],
+  ['arrow-left', <ArrowLeft key={getKey()}/>],
 ])
 
 

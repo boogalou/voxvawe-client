@@ -1,41 +1,41 @@
 @font-face {
   font-family: 'Roboto';
-  src: url('src/shared/assets/fonts/Roboto-Regular.ttf') format('truetype');
+  src: url('../../../public/fonts/Roboto-Regular.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'Roboto';
-  src: url('src/shared/assets/fonts/Roboto-Medium.ttf') format('truetype');
+  src: url('../../../public/fonts/Roboto-Medium.ttf') format('truetype');
   font-weight: 500; // Medium
   font-style: normal;
 }
 
 @font-face {
   font-family: 'Roboto';
-  src: url('src/shared/assets/fonts/Roboto-Bold.ttf') format('truetype');
+  src: url('../../../public/fonts/Roboto-Bold.ttf') format('truetype');
   font-weight: bold;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'Inter';
-  src: url('src/shared/assets/fonts/Inter-Regular.ttf') format('truetype');
+  src: url('../../../public/fonts/Inter-Regular.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'Inter';
-  src: url('src/shared/assets/fonts/Inter-Medium.ttf') format('truetype');
-  font-weight: 500; // Medium
+  src: url('../../../public/fonts/Inter-Medium.ttf') format('truetype');
+  font-weight: 500;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'Inter';
-  src: url('src/shared/assets/fonts/Inter-Bold.ttf') format('truetype');
+  src: url('../../../public/fonts/Inter-Bold.ttf') format('truetype');
   font-weight: bold;
   font-style: normal;
 }

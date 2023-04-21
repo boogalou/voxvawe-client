@@ -17,11 +17,11 @@ export const ChatBox: FC = () => {
 
   return (
       <div className={cx('chat-box')}>
-          <div className={cx("container")}>
+
             {
               messages.map(message => <Message key={message.id} { ...message }/>)
             }
-          </div>
+
       </div>
   );
 };

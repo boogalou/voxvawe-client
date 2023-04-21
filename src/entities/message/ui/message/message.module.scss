@@ -6,6 +6,7 @@
   flex-direction: row;
 
 
+
   &__inner {
     display: grid;
     grid-template-columns: auto 1fr;
@@ -14,12 +15,7 @@
   }
 
   &__avatar {
-    grid-column: 1 /  2;
-    width: 35px;
-    height: 35px;
-    background-color: cornflowerblue;
-    border-radius: 50%;
-    align-self: end;
+    display: none;
   }
 
   &__body {
@@ -47,14 +43,14 @@
     }
   }
 
-  .body__text {
+  &__text {
     grid-column: 1 / -1;
     grid-row: 1 / 1;
     margin: 0;
     font-size: 15px;
   }
 
-  .body__info {
+  &__info {
     grid-row: 2 / 3;
     display: flex;
     column-gap: 5px;
@@ -63,11 +59,15 @@
     align-items: center;
   }
 
-  .info__status {
+  &__status {
     display: none;
+
+    &--read {
+
+    }
   }
 
-  &--out {
+  &--you {
     transform: scaleX(-1);
 
     #{$this}__avatar {
@@ -76,39 +76,44 @@
 
     #{$this}__body {
       background-color: #F7DEAD;
+
       &:before {
         border-color: transparent transparent #F7DEAD transparent;
       }
     }
 
-    .body__text, .info {
+    #{$this}__text, #{$this}__info {
       transform: scaleX(-1);
     }
 
-    .info {
+    #{$this}__info {
       justify-self: start;
+    }
 
-      &__status {
-        display: block;
+    #{$this}__status {
+      display: block;
 
-        svg {
-          width: 16px;
-          height: 16px;
-        }
+      svg {
+        width: 1rem;
+        height: 1rem;
       }
     }
   }
 }
 
-@media (min-width: 576px) {
-  .message__avatar {
-    display: none;
-  }
+@include respond-to(tablet) {
+
 }
 
-@media (min-width: 800px) {
+@include respond-to(desktop) {
   .message__avatar {
-    display: inline-block;
+    display: block;
+    grid-column: 1 /  2;
+    width: 35px;
+    height: 35px;
+    background-color: cornflowerblue;
+    border-radius: 50%;
+    align-self: end;
   }
 }
 

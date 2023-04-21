@@ -1,5 +1,6 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {messagesThunk} from "./messages.thunk";
+import {fetchMessagesThunk, sendMessageThunk} from "@/entities/message/model/fetchMessagesThunk";
+
 
 
 export interface IMessage {
@@ -128,7 +129,43 @@ const initialState: MessageState = {
       isGroup: true,
       isRead: false,
       timestamp: Date.now().toString()
-    }
+    },
+    {
+      id: 204,
+      userId: 200,
+      text: "Don't worry, I won't spoil it for you. It's amazing, though!",
+      attachments: [],
+      isGroup: true,
+      isRead: false,
+      timestamp: Date.now().toString()
+    },
+    {
+      id: 77,
+      userId: 100,
+      text: "No, I haven't had the time to watch it yet. Please don't spoil it for me!",
+      attachments: [],
+      isGroup: true,
+      isRead: false,
+      timestamp: Date.now().toString()
+    },
+    {
+      id: 159,
+      userId: 100,
+      text: "No, I haven't had the time to watch it yet. Please don't spoil it for me!",
+      attachments: [],
+      isGroup: true,
+      isRead: false,
+      timestamp: Date.now().toString()
+    },
+    {
+      id: 591,
+      userId: 200,
+      text: "No, I haven't had the time to watch it yet. Please don't spoil it for me!",
+      attachments: [],
+      isGroup: true,
+      isRead: false,
+      timestamp: Date.now().toString()
+    },
   ],
   status: "idle",
   error: null,
@@ -144,33 +181,33 @@ const messageSlice = createSlice({
       },
 
       extraReducers: (builder) => {
-        builder.addCase(messagesThunk.pending, (state) => {
+        builder.addCase(fetchMessagesThunk.pending, (state) => {
           state.status = "loading";
           state.error = null;
         })
-            .addCase(messagesThunk.fulfilled, (state, action) => {
+            .addCase(fetchMessagesThunk.fulfilled, (state, action) => {
               state.messages = action.payload;
               state.status = "succeeded";
             })
-            .addCase(messagesThunk.rejected, (state, action) => {
+            .addCase(fetchMessagesThunk.rejected, (state, action) => {
               state.status = "failed";
             })
 
-        // builder.addCase(sendMessageThunk.pending, (state) => {
-        //   state.status = "loading";
-        //   state.error = null;
-        // })
-        //     .addCase(sendMessageThunk.fulfilled, (state, action) => {
-        //       console.log("slice: ", action.payload)
-        //       messageSlice.actions.addMessage(action.payload);
-        //       state.status = "succeeded";
-        //     })
-        //     .addCase(sendMessageThunk.rejected, (state, action) => {
-        //       state.status = "failed";
-        //     })
+        builder.addCase(sendMessageThunk.pending, (state) => {
+          state.status = "loading";
+          state.error = null;
+        })
+            .addCase(sendMessageThunk.fulfilled, (state, action) => {
+              console.log("slice: ", action.payload)
+              messageSlice.actions.addMessage(action.payload);
+              state.status = "succeeded";
+            })
+            .addCase(sendMessageThunk.rejected, (state, action) => {
+              state.status = "failed";
+            })
       }
     }
 );
 
-export const {addMessage} = messageSlice.actions;
+export const { addMessage,} = messageSlice.actions;
 export default messageSlice.reducer
