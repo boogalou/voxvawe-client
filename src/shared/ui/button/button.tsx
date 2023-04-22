@@ -1,7 +1,7 @@
 import React, {ButtonHTMLAttributes, DetailedHTMLProps, ForwardedRef, forwardRef, ReactNode} from 'react';
 import cnBind from "classnames/bind"
 import styles from "./button.module.scss";
-import {IconType, Icon} from "shared/ui/icon";
+import { IconType, Icon } from "shared/ui/icon";
 
 
 

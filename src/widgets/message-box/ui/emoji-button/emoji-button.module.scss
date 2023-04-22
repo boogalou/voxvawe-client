@@ -17,10 +17,22 @@
 
   &--isPressed {
     svg {
-      fill: var(--color-primary);
+      fill: var(--color-chat-selected);
     }
     #{$this}__picker {
       visibility: visible;
+    }
+  }
+}
+
+@include respond-to(desktop) {
+  .emoji {
+    &__btn {
+      svg {
+        &:hover {
+          fill: var(--color-chat-selected);
+        }
+      }
     }
   }
 }

@@ -26,15 +26,6 @@
     border-radius: 50%;
     align-self: end;
     margin-bottom: 12px;
-
-    svg {
-      width: 100%;
-      height: 100%;
-      fill: var(--color-icon-primary);
-      &:hover {
-        fill: var(--color-primary);
-      }
-    }
   }
 
   &__textarea {
@@ -71,13 +62,5 @@
 @include respond-to(desktop) {
   .message-box {
     margin-bottom: 30px;
-
-    &__icon {
-      svg {
-        &:hover {
-          fill: var(--color-icon-secondary);
-        }
-      }
-    }
   }
 }

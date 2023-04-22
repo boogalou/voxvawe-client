@@ -1,5 +1,4 @@
 import React, { useRef, useState } from 'react';
-
 import Picker from '@emoji-mart/react';
 import emojiMartData from "@emoji-mart/data/sets/14/google.json"
 import cnBind from "classnames/bind";
@@ -39,12 +38,13 @@ export const EmojiButton = () => {
           <Picker
               set="apple"
               emojiSize={26}
+              theme={'dark'}
               data={ emojiMartData }
               onEmojiSelect={onSelectEmojiHandler}
           />
         </div>
         <IconButton
-            className={cx("emoji__btn")}
+            className={cx("emoji__btn", {"emoji__btn--active": isPressed})}
             onClick={onButtonClickHandler}
             typeIcon={"emoji"}
         />

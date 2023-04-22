@@ -1,18 +1,14 @@
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import React, {ChangeEvent, useEffect, useState} from 'react';
 import cnBind from "classnames/bind";
 import styles from "./message-box.module.scss";
-import {Input, Textarea} from "shared/ui";
-import { EmojiButton } from "./ui/emoji-button";
-import { AttachButton } from './ui/attach-button';
-import { SendButton } from "./ui/send-button/send-button";
-import { useResizeTextarea } from "./lib/use-textarea-auto-height";
+import {Textarea} from "shared/ui";
+import {EmojiButton} from "./ui/emoji-button";
+import {AttachButton} from './ui/attach-button';
+import {SendButton} from "./ui/send-button/send-button";
+import {useResizeTextarea} from "./lib/use-textarea-auto-height";
 import {useAppDispatch, useAppSelector} from "@/shared/hooks";
-import { addMessage, sendMessageThunk } from '@/entities/message';
+import {addMessage, sendMessageThunk} from '@/entities/message';
 import {IMessage} from "@/entities/message/model/message.slice";
-
-
-
-
 
 
 const cx = cnBind.bind(styles);
@@ -62,7 +58,7 @@ export const MessageBox = () => {
   return (
       <div className={cx("message-box")}>
         <div className={cx("message-box__container")}>
-          <div className={cx("message-box__icon")}>
+          <div className={cx("message-box__icon", )}>
             <EmojiButton/>
           </div>
           <div className={cx("message-box__textarea")}>
