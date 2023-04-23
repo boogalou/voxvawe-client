@@ -3,31 +3,44 @@ import cnBind from "classnames/bind";
 import styles from './chat-info.module.scss';
 import {Avatar} from "shared/ui";
 import {Link} from "react-router-dom";
+import {useAppDispatch} from "@/shared";
+import {moveBackMiddleColumn} from "@/entities";
+import {SwitchPanel} from "@/features/switch-panel";
+
 
 
 const cx = cnBind.bind(styles);
 
 export interface ChatInfoProps {
+  userId?: number;
   userPic?: string;
-  username?: string;
+  fullName?: string;
+  isOnline?: boolean;
   lastMsgDate?: string;
-  onClick?: (evt: React.MouseEvent) => void;
 }
 
-export const ChatInfo: FC<ChatInfoProps> = ({userPic, username, lastMsgDate, onClick}) => {
+export const ChatInfo: FC<ChatInfoProps> = ({userId, userPic,  fullName, lastMsgDate}) => {
+
+  const dispatch = useAppDispatch();
+
+  const handleOnClick = () => {
+    dispatch(moveBackMiddleColumn(false));
+  }
+
   return (
       <div className={cx('chat-info')}
-           onClick={onClick}
-      >
-        <Link to={""} className={cx('chat-info__link')}>
+           onClick={handleOnClick}
 
+      >
+        <SwitchPanel/>
+        <Link to={""} className={cx('chat-info__link')}>
           <div className={cx('chat-info__avatar')}>
             <Avatar
-                avatarImg={'https://images.unsplash.com/photo-1671531009361-8846ff0d7ae4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2071&q=80'}/>
+                avatarImg={userPic ? userPic : ''}/>
           </div>
           <div className={cx('chat-info__info')}>
-            <div className={cx('chat-info__name')}>{'Наташа'}</div>
-            <div className={cx('chat-info__timestamp')}>{'был(а) 54 минты назад'}</div>
+            <div className={cx('chat-info__name')}>{fullName}</div>
+            <div className={cx('chat-info__timestamp')}>{ lastMsgDate }</div>
           </div>
         </Link>
       </div>

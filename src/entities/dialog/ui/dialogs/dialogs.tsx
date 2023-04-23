@@ -7,15 +7,18 @@ import {useAppSelector} from "shared/hooks";
 
 const cx = cnBind.bind(styles);
 
+
+
 export const Dialogs: FC = () => {
 
 
 
-  const [selected, setSelected] = useState<number | null>(null);
+  const [selectedDialog, setSelectedDialog] = useState<number | null>(null);
 
   const selectDialogHandler = (id: number) => {
-    setSelected(id)
+    setSelectedDialog(id)
   }
+
 
   const dialogs = useAppSelector(state => state.dialogSlice.dialogs);
 
@@ -25,8 +28,9 @@ export const Dialogs: FC = () => {
           dialogs.map(dialog => (
                   <Dialog
                       key={dialog.id}
-                      selectedId={selected}
+                      selectedDialog={selectedDialog}
                       onClick={selectDialogHandler}
+
                       {...dialog}
                   />
               )

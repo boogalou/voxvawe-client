@@ -1,0 +1,27 @@
+@import 'src/app/index';
+
+.switch-panel {
+  $this: &;
+
+  &__btn {
+    border: none;
+    background: none;
+    width: 2.1875rem;
+    height: 2.1875rem;
+
+    svg {
+      width: 100%;
+      height: 100%;
+      stroke: var(--color-icon-primary);
+    }
+  }
+}
+
+
+@include respond-to(desktop) {
+  .switch-panel {
+    display: none;
+  }
+}
+
+

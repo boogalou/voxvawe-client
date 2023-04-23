@@ -18,7 +18,7 @@ import {ReactComponent as Profile} from 'shared/assets/icons/profile_.svg';
 import {ReactComponent as Warning} from 'shared/assets/icons/warning_.svg';
 import {ReactComponent as Settings} from 'shared/assets/icons/setting_.svg';
 import {ReactComponent as Close} from 'shared/assets/icons/close_.svg';
-import {ReactComponent as ArrowLeft} from 'shared/assets/icons/arrow-long-left_.svg';
+import {ReactComponent as ArrowLeft} from 'shared/assets/icons/arrow-left-md_.svg';
 
 
 export type IconType =
