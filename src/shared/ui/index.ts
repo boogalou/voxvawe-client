@@ -14,6 +14,7 @@ import UnreadMsgBadge from "./unread-msg-badge";
 import Dropdown from "./dropdown";
 import Toggle from "./toggle";
 import Layout from "./layout";
+import Preloader from "./preloader";
 
 export {
   Content,
@@ -32,4 +33,5 @@ export {
   Dropdown,
   Toggle,
   Layout,
+  Preloader,
 }

@@ -109,11 +109,13 @@
   .message__avatar {
     display: block;
     grid-column: 1 /  2;
-    width: 35px;
-    height: 35px;
-    background-color: cornflowerblue;
     border-radius: 50%;
     align-self: end;
+
+    &-img {
+      width: 30px;
+      height: 30px;
+    }
   }
 }
 

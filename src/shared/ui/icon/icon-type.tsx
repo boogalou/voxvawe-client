@@ -19,6 +19,7 @@ import {ReactComponent as Warning} from 'shared/assets/icons/warning_.svg';
 import {ReactComponent as Settings} from 'shared/assets/icons/setting_.svg';
 import {ReactComponent as Close} from 'shared/assets/icons/close_.svg';
 import {ReactComponent as ArrowLeft} from 'shared/assets/icons/arrow-left-md_.svg';
+import {ReactComponent as Preloader} from 'shared/assets/icons/dual-ring_.svg';
 
 
 export type IconType =
@@ -42,6 +43,7 @@ export type IconType =
     | 'settings'
     | 'close'
     | 'arrow-left'
+    | 'preloader'
 
 export const iconTypes = new Map([
   ['send', <Send key={getKey()}/>],
@@ -64,6 +66,7 @@ export const iconTypes = new Map([
   ['settings', <Settings key={getKey()}/>],
   ['close', <Close key={getKey()}/>],
   ['arrow-left', <ArrowLeft key={getKey()}/>],
+  ['preloader', <Preloader key={getKey()}/>],
 ])
 
 

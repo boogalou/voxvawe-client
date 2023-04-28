@@ -1,13 +1,16 @@
 import { combineReducers } from "@reduxjs/toolkit";
-import  dialogSlice  from '@/entities/dialog/model/dialogs.slice';
-import messageSlice from "@/entities/message/model/message.slice";
-import messageInputSlice from "@/widgets/message-box/model/message-input.slice";
+import authSlice from 'entities/auth/model/auth.slice';
+import dialogSlice from 'entities/dialog/model/dialogs.slice';
+import messageSlice from 'entities/message/model/message.slice';
+import messageInputSlice from 'components/chat/message-box/model/message-input.slice';
+
+
 
 
 
 
 export const rootReducer = combineReducers({
-  // authSlice,
+  authSlice,
   dialogSlice,
   messageSlice,
   messageInputSlice,

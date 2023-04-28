@@ -50,9 +50,10 @@
   &__unread-message {
     grid-column: 3 / 4;
     grid-row: 2 / -1;
-    justify-self: center;
+    justify-self: end;
     font-size: 12px;
     font-weight: bold;
+
     color: var(--color-background);
   }
 

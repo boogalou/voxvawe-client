@@ -1,0 +1,33 @@
+@import 'src/app/index';
+
+.chat {
+  display: grid;
+  grid-template-rows: repeat(12, 1fr);
+  width: 100%;
+  height: 100dvh;
+  overflow: hidden;
+
+  &--close{
+    display: none;
+  }
+
+  &__header {
+    grid-row: 1 / 2;
+  }
+
+  &__content {
+    grid-row: 2 / 12;
+    margin-bottom: 0.5rem;
+  }
+
+  &__footer {
+    grid-row: 12/ 13;
+
+  }
+
+  &__preloader {
+    @include preloader();
+  }
+}
+
+

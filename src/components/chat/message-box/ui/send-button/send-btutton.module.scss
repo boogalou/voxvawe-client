@@ -1,0 +1,41 @@
+@import 'src/app/index';
+
+.send {
+  $this: &;
+  align-self: end;
+  &__btn {
+
+    width: 3.125rem;
+    height: 3.125rem;
+    border-radius: 50%;
+    padding: 0.9rem;
+   border: none;
+    background-color: var(--color-chat-selected);
+    margin-bottom: 0.3125rem;
+
+    svg {
+      width: 100%;
+      height: 100%;
+      stroke: var(--color-primary);
+    }
+  }
+}
+
+@include respond-to(desktop) {
+  .send {
+    &__btn {
+      border: solid 1px var(--color-primary);
+      background-color: var(--color-primary);
+      svg {
+        stroke: var(--color-icon-primary);
+      }
+      &:hover {
+        background-color: var(--color-chat-selected);
+        svg {
+          stroke: var(--color-primary);
+        }
+      }
+    }
+
+  }
+}
