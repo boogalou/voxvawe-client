@@ -4,7 +4,10 @@ export interface IUser {
   username: string;
   email: string;
   accessToken: string;
-  refreshToken: string;
+  lastSeen: Date;
+  createdAt?: Date;
+  updateAt?: Date;
+  isOnline: boolean;
   isActivated: boolean;
 }
 

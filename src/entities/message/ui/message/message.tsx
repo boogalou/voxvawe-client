@@ -20,14 +20,14 @@ export interface MessageProps {
 export const Message: FC<MessageProps> = ({ text, userId, isRead }) => {
 
   const hostId: number = 666333999;
-  const { interlocutor_avatar } = useAppSelector(state => state.dialogSlice.currentDialog!);
+  const { interlocutorAvatar } = useAppSelector(state => state.dialogSlice.currentDialog!);
   return (
       <div className={cx("message", { "message--you": userId === hostId })}>
         <div className={cx("message__inner")}>
           <div className={cx("message__avatar")}>
             <Avatar
                 className={cx("message__avatar-img")}
-                avatarImg={interlocutor_avatar}
+                avatarImg={interlocutorAvatar}
             />
           </div>
           <div className={cx("message__body")}>

@@ -1,9 +1,9 @@
-import {ForwardedRef, forwardRef} from "react";
+import { ChangeEvent, ForwardedRef, forwardRef } from 'react';
 import {InputProps} from "../input";
 import cnBind from "classnames/bind";
 import styles from './icon-input.module.scss';
-import { IconType } from "@/shared/ui/icon";
-import { Icon } from "@/shared/ui";
+import { IconType } from "shared/ui/icon";
+import { Icon } from "shared/ui";
 
 
 const cx = cnBind.bind(styles)
@@ -11,12 +11,12 @@ const cx = cnBind.bind(styles)
 interface IconInputProps extends InputProps {
   icon: IconType;
   iconClassName?: string;
-  onClick?: () => void;
+  onClickClear?: () => void;
 }
 
 export const IconInput = forwardRef(
     ({
-       className, name, type, value, error, icon, iconClassName, onClick, ...restProps
+       className, name, type, value, error, icon, iconClassName, onClickClear, ...restProps
      }: IconInputProps, ref: ForwardedRef<HTMLInputElement>): JSX.Element => {
 
       return (
@@ -31,7 +31,7 @@ export const IconInput = forwardRef(
             />
             <Icon
                 className={cx('input__icon', iconClassName)}
-                onClick={onClick}
+                onClick={onClickClear}
                 typeIcon={icon}
             />
           </div>

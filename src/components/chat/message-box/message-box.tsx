@@ -17,7 +17,7 @@ const cx = cnBind.bind(styles);
 export const MessageBox = () => {
 
   const dispatch = useAppDispatch();
-  const selectedEmoji = useAppSelector(state => state.messageInputSlice.selectedEmoji);
+  const { selectedEmoji } = useAppSelector(state => state.messageInputSlice);
   const [textValue, setTextValue] = useState('');
   const textAreaRef = useResizeTextarea(textValue);
   const buttonType = textValue ? "send" : "microphone"
@@ -41,7 +41,7 @@ export const MessageBox = () => {
       isRead: false,
       isGroup: false,
       attachments: [],
-      id: 23
+      id:  Math.floor(Math.random() * 1000)
     }
 
 

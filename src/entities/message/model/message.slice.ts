@@ -1,15 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { fetchMessagesThunk, sendMessageThunk } from 'entities/message';
+import { IMessage } from 'shared/types';
 
-export interface IMessage {
-  id: number;
-  userId: number;
-  text: string;
-  timestamp: string;
-  isRead: boolean;
-  isGroup: boolean;
-  attachments: [];
-}
+
 
 export interface MessageState {
   messages: IMessage[];

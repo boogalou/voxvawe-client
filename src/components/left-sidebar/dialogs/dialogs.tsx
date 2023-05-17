@@ -10,8 +10,6 @@ const cx = cnBind.bind(styles);
 export const Dialogs: FC = () => {
   const { dialogs, status } = useAppSelector(state => state.dialogSlice);
 
-  dialogs.map(item => console.log(item.last_message_text));
-
   return (
     <ul className={cx('dialogs')}>
       {status === 'loading' ? (

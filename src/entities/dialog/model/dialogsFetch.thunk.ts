@@ -1,6 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { IDialog } from "@/entities/dialog/ui/dialog/dialog";
+import { IDialog } from 'src/shared';
+
 
 
 

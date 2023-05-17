@@ -17,6 +17,7 @@
     font-size: 16px;
     padding-left: 20px;
     padding-right: 40px;
+    color: var(--color-primary-font);
     background-color: var(--color-search-input-bg);
     &:focus {
       outline-color: var(--color-chat-selected);

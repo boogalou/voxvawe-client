@@ -2,7 +2,7 @@ import React, {ForwardedRef, ReactNode, RefAttributes} from 'react';
 import cnBind from "classnames/bind";
 import styles from './dropdown.module.scss';
 import {List} from "shared/ui";
-import {IMenuItems} from "@/components/left-sidebar/main-menu/main-menu";
+import {IMenuItems} from "components/left-sidebar/main-menu/main-menu";
 
 const cx = cnBind.bind(styles);
 
@@ -24,6 +24,7 @@ export const Dropdown = React.forwardRef((
       onClickMenuItem,
       onClickToggle,
     }: IDropdownProps, ref: ForwardedRef<HTMLUListElement>) => {
+
 
 
   return (

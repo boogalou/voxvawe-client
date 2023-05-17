@@ -1,12 +1,10 @@
-import { combineReducers } from "@reduxjs/toolkit";
+import { combineReducers } from '@reduxjs/toolkit';
 import authSlice from 'entities/auth/model/auth.slice';
 import dialogSlice from 'entities/dialog/model/dialogs.slice';
 import messageSlice from 'entities/message/model/message.slice';
 import messageInputSlice from 'components/chat/message-box/model/message-input.slice';
-
-
-
-
+import contactsSlice from 'entities/contact/model/contacts.slice';
+import  leftSidebarSlice  from 'components/left-sidebar/model/left-sidebar.slice';
 
 
 export const rootReducer = combineReducers({
@@ -14,4 +12,6 @@ export const rootReducer = combineReducers({
   dialogSlice,
   messageSlice,
   messageInputSlice,
+  contactsSlice,
+  leftSidebarSlice,
 });

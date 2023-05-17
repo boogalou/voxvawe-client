@@ -3,42 +3,47 @@ import cnBind from 'classnames/bind';
 import styles from './search-bar.module.scss';
 import { IconInput } from 'shared/ui';
 import { useAppDispatch } from 'shared/hooks';
-import { searchUserRequest } from 'components/left-sidebar/search-bar/model';
+import { searchContacts } from 'entities/contact';
+import { setIsFocus } from 'components/left-sidebar/model/left-sidebar.slice';
+import { clearSearch } from 'entities/contact/model/contacts.slice';
 
 const cx = cnBind.bind(styles);
 
 export const SearchBar = () => {
   const dispatch = useAppDispatch();
-  const [inputValue, setInputValue] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
 
   const handleInputFieldClear = () => {
-    setInputValue('');
+    setSearchTerm('');
+    dispatch(clearSearch())
+  };
+
+  const handleOnClickInput = () => {
+    dispatch(setIsFocus(true));
   };
 
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
-    dispatch(searchUserRequest(inputValue));
-    setInputValue('');
+    dispatch(searchContacts({ query: searchTerm }));
   };
 
   const handleOnChange = (evt: ChangeEvent<HTMLInputElement>) => {
-    setInputValue(evt.target.value);
+    setSearchTerm(evt.target.value);
+    dispatch(searchContacts({ query: evt.target.value }));
   };
 
   return (
     <div className={cx('search')}>
-      <form
-        className={cx('search__form')}
-        onSubmit={handleSubmit}
-      >
+      <form className={cx('search__form')} onSubmit={handleSubmit}>
         <div className={cx('search__field')}>
           <IconInput
             type="text"
             placeholder="Поиск"
-            onClick={handleInputFieldClear}
+            onClick={handleOnClickInput}
+            onClickClear={handleInputFieldClear}
             onChange={handleOnChange}
-            icon={!inputValue ? 'search' : 'clear'}
-            value={inputValue}
+            icon={!searchTerm ? 'search' : 'clear'}
+            value={searchTerm}
             className={cx('search__input')}
             iconClassName={cx('search__icon')}
           />

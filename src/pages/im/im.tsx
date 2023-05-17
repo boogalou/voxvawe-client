@@ -1,35 +1,32 @@
 import React, { useEffect } from 'react';
 import cnBind from 'classnames/bind';
 import styles from './im.module.scss';
+import io from 'socket.io-client';
 import { Sidebar } from 'shared/ui';
-import { socket } from 'app/socket.io';
 import { dialogsFetchThunk } from 'entities/dialog';
-import { checkAuthRequest } from 'entities/auth';
 import { Chat } from 'components/chat';
 import { useAppDispatch, useAppSelector } from 'shared/hooks';
 import { LeftSidebar } from 'components/left-sidebar';
+import { API_URL } from 'shared/constants';
+
+import { socketConfig } from 'shared/socket';
 
 const cx = cnBind.bind(styles);
 
+const socket = io(API_URL, socketConfig);
+
 export const Im = () => {
+  const dispatch = useAppDispatch();
   const { isOpen } = useAppSelector(state => state.dialogSlice);
 
-  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(dialogsFetchThunk());
+  }, []);
 
   useEffect(() => {
-    console.log('перезагрузка приложения');
-    if (localStorage.getItem('token')) {
-      dispatch(checkAuthRequest());
-      console.log('отработал диспатч checkAuthRequest');
-    }
-    dispatch(dialogsFetchThunk());
-    console.log('отработал диспатч dialogsFetchThunk');
-
-    console.log('начало соединения с с websocket...');
-    socket.on('connected', data => {
-      console.log(data.message);
-    });
-    socket.connect();
+    return () => {
+      socket.disconnect();
+    };
   }, []);
 
   return (
@@ -46,5 +43,3 @@ export const Im = () => {
     </div>
   );
 };
-
-

@@ -1,45 +1,42 @@
-import {createBrowserRouter} from "react-router-dom";
-import {routes} from "./routes";
-
-import {Auth, Im} from "@/pages";
-import {Chat} from "@/components";
-import {Signin, Signup} from "@/entities/auth";
-import {PrivateRoutes} from "@/shared/ui/private-route/PrivateRoutes";
-import {Unauthorization} from "@/shared/ui/unauthorization/unauthorization";
+import { createBrowserRouter } from 'react-router-dom';
+import { routes } from 'shared/constants';
+import { Auth } from 'pages/auth';
+import { Im } from 'pages/im';
+import { Chat } from 'components/chat';
+import { Signin, Signup } from 'entities/auth';
+import { AuthorizedRoute, PrivateRoute } from 'shared/ui';
 
 export const router = createBrowserRouter([
   {
     path: routes.IM_PAGE,
     element: (
-        <PrivateRoutes>
-          <Im/>
-        </PrivateRoutes>
+      <PrivateRoute>
+        <Im />
+      </PrivateRoute>
     ),
     children: [
       {
         path: routes.CHAT_PAGE,
-        element: <Chat/>
-      }
-    ]
+        element: <Chat />,
+      },
+    ],
   },
   {
     path: routes.AUTH_PAGE,
-    element: <Auth/>,
+    element: <Auth />,
     children: [
       {
         path: routes.SIGNUP_PAGE,
-         element: <Signup/>
+        element: <Signup />,
       },
       {
         path: routes.SIGNIN_PAGE,
         element: (
-            <Unauthorization>
-              <Signin/>
-            </Unauthorization>
-            )
-
-
+          <AuthorizedRoute>
+            <Signin />
+          </AuthorizedRoute>
+        ),
       },
     ],
-  }
+  },
 ]);

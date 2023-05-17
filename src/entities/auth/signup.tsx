@@ -3,11 +3,11 @@ import styles from './auth.module.scss'
 import cnBind from "classnames/bind";
 import {Icon, Input, useAppDispatch} from "../../shared";
 import {Link} from "react-router-dom";
-import {useShowPasswordToggle} from "./lib/useShowPassword";
+import {useShowPasswordToggle} from "./lib/use-show-password";
 import {registrationRequest} from "./model";
-import {ErrorMessage, Field, Form, Formik} from "formik";
-import {routes} from "@/pages/router/routes";
-import { IAuthRequestData } from "@/shared/types/auth.interface";
+import { ErrorMessage, Field, Form, Formik } from 'formik';
+import { routes } from 'shared/constants';
+import { IAuthRequestData } from "shared/types";
 
 const cx = cnBind.bind(styles);
 

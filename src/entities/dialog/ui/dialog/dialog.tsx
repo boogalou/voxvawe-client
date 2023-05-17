@@ -19,51 +19,45 @@ export const Dialog: FC<IDialogProps> = (
     {
       id,
       name,
-      last_message_status,
-      last_message_text,
-      last_message_time,
-      interlocutor_id,
-      interlocutor_avatar,
-      interlocutor_name,
-      unread_messages,
-      created_at,
-      updated_at,
-      isActive,
+      interlocutorId,
+      interlocutorName,
+      interlocutorAvatar,
+      lastMessageText,
+      lastMessageStatus,
+      unreadMessages,
+      lastMessageTime,
     }
 ) => {
   const dispatch = useAppDispatch();
   const onClickHandler = () => {
-    dispatch(setSelectedDialogAction(interlocutor_id));
+    dispatch(setSelectedDialogAction(interlocutorId));
     dispatch(moveFrontMiddleColumn(true));
   }
 
   const { selectedDialog } = useAppSelector(state => state.dialogSlice)
+  const dateLastMessageTime = formatTimePassed(lastMessageTime);
 
-  const dateLastMessageTime = formatTimePassed(last_message_time);
-  const now = new Date();
-  const isoString = now.toISOString();
-  console.log(isoString);
   return (
       <li
-          className={cx('dialog', {"dialog--selected": interlocutor_id === selectedDialog})}
+          className={cx('dialog', {"dialog--selected": interlocutorId === selectedDialog})}
           onClick={onClickHandler}
       >
-        <Link to={`/im/@${interlocutor_id}`} className={cx("dialog__link")}>
+        <Link to={`/im/@${interlocutorId}`} className={cx("dialog__link")}>
           <div className={cx("dialog__container")}>
             <div className={cx("dialog__avatar")}>
-              <Avatar avatarImg={interlocutor_avatar}/>
+              <Avatar avatarImg={interlocutorAvatar}/>
             </div>
             <div className={cx("dialog__name")}>
-              {interlocutor_name}
+              {interlocutorName}
             </div>
             <div className={cx("dialog__time-date")}>
               { dateLastMessageTime }
             </div>
             <div className={cx("dialog__last-message")}>
-              {last_message_text}
+              {lastMessageText}
             </div>
             <div className={cx("dialog__unread-message")}>
-              <UnreadMsgBadge count={unread_messages}/>
+              <UnreadMsgBadge count={unreadMessages}/>
             </div>
           </div>
         </Link>

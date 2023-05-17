@@ -10,7 +10,6 @@ export interface IContentProps {
 }
 
 export const Content: FC<IContentProps> = ({children, className}) => {
-  console.log('content: ',className);
   return (
       <section className={cx('content', className)}>
         {children}

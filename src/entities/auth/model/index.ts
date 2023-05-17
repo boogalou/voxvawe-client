@@ -5,5 +5,4 @@ export {
   dataReceived,
   rejected,
   finishLoading,
-  setIsAuthenticated,
 } from './auth.slice';

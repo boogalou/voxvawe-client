@@ -30,7 +30,7 @@ const dialogsSlice = createSlice({
   reducers: {
     setSelectedDialogAction(state, action: PayloadAction<string>) {
       state.selectedDialog = action.payload;
-      const currentDialog = state.dialogs.find(dialog => dialog.interlocutor_id === action.payload);
+      const currentDialog = state.dialogs.find(dialog => dialog.interlocutorId === action.payload);
       state.currentDialog = currentDialog ? { ...currentDialog } : null;
     },
 
