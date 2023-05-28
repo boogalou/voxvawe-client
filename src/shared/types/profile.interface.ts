@@ -4,7 +4,6 @@ export interface IProfile {
   accountId: string;
   username: string;
   email: string;
-  avatar: string;
   gender: string;
   age: string;
   bio: string;

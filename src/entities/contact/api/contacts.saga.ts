@@ -1,9 +1,51 @@
-import { dataReceived, searchContacts } from 'entities/contact';
+import {
+  addContact,
+  dataReceived,
+  finishLoading,
+  searchContacts,
+  startLoading,
+} from 'entities/contact';
 import { call, fork, put, take, takeEvery } from 'redux-saga/effects';
 import { socket } from 'shared/socket';
 import { Socket } from 'socket.io-client';
 import { eventChannel, EventChannel } from 'redux-saga';
 import { IContact } from 'shared/types';
+import axios, { AxiosResponse } from 'axios';
+import { searchService } from 'entities/contact/api/search.service';
+import { rejected } from 'entities/auth';
+import { getContacts } from 'entities/contact/api/contacts.actions';
+import { setSearchResult } from 'entities/contact/model/contacts.slice';
+
+function* getContactsWorker() {
+  try {
+    yield put(startLoading());
+    const response: AxiosResponse<IContact[]> = yield call(searchService.getContacts);
+    yield put(dataReceived(response.data));
+  } catch (err) {
+    if (axios.isAxiosError(err)) {
+      yield put(rejected(err.response?.data.message));
+    }
+  } finally {
+    yield put(finishLoading());
+  }
+}
+
+function* addContactWorker(action: ReturnType<typeof addContact>) {
+  try {
+    put(startLoading());
+    const response: AxiosResponse<IContact[]> = yield call(
+      searchService.addContactRequeset,
+      action.payload
+    );
+    put(dataReceived(response.data));
+  } catch (err) {
+    if (axios.isAxiosError(err)) {
+      yield put(rejected(err.response?.data.message));
+    }
+  } finally {
+    put(finishLoading());
+  }
+}
 
 function* searchRequest(action: ReturnType<typeof searchContacts>) {
   if (socket) {
@@ -42,7 +84,7 @@ export function* fetchSearch() {
     while (true) {
       try {
         const response: IContact[] = yield take(socketChannel);
-        yield put(dataReceived(response));
+        yield put(setSearchResult(response));
       } catch (error) {
         console.log(error);
       }
@@ -52,5 +94,7 @@ export function* fetchSearch() {
 
 export function* searchSagaWatcher() {
   yield takeEvery(searchContacts.type, searchRequest);
-  yield fork(fetchSearch)
+  yield takeEvery(addContact.type, addContactWorker);
+  yield takeEvery(getContacts.type, getContactsWorker);
+  yield fork(fetchSearch);
 }

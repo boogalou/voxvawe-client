@@ -33,7 +33,7 @@
 
 .right-sidebar {
   @include element-position($position: fixed, $top: 0, $bottom: 0, $right: 0);
-  background-color: #E96479;
+  background-color: var(--color-primary);
   width: 100%;
   transition: transform 0.5s ease-out;
   transform: translateX(100%);
@@ -78,7 +78,6 @@
   }
 
   .right-sidebar {
-    background-color: crimson;
     width: 400px;
   }
 }
@@ -93,6 +92,47 @@
 
     &--close {
       transition: none;
+    }
+  }
+}
+
+
+@include respond-to("desktop") {
+
+  .main {
+
+    &--active {
+      margin-left: unset;
+      width: unset;
+    }
+
+    &--close {
+      transition: none;
+    }
+
+    &--ractive {
+      margin-left: 0;
+      margin-right: 400px;
+      width: unset;
+      transition: transform 0.5s ease-out, width 0.5s ease-in-out, margin-right 0.5s ease-in-out;
+      transform: none;
+    }
+
+    &--rclose {
+      //transition: none;
+      //width: 100%;
+      transition: all 0.5s ease-in-out;
+      margin-right: 0;
+    }
+  }
+
+  .right-sidebar {
+    width: 0;
+    transition: transform 0.5s ease-out, width 0.5s ease-in-out;
+
+    &--active {
+      transform: translateX(0%);
+      width: 400px;
     }
   }
 }

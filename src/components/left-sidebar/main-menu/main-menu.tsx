@@ -6,7 +6,7 @@ import { Dropdown, Icon, IconButton } from 'shared/ui';
 import { ThemeSwitcher } from 'components/left-sidebar/theme-switch';
 import { useAppDispatch, useAppSelector } from 'shared/hooks';
 import { logoutRequest } from 'entities/auth';
-import { setIsFocus } from 'components/left-sidebar/model/left-sidebar.slice';
+import { setIsActive, setIsFocus } from 'components/left-sidebar/model/left-sidebar.slice';
 import { clearSearch } from 'entities/contact/model/contacts.slice';
 
 const cx = cnBind.bind(style);
@@ -30,7 +30,7 @@ export const MainMenu = () => {
   const dispatch = useAppDispatch();
   const dropdownRef = useRef<HTMLUListElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
-  const { isFocus } = useAppSelector(state => state.leftSidebarSlice);
+  const { isFocus, isActive } = useAppSelector(state => state.leftSidebarSlice);
 
   const [isPressed, setIsPressed] = useState<boolean>(false);
 
@@ -47,6 +47,7 @@ export const MainMenu = () => {
 
   const handleClickBack = () => {
     dispatch(setIsFocus(false));
+    dispatch(setIsActive(false))
     dispatch(clearSearch());
   }
 
@@ -54,6 +55,10 @@ export const MainMenu = () => {
     setIsPressed(false);
     if (id === 4) {
       dispatch(logoutRequest());
+    }
+
+    if (id === 1) {
+      dispatch(setIsActive(true))
     }
   };
 
@@ -65,7 +70,7 @@ export const MainMenu = () => {
 
   return (
     <div className={cx('main-menu')}>
-      {isFocus ? (
+      {isFocus || isActive ? (
         <IconButton
           className={cx('main-menu__button')}
           typeIcon={'arrow-left'}

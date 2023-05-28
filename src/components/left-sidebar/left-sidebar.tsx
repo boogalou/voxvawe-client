@@ -7,12 +7,12 @@ import { SearchBar } from './search-bar';
 import { Dialogs } from './dialogs';
 import { useAppSelector } from 'shared/hooks';
 import { SearchPage } from 'components/left-sidebar/search-page';
+import { Contactlist } from 'components/left-sidebar/contactlist/contactlist';
 
 const cx = cnBind.bind(styles);
 
-export function LeftSidebar() {
-  const { status } = useAppSelector(state => state.dialogSlice);
-  const { isFocus } = useAppSelector(state => state.leftSidebarSlice);
+export const LeftSidebar = () => {
+  const { isFocus, isActive } = useAppSelector(state => state.leftSidebarSlice);
 
   return (
     <>
@@ -21,7 +21,7 @@ export function LeftSidebar() {
         <SearchBar />
       </Header>
       <Content className={cx('left-sidebar__content')}>
-        {isFocus ? <SearchPage /> : <Dialogs />}
+        {isFocus ? <SearchPage /> : isActive ? <Contactlist /> : <Dialogs />}
       </Content>
     </>
   );

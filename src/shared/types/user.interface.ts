@@ -3,6 +3,7 @@ export interface IUser {
   accountId: string;
   username: string;
   email: string;
+  avatar: string;
   accessToken: string;
   lastSeen: Date;
   createdAt?: Date;

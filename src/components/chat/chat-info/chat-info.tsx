@@ -4,13 +4,19 @@ import styles from './chat-info.module.scss';
 import { Avatar } from 'shared/ui';
 import { Link } from 'react-router-dom';
 import { useAppDispatch } from 'shared/hooks';
-import { moveBackMiddleColumn } from 'entities/dialog';
 import { SwitchPanel } from 'components/chat/switch-panel';
-import { IDialog } from 'shared/types';
+import { openRightSidebar } from 'components/right-sidebar/model';
 
 const cx = cnBind.bind(styles);
 
-export interface ChatInfoProps extends IDialog {}
+export interface ChatInfoProps  {
+  id?: number;
+  name?: string;
+  interlocutorId?: string;
+  interlocutorName?: string;
+  interlocutorAvatar?: string;
+  lastMessageTime?: Date;
+}
 
 export const ChatInfo: FC<ChatInfoProps> = ({
   interlocutorId,
@@ -21,7 +27,7 @@ export const ChatInfo: FC<ChatInfoProps> = ({
   const dispatch = useAppDispatch();
 
   const handleOnClick = () => {
-    dispatch(moveBackMiddleColumn(false));
+    dispatch(openRightSidebar(true));
   };
 
   return (
@@ -29,7 +35,7 @@ export const ChatInfo: FC<ChatInfoProps> = ({
       <SwitchPanel />
       <Link to={''} className={cx('chat-info__link')}>
         <div className={cx('chat-info__avatar')}>
-          <Avatar avatarImg={ interlocutorAvatar?  interlocutorAvatar : ''} />
+          <Avatar avatarImg={interlocutorAvatar ? interlocutorAvatar : ''} />
         </div>
         <div className={cx('chat-info__info')}>
           <div className={cx('chat-info__name')}>{interlocutorName}</div>

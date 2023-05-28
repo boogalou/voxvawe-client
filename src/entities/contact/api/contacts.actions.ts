@@ -1,8 +1,8 @@
 import { createAction } from '@reduxjs/toolkit';
-import { Socket } from 'socket.io-client';
 
-const addContact = createAction('contacts/addContact');
+const addContact = createAction<string>('contacts/addContact');
 const removeContact = createAction('contacts/removeContact');
+const getContacts = createAction('contacts/getContacts')
 const blockContact = createAction<boolean>('contacts/blockContact');
 const searchContacts = createAction<{query: string}>('contacts/searchContacts');
 
@@ -10,6 +10,7 @@ const searchContacts = createAction<{query: string}>('contacts/searchContacts');
 export {
   addContact,
   removeContact,
+  getContacts,
   blockContact,
   searchContacts,
 }

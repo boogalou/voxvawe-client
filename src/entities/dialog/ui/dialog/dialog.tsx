@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import { IDialog } from 'shared/types';
 import { useAppDispatch, useAppSelector } from 'shared/hooks';
 import { formatTimePassed, } from 'shared/lib';
-import { moveFrontMiddleColumn, setSelectedDialogAction } from 'entities/dialog';
+import { setSelectedDialogAction, moveFrontMiddleColumn } from 'entities/dialog';
 
 
 
