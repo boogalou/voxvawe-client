@@ -2,14 +2,14 @@ import React, { useEffect } from 'react';
 import cnBind from 'classnames/bind';
 import styles from './im.module.scss';
 import io from 'socket.io-client';
-import { dialogsFetchThunk } from 'entities/dialog';
 import { Chat } from 'components/chat';
 import { useAppDispatch, useAppSelector } from 'shared/hooks';
 import { LeftSidebar } from 'components/left-sidebar';
 import { API_URL } from 'shared/constants';
 import { socketConfig } from 'shared/socket';
 import { RightSidebar } from 'components/right-sidebar';
-import { getContacts } from 'entities/contact/api/contacts.actions';
+import { getCurrentUser } from 'entities/user';
+import { getDialogs } from 'entities/dialog/model/dialog.actions';
 
 const cx = cnBind.bind(styles);
 
@@ -21,8 +21,8 @@ export const Im = () => {
   const { rightIsOpen } = useAppSelector(state => state.rightSidebarSlice);
 
   useEffect(() => {
-    dispatch(dialogsFetchThunk());
-    dispatch(getContacts());
+    dispatch(getDialogs())
+    dispatch(getCurrentUser())
   }, []);
 
   useEffect(() => {

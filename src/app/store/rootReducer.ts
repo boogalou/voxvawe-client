@@ -6,6 +6,7 @@ import messageInputSlice from 'components/chat/message-box/model/message-input.s
 import contactsSlice from 'entities/contact/model/contacts.slice';
 import  leftSidebarSlice  from 'components/left-sidebar/model/left-sidebar.slice';
 import rightSidebarSlice from 'components/right-sidebar/model/right-sidebar.slice';
+import userSlice from 'entities/user/model/user.slice';
 
 
 
@@ -17,4 +18,5 @@ export const rootReducer = combineReducers({
   contactsSlice,
   leftSidebarSlice,
   rightSidebarSlice,
+  userSlice,
 });

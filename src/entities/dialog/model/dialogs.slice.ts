@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { dialogsFetchThunk } from 'entities/dialog';
-import { IDialog } from 'shared/types';
+import { IDialog, IUser } from 'shared/types';
 
 export interface DialogsState {
   dialogs: IDialog[];
@@ -49,25 +48,24 @@ const dialogsSlice = createSlice({
       state.isClose = action.payload;
       state.selectedDialog = '';
     },
+
+    startLoading(state) {
+      state.status = 'loading';
+    },
+
+    dataReceived(state, action: PayloadAction<IDialog[]>) {
+      state.dialogs = action.payload;
+    },
+
+    finishLoading(state) {
+      state.status = 'succeeded'
+    }
   },
 
-  extraReducers: builder => {
-    builder
-      .addCase(dialogsFetchThunk.pending, state => {
-        state.status = 'loading';
-        state.error = null;
-      })
-      .addCase(dialogsFetchThunk.fulfilled, (state, action) => {
-        state.dialogs = action.payload;
-        state.status = 'succeeded';
-      })
-      .addCase(dialogsFetchThunk.rejected, (state, action) => {
-        state.status = 'failed';
-      });
-  },
+
 });
 
-export const { setSelectedDialogAction, moveFrontMiddleColumn, moveBackMiddleColumn, closeChat } =
+export const { setSelectedDialogAction, moveFrontMiddleColumn, moveBackMiddleColumn, closeChat, startLoading, finishLoading, dataReceived } =
   dialogsSlice.actions;
 
 export default dialogsSlice.reducer;

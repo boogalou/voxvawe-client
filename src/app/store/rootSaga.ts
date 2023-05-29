@@ -2,9 +2,8 @@ import { all } from '@redux-saga/core/effects';
 import { authWatcherSaga } from 'entities/auth';
 import { userSagaWatcher } from 'entities/user';
 import { searchSagaWatcher } from 'entities/contact';
-import { fork } from 'redux-saga/effects';
-import { fetchSearch } from 'entities/contact/api/contacts.saga';
+import { dialogSagaWather } from 'entities/dialog/model/dialog.saga';
 
 export function* rootSaga() {
-  yield all([authWatcherSaga(), userSagaWatcher(), searchSagaWatcher()]);
+  yield all([authWatcherSaga(), userSagaWatcher(), searchSagaWatcher(), dialogSagaWather()]);
 }

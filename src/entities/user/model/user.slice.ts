@@ -26,8 +26,8 @@ const userSlice = createSlice({
       state.isLoading = true;
     },
 
-    dataReceived(state, action: PayloadAction<IAuthResponse>) {
-      state.user = action.payload.user;
+    dataReceived(state, action: PayloadAction<IUser>) {
+      state.user = action.payload;
     },
 
     finishLoading(state,) {

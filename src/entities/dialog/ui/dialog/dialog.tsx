@@ -38,29 +38,23 @@ export const Dialog: FC<IDialogProps> = (
   const dateLastMessageTime = formatTimePassed(lastMessageTime);
 
   return (
-      <li
-          className={cx('dialog', {"dialog--selected": interlocutorId === selectedDialog})}
-          onClick={onClickHandler}
-      >
-        <Link to={`/im/@${interlocutorId}`} className={cx("dialog__link")}>
-          <div className={cx("dialog__container")}>
-            <div className={cx("dialog__avatar")}>
-              <Avatar avatarImg={interlocutorAvatar}/>
-            </div>
-            <div className={cx("dialog__name")}>
-              {interlocutorName}
-            </div>
-            <div className={cx("dialog__time-date")}>
-              { dateLastMessageTime }
-            </div>
-            <div className={cx("dialog__last-message")}>
-              {lastMessageText}
-            </div>
-            <div className={cx("dialog__unread-message")}>
-              <UnreadMsgBadge count={unreadMessages}/>
-            </div>
+    <li
+      className={cx('dialog', { 'dialog--selected': interlocutorId === selectedDialog })}
+      onClick={onClickHandler}
+    >
+      <Link to={`/im/@${interlocutorId}`} className={cx('dialog__link')}>
+        <div className={cx('dialog__container')}>
+          <div className={cx('dialog__avatar')}>
+            <Avatar avatarImg={interlocutorAvatar} />
           </div>
-        </Link>
-      </li>
+          <div className={cx('dialog__name')}>{interlocutorName}</div>
+          <div className={cx('dialog__time-date')}>{dateLastMessageTime}</div>
+          <div className={cx('dialog__last-message')}>{lastMessageText}</div>
+          <div className={cx('dialog__unread-message')}>
+            { unreadMessages <= 0 ? '' : <UnreadMsgBadge count={unreadMessages} />}
+          </div>
+        </div>
+      </Link>
+    </li>
   );
 };

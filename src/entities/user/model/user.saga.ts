@@ -1,15 +1,22 @@
-import { put, takeEvery } from 'redux-saga/effects';
+import { call, put, takeEvery } from 'redux-saga/effects';
 import { getCurrentUser } from './user.actions';
-import { startLoading } from 'entities/user/model/user.slice';
+import { dataReceived, finishLoading, startLoading } from 'entities/user/model/user.slice';
+import { AxiosResponse } from 'axios';
+import { IUser } from '@/src/shared';
+import { userService } from 'entities/user';
 
-function* handelGetCurrentUser(action: ReturnType<typeof getCurrentUser>) {
+function* getCurrentUserWorker() {
   try {
-    put(startLoading());
+    yield put(startLoading());
+    const response: AxiosResponse<IUser> = yield call(userService.getCurrentUser);
+    yield put(dataReceived(response.data))
   } catch (err) {
     console.log(err);
+  } finally {
+    yield put(finishLoading());
   }
 }
 
 export function* userSagaWatcher() {
-  yield takeEvery(getCurrentUser.type, handelGetCurrentUser);
+  yield takeEvery(getCurrentUser.type, getCurrentUserWorker);
 }
