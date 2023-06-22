@@ -1,7 +1,7 @@
 import { AxiosResponse } from 'axios';
 import { apiService } from 'shared/services';
 
-class SearchService {
+class ContactService {
   public async search(searchTerm: string): Promise<AxiosResponse<string>> {
     try {
       return await apiService.get('/search', {
@@ -15,12 +15,21 @@ class SearchService {
     }
   }
 
-  public async addContactRequeset(accountId: string): Promise<AxiosResponse> {
+  public async addContactRequest(accountId: string): Promise<AxiosResponse> {
     try {
       return await apiService.patch('/add-contact', { accountId });
     } catch (err) {
       console.error(err);
       throw new Error();
+    }
+  }
+
+  public async deleteContactRequest(accountId: string): Promise<AxiosResponse> {
+    try {
+      return await apiService.patch('/delete-contact', { accountId })
+    } catch (err) {
+      console.error(err)
+      throw new Error()
     }
   }
 
@@ -36,6 +45,6 @@ class SearchService {
 
 
 
-const searchService = new SearchService();
+const contactService = new ContactService();
 
-export { searchService };
+export { contactService };

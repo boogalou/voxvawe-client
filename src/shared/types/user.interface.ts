@@ -1,3 +1,5 @@
+import { IContact, IDialog } from "@/src/shared";
+
 export interface IUser {
   id: number;
   accountId: string;
@@ -10,6 +12,8 @@ export interface IUser {
   updateAt?: Date;
   isOnline: boolean;
   isActivated: boolean;
+  contacts: IContact[];
+  dialogs: IDialog[],
 }
 
 export  interface IAuthResponse {

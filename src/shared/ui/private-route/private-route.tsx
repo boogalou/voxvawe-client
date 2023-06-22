@@ -2,7 +2,7 @@ import { Navigate } from 'react-router-dom';
 import React, { FC, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from 'shared/hooks';
 import { checkExpireToken } from 'shared/lib';
-import { checkAuthRequest } from 'entities/auth';
+import { checkAuthRequestAsync } from 'entities/auth';
 import { Preloader } from 'shared/ui';
 
 export interface IPrivateRouteProps {
@@ -18,7 +18,7 @@ export const PrivateRoute: FC<IPrivateRouteProps> = ({ children }) => {
   useEffect(() => {
     async function fn() {
       if (!isAuth || checkExpireToken(accessToken)) {
-        await dispatch(checkAuthRequest());
+        await dispatch(checkAuthRequestAsync());
       }
       setIsReady(true);
     }

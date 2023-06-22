@@ -12,7 +12,7 @@ export const store = configureStore({
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
       thunk: true,
-      serializableCheck: true,
+      serializableCheck: false,
     })
       .concat(logger)
       .concat(sagaMiddleware),
@@ -20,5 +20,7 @@ export const store = configureStore({
 
 export type AppDispatch = typeof store.dispatch;
 export type AppState = ReturnType<typeof store.getState>;
+
+
 
 sagaMiddleware.run(rootSaga);

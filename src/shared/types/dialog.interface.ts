@@ -11,4 +11,5 @@ export interface IDialog {
   createdAt: Date;
   updatedAt: Date;
   isActive: boolean;
+  isOnline: boolean;
 }

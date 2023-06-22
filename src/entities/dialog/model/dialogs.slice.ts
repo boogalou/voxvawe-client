@@ -57,6 +57,10 @@ const dialogsSlice = createSlice({
       state.dialogs = action.payload;
     },
 
+    setDialogs(state, action: PayloadAction<IDialog[]>) {
+      state.dialogs = action.payload;
+    },
+
     finishLoading(state) {
       state.status = 'succeeded'
     }
@@ -65,7 +69,7 @@ const dialogsSlice = createSlice({
 
 });
 
-export const { setSelectedDialogAction, moveFrontMiddleColumn, moveBackMiddleColumn, closeChat, startLoading, finishLoading, dataReceived } =
+export const { setSelectedDialogAction, moveFrontMiddleColumn, moveBackMiddleColumn, closeChat, startLoading, finishLoading, dataReceived, setDialogs } =
   dialogsSlice.actions;
 
 export default dialogsSlice.reducer;

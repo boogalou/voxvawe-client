@@ -11,9 +11,13 @@ export interface AvatarProps {
   avatarImg?: string;
   accountId?: string;
   username?: string;
+  isOnline?: boolean;
 }
 
-export const Avatar: FC<AvatarProps> = ({ avatarImg, accountId = '', username = '' }) => {
+export const Avatar: FC<AvatarProps> = ({ avatarImg, accountId = '', username = '', isOnline }) => {
+
+
+
   const dispatch = useAppDispatch();
 
   const avatarPlaceholder = generateColor(accountId);
@@ -22,10 +26,7 @@ export const Avatar: FC<AvatarProps> = ({ avatarImg, accountId = '', username = 
   const handleOnClick = () => {};
 
   return (
-    <div
-      className={cx('avatar')}
-      onClick={handleOnClick}
-    >
+    <div className={cx('avatar')} onClick={handleOnClick}>
       {avatarImg ? (
         <img className={cx('avatar__img')} src={avatarImg} alt="user picture" />
       ) : (
@@ -33,6 +34,7 @@ export const Avatar: FC<AvatarProps> = ({ avatarImg, accountId = '', username = 
           {...initials}
         </div>
       )}
+      <div className={cx('avatar__status', {'avatar__status--online': isOnline})}></div>
     </div>
   );
 };

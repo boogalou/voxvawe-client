@@ -3,8 +3,8 @@ import { IAuthRequestData } from 'shared/types';
 
 
 
-export const loginRequest = createAction<IAuthRequestData>('auth/login');
-export const registrationRequest = createAction<IAuthRequestData>('auth/registration');
-export const checkAuthRequest = createAction('auth/checkAuth');
-export const logoutRequest = createAction('auth/logout');
+export const loginRequestAsync = createAction<IAuthRequestData>('AUTH:LOGIN');
+export const registrationRequestAsync = createAction<IAuthRequestData>('AUTH:REGISTRATION');
+export const checkAuthRequestAsync = createAction('AUTH:CHECK_AUTH');
+export const logoutRequestAsync = createAction('AUTH:LOGOUT');
 

@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import styles from './auth.module.scss';
 import cnBind from 'classnames/bind';
 import { Icon, Input, useAppDispatch, useAppSelector } from '../../shared';
-import { loginRequest } from './model';
+import { loginRequestAsync } from './model';
 import { useShowPasswordToggle } from './lib/use-show-password';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import { routes } from 'shared/constants';
@@ -38,7 +38,7 @@ export const Signin: FC = () => {
           },
         };
         console.log(JSON.stringify(data, null, 2));
-        dispatch(loginRequest(data));
+        dispatch(loginRequestAsync(data));
       }}
     >
       {({ isSubmitting, values }) => (

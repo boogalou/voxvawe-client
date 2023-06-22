@@ -26,9 +26,17 @@ export const Dialog: FC<IDialogProps> = (
       lastMessageStatus,
       unreadMessages,
       lastMessageTime,
+      isOnline,
     }
 ) => {
   const dispatch = useAppDispatch();
+
+
+
+
+
+
+
   const onClickHandler = () => {
     dispatch(setSelectedDialogAction(interlocutorId));
     dispatch(moveFrontMiddleColumn(true));
@@ -45,7 +53,7 @@ export const Dialog: FC<IDialogProps> = (
       <Link to={`/im/@${interlocutorId}`} className={cx('dialog__link')}>
         <div className={cx('dialog__container')}>
           <div className={cx('dialog__avatar')}>
-            <Avatar avatarImg={interlocutorAvatar} />
+            <Avatar avatarImg={interlocutorAvatar} isOnline={isOnline} />
           </div>
           <div className={cx('dialog__name')}>{interlocutorName}</div>
           <div className={cx('dialog__time-date')}>{dateLastMessageTime}</div>

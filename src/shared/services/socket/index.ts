@@ -1,0 +1,1 @@
+export { socketConfig } from './socket-config'

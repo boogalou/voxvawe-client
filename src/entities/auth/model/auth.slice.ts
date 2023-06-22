@@ -2,14 +2,14 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IAuthResponse } from 'shared/types/user.interface';
 
 export interface AuthState {
-  accessToken: string;
-  error: string | null;
+  accessToken: null | string;
+  error: null | string;
   isLoading: boolean;
   isAuth: boolean;
 }
 
 const initialState: AuthState = {
-  accessToken: '',
+  accessToken: null,
   isLoading: false,
   error: null,
   isAuth: false,
@@ -27,14 +27,15 @@ const authSlice = createSlice({
       state.accessToken = action.payload.user.accessToken;
     },
 
-    setAuth(state) {
+    setIsAuth(state) {
       state.isAuth = true;
     },
 
     logout(state) {
       state.accessToken = '';
       state.isAuth = false;
-      },
+      state.error = null;
+    },
 
     finishLoading(state) {
       state.isLoading = false;
@@ -46,5 +47,6 @@ const authSlice = createSlice({
   },
 });
 
-export const { startLoading, dataReceived, rejected, finishLoading, setAuth, logout } = authSlice.actions;
+export const { startLoading, dataReceived, rejected, finishLoading, setIsAuth, logout } =
+  authSlice.actions;
 export default authSlice.reducer;

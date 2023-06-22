@@ -4,7 +4,7 @@ import cnBind from "classnames/bind";
 import {Icon, Input, useAppDispatch} from "../../shared";
 import {Link} from "react-router-dom";
 import {useShowPasswordToggle} from "./lib/use-show-password";
-import {registrationRequest} from "./model";
+import {registrationRequestAsync} from "./model";
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import { routes } from 'shared/constants';
 import { IAuthRequestData } from "shared/types";
@@ -46,7 +46,7 @@ export const Signup = () => {
             }
             console.log(JSON.stringify(authData, null, 2));
             if (authData.user.password === values.confirmPassword) {
-              dispatch(registrationRequest(authData));
+              dispatch(registrationRequestAsync(authData));
             } else {
               console.log('Пароли несовадают');
             }

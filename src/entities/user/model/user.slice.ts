@@ -1,13 +1,12 @@
 import { IUser } from '@/src/shared';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { IAuthResponse } from 'shared/types/user.interface';
+
 
 export interface UserState {
   user: IUser;
   error: string | null;
   isLoading: boolean;
   isOnline: boolean,
-  isAuth: boolean,
 }
 
 const initialState: UserState = {
@@ -15,27 +14,26 @@ const initialState: UserState = {
   error: null,
   isLoading: false,
   isOnline: false,
-  isAuth: false,
 };
 
 const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    startLoading(state) {
-      state.isLoading = true;
+    startLoading(state, action: PayloadAction<boolean>) {
+      state.isLoading = action.payload;
     },
 
     dataReceived(state, action: PayloadAction<IUser>) {
       state.user = action.payload;
     },
 
-    finishLoading(state,) {
-      state.isLoading = false;
+    finishLoading(state, action: PayloadAction<boolean>) {
+      state.isLoading = action.payload;
     },
 
-    setIsAuthenticated(state) {
-      state.isAuth = !state.isAuth;
+    toggleOnlineStatus(state, action: PayloadAction<boolean>) {
+      state.isOnline = action.payload
     },
 
     rejected(state, action: PayloadAction<string>) {
@@ -44,5 +42,5 @@ const userSlice = createSlice({
   }
 })
 
-export const { startLoading, finishLoading, dataReceived, rejected, setIsAuthenticated } = userSlice.actions;
+export const { startLoading, finishLoading, dataReceived, rejected, toggleOnlineStatus } = userSlice.actions;
 export default userSlice.reducer;

@@ -15,10 +15,10 @@ export interface IContactProps extends IContact {
   handleSetCurrentContact?: (arg: string) => void;
 }
 
-export const Contact: FC<IContactProps> = ({ avatar, username, lastSeen, accountId, handleSetCurrentContact }) => {
+export const Contact: FC<IContactProps> = ({ avatar, username, lastSeen, accountId, handleSetCurrentContact, isOnline }) => {
   const dispatch = useAppDispatch();
 
-  const lastSeenTime = formatTimePassed(lastSeen);
+  const lastSeenDate = formatTimePassed(lastSeen);
 
   const handleOnclick = () => {
     if (handleSetCurrentContact) {
@@ -33,10 +33,14 @@ export const Contact: FC<IContactProps> = ({ avatar, username, lastSeen, account
     <li className={cx('contact')} onClick={handleOnclick}>
       <div className={cx('contact__container')}>
         <div className={cx('contact__avatar')}>
-          <Avatar avatarImg={avatar} accountId={accountId} username={username} />
+          <Avatar
+            avatarImg={avatar}
+            accountId={accountId}
+            username={username}
+            isOnline={isOnline}/>
         </div>
         <div className={cx('contact__name')}>{username}</div>
-        <div className={cx('contact__last-visit')}>{lastSeenTime}</div>
+        <div className={cx('contact__last-visit')}>{lastSeenDate}</div>
       </div>
     </li>
   );

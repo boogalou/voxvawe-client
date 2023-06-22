@@ -4,7 +4,7 @@ import cnBind from 'classnames/bind';
 import { Button, Content, Header, IconButton } from 'shared/ui';
 import { useAppDispatch, useAppSelector } from 'shared/hooks';
 import { closeRightSidebar } from 'components/right-sidebar/model';
-import { addContact } from 'entities/contact';
+import { addContact, deleteContact } from "entities/contact";
 
 const cx = cnBind.bind(styles);
 
@@ -15,15 +15,11 @@ export const RightSidebar = () => {
 
   const { accountId, email, avatar, lastSeen, bio, gender, age, id, username } = contact || {};
 
+  const closeOnClickHandler = () => dispatch(closeRightSidebar(false));
 
+  const addContactOnClickHandler = () => dispatch(addContact(accountId));
 
-  const closeOnClickHandler = () => {
-    dispatch(closeRightSidebar(false));
-  };
-
-  const addContactOnClickHandler = () => {
-    dispatch(addContact(accountId));
-  };
+  const deleteContactOnClickHandler = () => dispatch(deleteContact(accountId));
 
   return (
     <>
@@ -39,7 +35,8 @@ export const RightSidebar = () => {
         <div className={cx('right-sidebar__userpic')}>
           <img src={avatar} alt="userpic" width={100} height={100} />
         </div>
-        <Button onClick={addContactOnClickHandler}>{'Добавить в контактлист'}</Button>
+        <Button onClick={addContactOnClickHandler}>{'Добавить конаткт'}</Button>
+        <Button onClick={deleteContactOnClickHandler}>{'Удалить контакт'}</Button>
       </Content>
     </>
   );

@@ -1,33 +1,60 @@
 import React, { useEffect } from 'react';
 import cnBind from 'classnames/bind';
 import styles from './im.module.scss';
-import io from 'socket.io-client';
 import { Chat } from 'components/chat';
 import { useAppDispatch, useAppSelector } from 'shared/hooks';
 import { LeftSidebar } from 'components/left-sidebar';
-import { API_URL } from 'shared/constants';
-import { socketConfig } from 'shared/socket';
 import { RightSidebar } from 'components/right-sidebar';
-import { getCurrentUser } from 'entities/user';
-import { getDialogs } from 'entities/dialog/model/dialog.actions';
+import { getCurrentUserAsync, updateUserOnlineStatusAsync } from 'entities/user';
+import { getAccessToken } from 'entities/user/api/user.actions';
+import { getDialogs } from "entities/dialog/model/dialog.actions";
 
 const cx = cnBind.bind(styles);
-
-const socket = io(API_URL, socketConfig);
 
 export const Im = () => {
   const dispatch = useAppDispatch();
   const { isOpen } = useAppSelector(state => state.dialogSlice);
   const { rightIsOpen } = useAppSelector(state => state.rightSidebarSlice);
+  const { isOnline, user } = useAppSelector(state => state.userSlice);
+  const { accessToken } = useAppSelector(state => state.authSlice);
 
   useEffect(() => {
-    dispatch(getDialogs())
-    dispatch(getCurrentUser())
+    dispatch(getCurrentUserAsync());
+    // dispatch(getDialogs());
   }, []);
 
   useEffect(() => {
+    dispatch(getAccessToken({ accessToken }));
+  }, [accessToken]);
+
+  useEffect(() => {
+    if (isOnline) {
+      dispatch(
+        updateUserOnlineStatusAsync({
+          accountId: user.accountId,
+          username: user.username,
+          status: 'online',
+        })
+      );
+    }
+  }, [isOnline]);
+
+  const handleBeforeUnload = () => {
+
+    console.log(user.username, user.accountId);
+    dispatch(
+      updateUserOnlineStatusAsync({
+        accountId: user.accountId,
+        username: user.username,
+        status: 'offline',
+      })
+    );
+  };
+
+  useEffect(() => {
+    window.addEventListener('beforeunload', handleBeforeUnload);
     return () => {
-      socket.disconnect();
+      window.removeEventListener('beforeunload', handleBeforeUnload);
     };
   }, []);
 
@@ -37,11 +64,18 @@ export const Im = () => {
         <LeftSidebar />
       </aside>
 
-      <main className={cx('main', { 'main--active': isOpen , 'main--close': !isOpen, 'main--ractive': rightIsOpen, 'main--rclose': !rightIsOpen })}>
+      <main
+        className={cx('main', {
+          'main--active': isOpen,
+          'main--close': !isOpen,
+          'main--ractive': rightIsOpen,
+          'main--rclose': !rightIsOpen,
+        })}
+      >
         <Chat />
       </main>
 
-      <aside className={cx('right-sidebar', { 'right-sidebar--active': rightIsOpen})}>
+      <aside className={cx('right-sidebar', { 'right-sidebar--active': rightIsOpen })}>
         <RightSidebar />
       </aside>
     </div>

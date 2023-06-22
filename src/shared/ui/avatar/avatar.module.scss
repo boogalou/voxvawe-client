@@ -1,8 +1,10 @@
 .avatar {
+  position: relative;
   object-fit: cover;
   border-radius: 50%;
   width: 55px;
   height: 55px;
+
 
   &__img {
     object-fit: cover;
@@ -22,5 +24,31 @@
     border-radius: 50%;
     width: 100%;
     height: 100%;
+  }
+
+  &__status {
+    position: relative;
+
+    &--online {
+      position: absolute;
+      width: 1.10rem;
+      height: 1.10rem;
+      background-color: white;
+      border-radius: 50%;
+      top: 63%;
+      left: 78%;
+
+      &:before {
+        content: '';
+        position: absolute;
+        width: 0.90rem;
+        height: 0.90rem;
+        background-color: green;
+        border-radius: 50%;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+    }
   }
 }

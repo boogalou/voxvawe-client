@@ -2,7 +2,7 @@ import React, { ChangeEvent, FormEvent, useState } from 'react';
 import cnBind from 'classnames/bind';
 import styles from './search-bar.module.scss';
 import { IconInput } from 'shared/ui';
-import { useAppDispatch } from 'shared/hooks';
+import { useAppDispatch, useAppSelector } from 'shared/hooks';
 import { searchContacts } from 'entities/contact';
 import { setIsFocus } from 'components/left-sidebar/model/left-sidebar.slice';
 import { clearSearch } from 'entities/contact/model/contacts.slice';
@@ -10,12 +10,15 @@ import { clearSearch } from 'entities/contact/model/contacts.slice';
 const cx = cnBind.bind(styles);
 
 export const SearchBar = () => {
+  const { accessToken } = useAppSelector(state => state.authSlice);
   const dispatch = useAppDispatch();
   const [searchTerm, setSearchTerm] = useState('');
 
+
+
   const handleInputFieldClear = () => {
     setSearchTerm('');
-    dispatch(clearSearch())
+    dispatch(clearSearch());
   };
 
   const handleOnClickInput = () => {

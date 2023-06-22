@@ -5,9 +5,12 @@ import { useOnClickOutside } from 'usehooks-ts';
 import { Dropdown, Icon, IconButton } from 'shared/ui';
 import { ThemeSwitcher } from 'components/left-sidebar/theme-switch';
 import { useAppDispatch, useAppSelector } from 'shared/hooks';
-import { logoutRequest } from 'entities/auth';
+import { logoutRequestAsync } from 'entities/auth';
 import { setIsActive, setIsFocus } from 'components/left-sidebar/model/left-sidebar.slice';
 import { clearSearch } from 'entities/contact/model/contacts.slice';
+import { getContacts } from "entities/contact/api/contacts.actions";
+import { updateUserOnlineStatusAsync } from "entities/user";
+
 
 const cx = cnBind.bind(style);
 
@@ -31,6 +34,7 @@ export const MainMenu = () => {
   const dropdownRef = useRef<HTMLUListElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const { isFocus, isActive } = useAppSelector(state => state.leftSidebarSlice);
+  const  {accountId, username}  = useAppSelector(state => state.userSlice.user);
 
   const [isPressed, setIsPressed] = useState<boolean>(false);
 
@@ -51,14 +55,24 @@ export const MainMenu = () => {
     dispatch(clearSearch());
   }
 
-  const handleMenuItemClick = (id: number) => {
+  const handleMenuItemClick = async (id: number) => {
     setIsPressed(false);
     if (id === 4) {
-      dispatch(logoutRequest());
+      console.log('задача dispatch(setUserOnlineAsync начата ');
+      await dispatch(updateUserOnlineStatusAsync({
+        accountId,
+        username,
+        status: 'offline',
+      }));
+      console.log('задача dispatch(setUserOnlineAsync завершина');
+      console.log('задача logoutRequestAsync начата');
+      await dispatch(logoutRequestAsync());
+      console.log('задача logoutRequestAsync завершина');
     }
 
     if (id === 1) {
-      dispatch(setIsActive(true))
+      dispatch(setIsActive(true));
+      // dispatch(getContacts());
     }
   };
 

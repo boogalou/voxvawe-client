@@ -1,3 +1,1 @@
-export { getCurrentUser } from './user.actions';
-export { userSagaWatcher } from './user.saga';
-export { startLoading, dataReceived, rejected, finishLoading } from './user.slice';
+export { startLoading, dataReceived, rejected, finishLoading, toggleOnlineStatus } from './user.slice';

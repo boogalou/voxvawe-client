@@ -9,15 +9,14 @@ function* getDialogsWorker() {
   try {
     yield put(startLoading());
     const response: AxiosResponse<IDialog[]> = yield call(dialogService.getDialogs);
-    console.log(response.data);
     yield put(dataReceived(response.data));
+    yield put(finishLoading());
   } catch (error) {
     console.log(error);
-  } finally {
     yield put(finishLoading());
   }
 }
 
-export function* dialogSagaWather() {
+export function* dialogSagaWatcher() {
   yield takeEvery(getDialogs.type, getDialogsWorker);
 }

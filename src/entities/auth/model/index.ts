@@ -1,4 +1,4 @@
-export { loginRequest, registrationRequest, checkAuthRequest, logoutRequest } from './auth.actions';
+export { loginRequestAsync, registrationRequestAsync, checkAuthRequestAsync, logoutRequestAsync } from './auth.actions';
 export { authWatcherSaga } from './auth.saga';
 export {
   startLoading,

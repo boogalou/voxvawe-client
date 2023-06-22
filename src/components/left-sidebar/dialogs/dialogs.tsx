@@ -9,13 +9,26 @@ const cx = cnBind.bind(styles);
 
 export const Dialogs: FC = () => {
   const { dialogs, status } = useAppSelector(state => state.dialogSlice);
+  const { contacts } = useAppSelector(state => state.contactsSlice);
+
+  const modifiedDialogs = dialogs.map((dialog, index) => {
+    console.log(contacts[index]?.accountId);
+    if (dialog.interlocutorId && contacts[index]?.accountId)
+      if (dialog.interlocutorId === contacts[index]?.accountId) {
+        dialog = {
+          ...dialog,
+          isOnline: contacts[index].isOnline,
+        };
+      }
+    return dialog;
+  });
 
   return (
     <ul className={cx('dialogs')}>
       {status === 'loading' ? (
         <Preloader className={cx('dialogs__preloader')} />
       ) : (
-        dialogs.map(dialog => <Dialog key={dialog.id} {...dialog} />)
+        modifiedDialogs.map(dialog => <Dialog key={dialog.id} {...dialog} />)
       )}
     </ul>
   );

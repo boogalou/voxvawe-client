@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { store } from 'app/store';
-import { authService } from 'entities/auth/api';
+import { checkAuthRequestAsync } from 'entities/auth';
 
 const API_URL = 'http://localhost:3000/api';
 
@@ -11,19 +11,16 @@ export const apiService = axios.create({
 
 apiService.interceptors.request.use(config => {
   config.headers['Authorization'] = `Bearer ${store.getState().authSlice.accessToken}`;
-  console.log('intercept request: ', config.headers.Authorization);
   return config;
 });
 
 apiService.interceptors.response.use(
   async (response) => {
-    console.log('intercept response: ', response);
     return response;
   },
   async (error) => {
-    console.log('intercept error: ', error);
     if (error.response.status === 401) {
-      await authService.checkAuth();
+      store.dispatch(checkAuthRequestAsync());
     }
     return Promise.reject(error);
   }
