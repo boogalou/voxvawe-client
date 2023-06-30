@@ -7,7 +7,8 @@ import { LeftSidebar } from 'components/left-sidebar';
 import { RightSidebar } from 'components/right-sidebar';
 import { getCurrentUserAsync, updateUserOnlineStatusAsync } from 'entities/user';
 import { getAccessToken } from 'entities/user/api/user.actions';
-import { getDialogs } from "entities/dialog/model/dialog.actions";
+import { getDialogsAsync } from "entities/dialog/api/dialog.actions";
+
 
 const cx = cnBind.bind(styles);
 
@@ -20,7 +21,7 @@ export const Im = () => {
 
   useEffect(() => {
     dispatch(getCurrentUserAsync());
-    // dispatch(getDialogs());
+    dispatch(getDialogsAsync());
   }, []);
 
   useEffect(() => {

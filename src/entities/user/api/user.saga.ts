@@ -15,7 +15,6 @@ import io, { Socket } from 'socket.io-client';
 import { API_URL } from 'shared/constants';
 import { socketConfig } from 'shared/services';
 import { setContacts, updateContactStatus } from 'entities/contact/model/contacts.slice';
-import { setDialogs } from 'entities/dialog';
 
 function connectToSocket(action: ReturnType<typeof getAccessToken>): Promise<Socket> {
   return new Promise((resolve, reject) => {
@@ -40,18 +39,22 @@ function* getCurrentUserWorker() {
   try {
     yield put(startLoading(true));
     const response: AxiosResponse<IUser> = yield call(userService.getCurrentUser);
-    const { contacts, dialogs } = response.data;
     yield put(dataReceived(response.data));
-    yield put(setContacts(contacts));
-    yield put(setDialogs(dialogs));
+    const { contacts } = response.data;
+    if (contacts) {
+      yield put(setContacts(contacts));
+    }
+
     yield put(finishLoading(false));
     yield put(toggleOnlineStatus(true));
   } catch (err) {
     console.log(err);
+    yield put(finishLoading(false));
   }
 }
 
-function* updateUserStatusWorker(socket: Socket, action: ReturnType<typeof updateUserOnlineStatusAsync>) {
+function* updateUserStatusWorker(socket: Socket, action: ReturnType<typeof updateUserOnlineStatusAsync>
+) {
   console.log('updateUserStatusWorker: ', action.payload);
   try {
     if (socket) {
@@ -90,9 +93,7 @@ function* fetchUserStatusWorker(socket: Socket) {
 
     while (true) {
       try {
-        const response: { accountId: string; username: string; status: string } = yield take(
-          socketChannel
-        );
+        const response: { accountId: string; username: string; status: string } = yield take(socketChannel);
         console.log(response);
         yield put(updateContactStatus(response));
       } catch (error) {

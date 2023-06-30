@@ -15,7 +15,9 @@ export const ChatBox: FC = () => {
   useScrollBottom(messageListRef, messages);
 
   return (
-    <div className={cx('chat-box')} ref={messageListRef}>
+    <div
+      className={cx('chat-box')}
+      ref={ messageListRef }>
       {messages && messages.map(message => <Message key={message.id} {...message} />)}
     </div>
   );

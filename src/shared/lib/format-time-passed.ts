@@ -2,6 +2,7 @@ import {differenceInCalendarDays, differenceInDays, format, isSameYear, parseISO
 import {ru} from 'date-fns/locale';
 
 export function formatTimePassed(date: Date) {
+if (date) {
   const fromDate = parseISO(new Date(date).toISOString())
   const nowDate = new Date();
   const diffInDays = differenceInDays(nowDate, fromDate);
@@ -16,4 +17,6 @@ export function formatTimePassed(date: Date) {
   } else {
     return format(fromDate, 'dd MMM yyyy', {locale: ru});
   }
+}
+
 }

@@ -9,18 +9,18 @@ import { openRightSidebar } from 'components/right-sidebar/model';
 
 const cx = cnBind.bind(styles);
 
-export interface ChatInfoProps  {
+export interface ChatInfoProps {
   id?: number;
   name?: string;
-  interlocutorId?: string;
+  accountId?: string;
   interlocutorName?: string;
-  interlocutorAvatar?: string;
+  avatar?: string;
   lastMessageTime?: Date;
 }
 
 export const ChatInfo: FC<ChatInfoProps> = ({
-  interlocutorId,
-  interlocutorAvatar,
+  accountId,
+  avatar,
   interlocutorName,
   lastMessageTime,
 }) => {
@@ -35,7 +35,7 @@ export const ChatInfo: FC<ChatInfoProps> = ({
       <SwitchPanel />
       <Link to={''} className={cx('chat-info__link')}>
         <div className={cx('chat-info__avatar')}>
-          <Avatar avatarImg={interlocutorAvatar ? interlocutorAvatar : ''} />
+          <Avatar avatarImg={avatar ? avatar : ''} />
         </div>
         <div className={cx('chat-info__info')}>
           <div className={cx('chat-info__name')}>{interlocutorName}</div>

@@ -1,9 +1,13 @@
 export interface IMessage {
-  id: number;
-  userId: number;
-  body: string;
-  timestamp: string;
+  messageId: number;
+  chatId: number;
+  senderId: string;
+  recipientId: string;
+  content: string;
+  sentAt: Date;
+  editAt: Date | null;
   isRead: boolean;
-  isGroup: boolean;
+  isDelivered: boolean;
+  is_deleted: boolean;
   attachments: [];
 }

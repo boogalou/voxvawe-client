@@ -10,7 +10,7 @@ import { useParams } from 'react-router';
 import { useNavigate } from 'react-router-dom';
 import { Header } from 'shared/ui';
 import { closeChat } from 'entities/dialog';
-import { fetchMessagesThunk } from 'entities/message/model';
+
 
 const cx = cnBind.bind(styles);
 
@@ -28,11 +28,11 @@ export const Chat: FC = () => {
     }
   };
 
-  useEffect(() => {
-    if (userId) {
-      dispatch(fetchMessagesThunk(userId));
-    }
-  }, [userId]);
+  // useEffect(() => {
+  //   if (userId) {
+  //     dispatch(fetchMessagesThunk(userId));
+  //   }
+  // }, [userId]);
 
   useEffect(() => {
     window.addEventListener('popstate', handlePopstate);

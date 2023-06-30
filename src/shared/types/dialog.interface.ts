@@ -1,9 +1,8 @@
 export interface IDialog {
   id: number;
   name: string;
-  interlocutorId: string;
-  interlocutorName: string;
-  interlocutorAvatar: string;
+  avatar: string;
+  accountId: string;
   lastMessageText: string;
   lastMessageStatus: string;
   unreadMessages: number;

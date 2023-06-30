@@ -110,6 +110,7 @@
 }
 
 .submit__btn {
+  cursor: pointer;
   width: 100%;
   height: 40px;
   border: none;
@@ -119,7 +120,6 @@
   letter-spacing: 1px;
   border-radius: 6px;
   background-color: #4070f4;
-  cursor: pointer;
   transition: all 0.3s ease;
 
   &:hover {

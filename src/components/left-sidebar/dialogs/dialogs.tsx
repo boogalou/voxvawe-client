@@ -12,9 +12,8 @@ export const Dialogs: FC = () => {
   const { contacts } = useAppSelector(state => state.contactsSlice);
 
   const modifiedDialogs = dialogs.map((dialog, index) => {
-    console.log(contacts[index]?.accountId);
-    if (dialog.interlocutorId && contacts[index]?.accountId)
-      if (dialog.interlocutorId === contacts[index]?.accountId) {
+    if (dialog.accountId && contacts[index]?.accountId)
+      if (dialog.accountId === contacts[index]?.accountId) {
         dialog = {
           ...dialog,
           isOnline: contacts[index].isOnline,

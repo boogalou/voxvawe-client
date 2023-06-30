@@ -7,7 +7,7 @@ export interface DialogsState {
   error: null | string;
   isActive: boolean;
   selectedDialog: string;
-  currentDialog: null | IDialog;
+  currentDialog: IDialog;
   isOpen: boolean;
   isClose: boolean;
 }
@@ -18,7 +18,7 @@ const initialState: DialogsState = {
   error: null,
   isActive: false,
   selectedDialog: '',
-  currentDialog: null,
+  currentDialog: {} as IDialog,
   isOpen: false,
   isClose: false,
 };
@@ -29,8 +29,8 @@ const dialogsSlice = createSlice({
   reducers: {
     setSelectedDialogAction(state, action: PayloadAction<string>) {
       state.selectedDialog = action.payload;
-      const currentDialog = state.dialogs.find(dialog => dialog.interlocutorId === action.payload);
-      state.currentDialog = currentDialog ? { ...currentDialog } : null;
+      const currentDialog = state.dialogs.find(dialog => dialog.accountId === action.payload);
+      state.currentDialog = currentDialog ? { ...currentDialog } : {} as IDialog;
     },
 
     moveFrontMiddleColumn(state, action: PayloadAction<true>) {
@@ -57,10 +57,6 @@ const dialogsSlice = createSlice({
       state.dialogs = action.payload;
     },
 
-    setDialogs(state, action: PayloadAction<IDialog[]>) {
-      state.dialogs = action.payload;
-    },
-
     finishLoading(state) {
       state.status = 'succeeded'
     }
@@ -69,7 +65,7 @@ const dialogsSlice = createSlice({
 
 });
 
-export const { setSelectedDialogAction, moveFrontMiddleColumn, moveBackMiddleColumn, closeChat, startLoading, finishLoading, dataReceived, setDialogs } =
+export const { setSelectedDialogAction, moveFrontMiddleColumn, moveBackMiddleColumn, closeChat, startLoading, finishLoading, dataReceived } =
   dialogsSlice.actions;
 
 export default dialogsSlice.reducer;

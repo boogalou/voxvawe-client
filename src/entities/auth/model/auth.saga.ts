@@ -17,12 +17,14 @@ function* signinSagaWorker(action: ReturnType<typeof loginRequestAsync>) {
     const response: AxiosResponse<IAuthRsponseData> = yield call(authService.signin, action.payload);
     yield put(dataReceived(response.data));
     yield put(finishLoading());
-    yield put(setIsAuth())
+    yield put(setIsAuth());
   } catch (err) {
     if (axios.isAxiosError(err)) {
       yield put(rejected(err.response?.data.message));
       yield put(finishLoading());
     }
+  } finally {
+    yield put(finishLoading());
   }
 }
 
@@ -35,8 +37,8 @@ function* signupSagaWorker(action: ReturnType<typeof registrationRequestAsync>) 
   } catch (err) {
     if (axios.isAxiosError(err)) {
       yield put(rejected(err.response?.data.message));
+      yield put(finishLoading());
     }
-    throw new Error('An error occurred: ' + `${JSON.stringify(err)}`);
   }
 }
 
