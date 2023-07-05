@@ -1,16 +1,14 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IMessage } from 'shared/types';
 
-
-
 export interface MessageState {
-  messages: IMessage[];
+  messages: Record<string, IMessage[]>;
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
   error: string | null;
 }
 
 const initialState: MessageState = {
-  messages: [],
+  messages: {},
   status: 'idle',
   error: null,
 };
@@ -19,13 +17,37 @@ const messageSlice = createSlice({
   name: 'messageSlice',
   initialState,
   reducers: {
-    addMessage(state, action: PayloadAction<IMessage>) {
-      state.messages.push(action.payload);
+    addMessage(state, { payload }: PayloadAction<IMessage>) {
+      const chatId = String(payload.chat_id);
+      if (!state.messages[chatId]) {
+        state.messages[chatId] = [];
+      }
+      state.messages[chatId].push(payload);
+    },
+
+    startLoading(state) {
+      state.status = 'loading';
+    },
+
+    finishLoading(state) {
+      state.status = 'succeeded';
+    },
+
+    rejected(state, { payload }: PayloadAction<string>) {
+      state.error = payload;
+    },
+
+    dataReceived(state, { payload }: PayloadAction<{ chat_id: number; messages: IMessage[] }>) {
+      const chatId = String(payload.chat_id);
+      if (!state.messages[chatId]) {
+        state.messages[chatId] = []
+      }
+
+      state.messages[chatId].push(...payload.messages);
     },
   },
-
-
 });
 
-export const { addMessage } = messageSlice.actions;
+export const { addMessage, dataReceived, startLoading, finishLoading, rejected } =
+  messageSlice.actions;
 export default messageSlice.reducer;

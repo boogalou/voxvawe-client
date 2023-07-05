@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from "react";
 import style from './main-menu.module.scss';
 import cnBind from 'classnames/bind';
 import { useOnClickOutside } from 'usehooks-ts';
@@ -8,8 +8,7 @@ import { useAppDispatch, useAppSelector } from 'shared/hooks';
 import { logoutRequestAsync } from 'entities/auth';
 import { setIsActive, setIsFocus } from 'components/left-sidebar/model/left-sidebar.slice';
 import { clearSearch } from 'entities/contact/model/contacts.slice';
-import { getContacts } from "entities/contact/api/contacts.actions";
-import { updateUserOnlineStatusAsync } from "entities/user";
+import { closeAllSocketConnection, getSocketConnetionCount } from "shared/services/socket/connect-socket";
 
 
 const cx = cnBind.bind(style);
@@ -34,7 +33,7 @@ export const MainMenu = () => {
   const dropdownRef = useRef<HTMLUListElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const { isFocus, isActive } = useAppSelector(state => state.leftSidebarSlice);
-  const  {accountId, username}  = useAppSelector(state => state.userSlice.user);
+  const  {account_id, username}  = useAppSelector(state => state.userSlice.user);
 
   const [isPressed, setIsPressed] = useState<boolean>(false);
 
@@ -58,21 +57,12 @@ export const MainMenu = () => {
   const handleMenuItemClick = async (id: number) => {
     setIsPressed(false);
     if (id === 4) {
-      console.log('задача dispatch(setUserOnlineAsync начата ');
-      await dispatch(updateUserOnlineStatusAsync({
-        accountId,
-        username,
-        status: 'offline',
-      }));
-      console.log('задача dispatch(setUserOnlineAsync завершина');
-      console.log('задача logoutRequestAsync начата');
+     closeAllSocketConnection()
       await dispatch(logoutRequestAsync());
-      console.log('задача logoutRequestAsync завершина');
     }
 
     if (id === 1) {
       dispatch(setIsActive(true));
-      // dispatch(getContacts());
     }
   };
 
@@ -81,6 +71,10 @@ export const MainMenu = () => {
   };
 
   useOnClickOutside(dropdownRef, handleOutsideClick);
+
+  useEffect(() => {
+    getSocketConnetionCount()
+  }, [handleMenuItemClick])
 
   return (
     <div className={cx('main-menu')}>

@@ -7,7 +7,7 @@ import {
   startLoading,
 } from 'entities/contact';
 import { call, fork, put, take, takeEvery } from 'redux-saga/effects';
-import io, { Socket } from 'socket.io-client';
+import { Socket } from 'socket.io-client';
 import { eventChannel, EventChannel } from 'redux-saga';
 import { IContact } from 'shared/types';
 import axios, { AxiosResponse } from 'axios';
@@ -16,28 +16,7 @@ import { rejected } from 'entities/auth';
 import { getContacts } from './contacts.actions';
 import { setSearchResult } from '../model/contacts.slice';
 import { getAccessToken } from 'entities/user/api/user.actions';
-import { socketConfig } from 'shared/services';
-import { API_URL } from 'shared/constants';
-
-function connectToSocket(action: ReturnType<typeof getAccessToken>): Promise<Socket> {
-  return new Promise((resolve, reject) => {
-    socketConfig.auth.authorization = 'Bearer ' + action.payload.accessToken;
-
-    const newSocket = io(API_URL, socketConfig);
-    newSocket.on('connect', () => {
-      console.log('Connect to server success');
-      resolve(newSocket);
-    });
-
-    newSocket.on('connect_error', error => {
-      console.log(error);
-      reject(error);
-    });
-
-    newSocket.connect();
-  });
-}
-
+import { connectSocket } from 'shared/services/socket/connect-socket';
 function* searchContactsWorker(socket: Socket, action: ReturnType<typeof searchContacts>) {
   if (socket) {
     console.log('searchContactsWorker', action.payload);
@@ -59,7 +38,7 @@ function* getContactsWorker() {
 }
 
 function* addContactWorker(action: ReturnType<typeof addContact>) {
-  console.log('addContactWorker: ', action.payload);
+  console.log('addContactWorker отправка id для добавления в котакт лист: ', action.payload);
   try {
     yield put(startLoading());
     const response: AxiosResponse<IContact[]> = yield call(
@@ -142,7 +121,7 @@ export function* contactsSagaWatcher(): Generator<any, void, any> {
     }
 
     const action: ReturnType<typeof searchContacts> = yield take(searchContacts.type)
-    const socket = yield call(connectToSocket, token);
+    const socket = yield call(connectSocket, token);
     yield fork(searchContactsWorker, socket, action);
     yield fork(fetchSearch, socket);
   }

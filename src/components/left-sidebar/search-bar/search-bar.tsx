@@ -10,11 +10,8 @@ import { clearSearch } from 'entities/contact/model/contacts.slice';
 const cx = cnBind.bind(styles);
 
 export const SearchBar = () => {
-  const { accessToken } = useAppSelector(state => state.authSlice);
   const dispatch = useAppDispatch();
   const [searchTerm, setSearchTerm] = useState('');
-
-
 
   const handleInputFieldClear = () => {
     setSearchTerm('');

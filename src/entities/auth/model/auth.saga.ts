@@ -12,9 +12,11 @@ import { IAuthRsponseData } from 'shared/types/auth.interface';
 import { toggleOnlineStatus } from "entities/user";
 
 function* signinSagaWorker(action: ReturnType<typeof loginRequestAsync>) {
+  console.log('signi: ', action.payload);
   try {
     yield put(startLoading());
     const response: AxiosResponse<IAuthRsponseData> = yield call(authService.signin, action.payload);
+    console.log(response.data.user.access_token);
     yield put(dataReceived(response.data));
     yield put(finishLoading());
     yield put(setIsAuth());
@@ -23,8 +25,6 @@ function* signinSagaWorker(action: ReturnType<typeof loginRequestAsync>) {
       yield put(rejected(err.response?.data.message));
       yield put(finishLoading());
     }
-  } finally {
-    yield put(finishLoading());
   }
 }
 

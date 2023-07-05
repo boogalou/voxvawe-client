@@ -1,14 +1,13 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from "react";
 import cnBind from 'classnames/bind';
 import styles from './im.module.scss';
 import { Chat } from 'components/chat';
-import { useAppDispatch, useAppSelector } from 'shared/hooks';
+import { useAppDispatch, useAppSelector, useSocketConnectionMonitor } from 'shared/hooks';
 import { LeftSidebar } from 'components/left-sidebar';
 import { RightSidebar } from 'components/right-sidebar';
-import { getCurrentUserAsync, updateUserOnlineStatusAsync } from 'entities/user';
+import { getCurrentUserAsync } from 'entities/user';
 import { getAccessToken } from 'entities/user/api/user.actions';
-import { getDialogsAsync } from "entities/dialog/api/dialog.actions";
-
+import { getDialogsAsync } from 'entities/dialog/api/dialog.actions';
 
 const cx = cnBind.bind(styles);
 
@@ -18,6 +17,8 @@ export const Im = () => {
   const { rightIsOpen } = useAppSelector(state => state.rightSidebarSlice);
   const { isOnline, user } = useAppSelector(state => state.userSlice);
   const { accessToken } = useAppSelector(state => state.authSlice);
+  // const prevAccessToken = useRef(accessToken);
+
 
   useEffect(() => {
     dispatch(getCurrentUserAsync());
@@ -25,39 +26,9 @@ export const Im = () => {
   }, []);
 
   useEffect(() => {
-    dispatch(getAccessToken({ accessToken }));
+      dispatch(getAccessToken({ access_token: accessToken }));
   }, [accessToken]);
 
-  useEffect(() => {
-    if (isOnline) {
-      dispatch(
-        updateUserOnlineStatusAsync({
-          accountId: user.accountId,
-          username: user.username,
-          status: 'online',
-        })
-      );
-    }
-  }, [isOnline]);
-
-  const handleBeforeUnload = () => {
-
-    console.log(user.username, user.accountId);
-    dispatch(
-      updateUserOnlineStatusAsync({
-        accountId: user.accountId,
-        username: user.username,
-        status: 'offline',
-      })
-    );
-  };
-
-  useEffect(() => {
-    window.addEventListener('beforeunload', handleBeforeUnload);
-    return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
-    };
-  }, []);
 
   return (
     <div className={cx('im')}>

@@ -11,14 +11,14 @@ export const Dialogs: FC = () => {
   const { dialogs, status } = useAppSelector(state => state.dialogSlice);
   const { contacts } = useAppSelector(state => state.contactsSlice);
 
-  const modifiedDialogs = dialogs.map((dialog, index) => {
-    if (dialog.accountId && contacts[index]?.accountId)
-      if (dialog.accountId === contacts[index]?.accountId) {
-        dialog = {
-          ...dialog,
-          isOnline: contacts[index].isOnline,
-        };
-      }
+  const onlineIds =  contacts.filter((contact) => contact.is_online).map(contact => contact.account_id);
+  const modifiedDialogs = dialogs.map(dialog => {
+    if (onlineIds.includes(dialog.account_id)) {
+      return {
+        ...dialog,
+        is_online: true
+      };
+    }
     return dialog;
   });
 

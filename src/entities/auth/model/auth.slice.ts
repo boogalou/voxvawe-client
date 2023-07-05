@@ -24,7 +24,8 @@ const authSlice = createSlice({
     },
 
     dataReceived(state, action: PayloadAction<IAuthResponse>) {
-      state.accessToken = action.payload.user.accessToken;
+      state.accessToken = action.payload.user.access_token;
+      state.error = null;
     },
 
     setIsAuth(state) {

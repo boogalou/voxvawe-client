@@ -10,7 +10,7 @@ export const apiService = axios.create({
 });
 
 apiService.interceptors.request.use(config => {
-  config.headers['Authorization'] = `Bearer ${store.getState().authSlice.accessToken}`;
+  config.headers['Authorization'] = `Bearer ${ store.getState().authSlice.accessToken }`;
   return config;
 });
 

@@ -1,8 +1,8 @@
 export interface IDialog {
   id: number;
-  name: string;
+  username: string;
   avatar: string;
-  accountId: string;
+  account_id: string;
   lastMessageText: string;
   lastMessageStatus: string;
   unreadMessages: number;
@@ -10,5 +10,5 @@ export interface IDialog {
   createdAt: Date;
   updatedAt: Date;
   isActive: boolean;
-  isOnline: boolean;
+  is_online: boolean;
 }

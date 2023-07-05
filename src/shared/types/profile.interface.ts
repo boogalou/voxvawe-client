@@ -1,7 +1,7 @@
 
 export interface IProfile {
   id: number;
-  accountId: string;
+  account_id: string;
   username: string;
   email: string;
   gender: string;

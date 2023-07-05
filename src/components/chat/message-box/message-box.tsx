@@ -21,26 +21,24 @@ const cx = cnBind.bind(styles);
 
 export const MessageBox = () => {
   const dispatch = useAppDispatch();
-  const { accountId } = useAppSelector(state => state.userSlice.user);
-  const recipientId = useAppSelector(state => state.dialogSlice.currentDialog.accountId);
+  const  sendeerId  = useAppSelector(state => state.userSlice.user.account_id);
+  const recipientId = useAppSelector(state => state.dialogSlice.currentDialog.account_id);
   const chatId = useAppSelector(state => state.dialogSlice.currentDialog.id);
   const { selectedEmoji } = useAppSelector(state => state.messageInputSlice);
   const [textValue, setTextValue] = useState('');
   const textAreaRef = useResizeTextarea(textValue);
   const buttonType = textValue ? 'send' : 'microphone';
 
-  type OutMessage = Omit<IMessage, 'messageId' | 'isRead' | 'isDelivered' | 'is_deleted' | 'editAt'>;
+  type OutMessage = Omit<IMessage, 'id' | 'message_id' | 'is_read' | 'is_delivered' | 'is_deleted' | 'edit_at'>;
 
   const newMessage: OutMessage = {
-    chatId: chatId,
-    senderId: accountId,
-    recipientId: recipientId,
+    chat_id: chatId,
+    sender_id: sendeerId,
+    recipient_id: recipientId,
     content: textValue,
-    sentAt: new Date(),
+    sent_at: new Date(),
     attachments: [],
   };
-
-  console.log('newMessage: ', newMessage);
 
   const keyboardSendMessageSettings = {
     default: false,

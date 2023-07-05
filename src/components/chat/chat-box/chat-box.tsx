@@ -10,9 +10,13 @@ const cx = cnBind.bind(styles);
 export const ChatBox: FC = () => {
   const messageListRef = useRef<HTMLDivElement>(null);
 
-  const { messages } = useAppSelector(state => state.messageSlice);
+  const chatId = useAppSelector(state => state.dialogSlice.currentDialog.id)
+  const messagesMap  = useAppSelector(state => state.messageSlice.messages);
 
-  useScrollBottom(messageListRef, messages);
+  const messages = messagesMap[String(chatId)]
+
+  if (messages)
+    useScrollBottom(messageListRef, messages);
 
   return (
     <div

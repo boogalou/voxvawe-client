@@ -13,13 +13,13 @@ export const RightSidebar = () => {
 
   const contact = useAppSelector(state => state.contactsSlice.currentContact)!;
 
-  const { accountId, email, avatar, lastSeen, bio, gender, age, id, username } = contact || {};
+  const { account_id, email, avatar, last_seen, bio, gender, age, id, username } = contact || {};
 
   const closeOnClickHandler = () => dispatch(closeRightSidebar(false));
 
-  const addContactOnClickHandler = () => dispatch(addContact(accountId));
+  const addContactOnClickHandler = () => dispatch(addContact(account_id));
 
-  const deleteContactOnClickHandler = () => dispatch(deleteContact(accountId));
+  const deleteContactOnClickHandler = () => dispatch(deleteContact(account_id));
 
   return (
     <>
