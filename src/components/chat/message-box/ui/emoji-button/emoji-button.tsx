@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react';
 import Picker from '@emoji-mart/react';
 import emojiMartData from "@emoji-mart/data/sets/14/google.json"
 import cnBind from "classnames/bind";
-import { IconButton } from "@/shared/ui";
+import { IconButton } from "shared/ui";
 import styles from "./emoji-button.module.scss";
 import { useDispatch } from "react-redux";
 import { IEmoji, setEmojiHandler } from "../../model";

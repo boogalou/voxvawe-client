@@ -6,14 +6,8 @@ import { Link } from 'react-router-dom';
 import { useShowPasswordToggle } from './lib/use-show-password';
 import { registrationRequestAsync } from './model';
 import { useFormik } from 'formik';
-import * as Yup from 'yup';
 import { routes } from 'shared/constants';
-import { IAuthRequestData } from 'shared/types';
-import {
-  validationRulesRegistrationForm,
-  validName,
-  validPassword,
-} from 'entities/auth/validation-rules';
+import { validationRulesRegistrationForm } from 'entities/auth/validation-rules';
 
 const cx = cnBind.bind(styles);
 

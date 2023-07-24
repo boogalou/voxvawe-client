@@ -12,6 +12,7 @@ interface IconInputProps extends InputProps {
   icon: IconType;
   iconClassName?: string;
   onClickClear?: () => void;
+  error?: string
 }
 
 export const IconInput = forwardRef(

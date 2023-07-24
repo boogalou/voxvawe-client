@@ -1,6 +1,7 @@
 import jwt_decode, { JwtPayload } from 'jwt-decode';
 
-export function checkExpireToken(token: string) {
+export function checkExpireToken(token: string | null) {
+  if (!token) return;
   const decoded = jwt_decode(token) as JwtPayload;
   const expirationDate = new Date(decoded.exp! * 1000);
   const currentUnixTime = Math.floor(Date.now() / 1000);
