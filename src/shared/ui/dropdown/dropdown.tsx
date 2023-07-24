@@ -9,10 +9,11 @@ const cx = cnBind.bind(styles);
 export interface IDropdownProps extends RefAttributes<HTMLDivElement> {
   className?: string;
   classNameItem?: string;
-  children: ReactNode;
+  children?: ReactNode;
   items: IMenuItems[];
   onClickMenuItem: (id: number) => void;
-  onClickToggle: (evt: React.MouseEvent) => void;
+  onClickToggle?: (evt: React.MouseEvent) => void;
+  onChange?: (evt: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 export const Dropdown = React.forwardRef((
@@ -23,13 +24,13 @@ export const Dropdown = React.forwardRef((
       children,
       onClickMenuItem,
       onClickToggle,
+      onChange,
     }: IDropdownProps, ref: ForwardedRef<HTMLUListElement>) => {
-
 
 
   return (
       <ul
-          className={cx('dropdown')}
+          className={cx('dropdown', className)}
           ref={ref}
       >
         <List items={items} renderItem={(item) => (
@@ -40,6 +41,21 @@ export const Dropdown = React.forwardRef((
             >
               <div className={cx("dropdown__icon")}>{ item.icon }</div>
               <span className={cx("dropdown__title")}>{ item.title }</span>
+              {
+                item.elements && (
+                  <div className={cx('dropdown__menu-elements')}>
+                    {item.elements.map((element, index) => (
+                      <div
+                        key={index}
+                        className={cx('dropdown__menu-element', classNameItem)}
+                        onChange={onChange}
+                      >
+                        {element}
+                      </div>
+                    ))}
+                  </div>
+                )
+              }
               <div
                   className={cx("dropdown__control")}
                   onClick={onClickToggle}

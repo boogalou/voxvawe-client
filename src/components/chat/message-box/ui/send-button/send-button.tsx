@@ -1,7 +1,7 @@
 import React, { FC, KeyboardEvent, MouseEvent } from "react";
 import cnBind from 'classnames/bind';
 import styles from './send-btutton.module.scss';
-import { Button } from 'shared/ui';
+import { Button, IconButton } from "shared/ui";
 
 const cx = cnBind.bind(styles);
 
@@ -18,7 +18,7 @@ export const SendButton: FC<SendButtonProps> = ({
 }) => {
   return (
     <div className={cx('send')}>
-      <Button
+      <IconButton
         className={cx('send__btn')}
         typeIcon={buttonType}
         onClick={buttonType === 'microphone' ? onClickSendVoice : onClickSendText}

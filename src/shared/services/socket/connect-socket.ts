@@ -35,7 +35,7 @@ export async function connectSocket(action: ReturnType<typeof getAccessToken>): 
     activeSockets.length = 0;
   }
 
-  export function getSocketConnetionCount() {
+  export function getSocketConnectionCount() {
     console.log('Открыто socket-соединений ' + activeSockets.length);
   }
 

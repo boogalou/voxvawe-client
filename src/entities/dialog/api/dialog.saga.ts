@@ -1,4 +1,4 @@
-import io, { Socket } from 'socket.io-client';
+import { Socket } from 'socket.io-client';
 import { AxiosResponse } from 'axios';
 import { call, fork, put, take, takeEvery } from 'redux-saga/effects';
 import { EventChannel, eventChannel } from 'redux-saga';
@@ -8,7 +8,6 @@ import {
   sendMessageAsync,
 } from 'entities/dialog/api/dialog.actions';
 import { dataReceived, finishLoading, startLoading } from '../model/dialogs.slice';
-import { socketConfig } from 'shared/services/';
 import { dialogService } from 'entities/dialog/api/index';
 import { getAccessToken } from 'entities/user';
 import { addMessage } from 'entities/message';
@@ -20,8 +19,8 @@ import {
   NEW_MESSAGE,
   SEND_MESSAGE,
 } from 'entities/dialog/api/dialog.constants';
-import { connectSocket } from "shared/services/socket/connect-socket";
-import { IDialog } from "shared/types";
+import { connectSocket } from 'shared/services/socket/connect-socket';
+import { IDialog } from 'shared/types';
 
 function* getDialogsWorker() {
   try {
@@ -46,10 +45,21 @@ function* connectToRoom(socket: Socket, action: ReturnType<typeof connectToRoomA
 }
 
 function* sendMessage(socket: Socket, action: ReturnType<typeof sendMessageAsync>) {
-  console.log('sendMessage: ', action.payload);
   try {
     if (socket) {
-      yield call([socket, socket.emit], SEND_MESSAGE, action.payload);
+      if (action.payload.attachments) {
+        console.log('отправлено один');
+        const response: AxiosResponse = yield call(
+          dialogService.uploadAttachments,
+          action.payload.attachments
+        );
+
+        action.payload.attachments = yield response.data;
+        yield call([socket, socket.emit], SEND_MESSAGE, action.payload);
+      } else {
+        console.log('отправлено два');
+        yield call([socket, socket.emit], SEND_MESSAGE, action.payload);
+      }
     }
   } catch (error) {
     console.log(error);

@@ -24,7 +24,7 @@ export const Chat: FC = () => {
   const handlePopstate = () => {
     if (!isClose) {
       dispatch(closeChat(true));
-      navigate('/im/');
+      navigate('/');
     }
   };
 

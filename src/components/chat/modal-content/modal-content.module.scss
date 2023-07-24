@@ -1,0 +1,84 @@
+@import 'src/app/index';
+
+.content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  width: 450px;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__title {
+    padding: 0 8px;
+    p {
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+  }
+
+  &__close {
+    width: 40px;
+    height: 40px;
+    &-button {
+      svg {
+        width: 35px;
+        height: 35px;
+      }
+    }
+
+    &:hover {
+
+      cursor: pointer;
+      border-radius: 50%;
+      background-color: var(--color-chat-hover);
+    }
+  }
+
+  &__form {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    width: 100%;
+    gap: 0 10px;
+  }
+
+  &__preview {
+    width: 100%;
+  }
+
+  &__image {
+    width: 100%;
+  }
+
+  &__input {
+    width: 100%;
+    padding: 10px;
+    border: solid 1px var(--color-search-input-bg);
+    border-radius: 3px;
+    background-color: var(--color-search-input-bg);
+
+    &:focus {
+      outline-color: var(--color-chat-selected);
+    }
+  }
+
+  &__button {
+    background-color: var(--color-chat-selected);
+    padding: 10px 25px;
+    border: none;
+    font-size: 1rem;
+    color: var(--color-primary-font);
+    border-radius: 6px;
+  }
+}
+
+
+
+
+
+
+

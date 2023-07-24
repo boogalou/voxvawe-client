@@ -1,9 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IAuthResponse } from 'shared/types/user.interface';
+import { IAuthErrorResponse } from "shared/types/auth.interface";
 
 export interface AuthState {
   accessToken: null | string;
-  error: null | string;
+  error: null | IAuthErrorResponse;
   isLoading: boolean;
   isAuth: boolean;
 }
@@ -42,7 +43,7 @@ const authSlice = createSlice({
       state.isLoading = false;
     },
 
-    rejected(state, action: PayloadAction<string>) {
+    rejected(state, action: PayloadAction<IAuthErrorResponse>) {
       state.error = action.payload;
     },
   },

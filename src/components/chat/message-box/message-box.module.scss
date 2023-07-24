@@ -7,6 +7,7 @@
   display: flex;
   gap: 0 15px;
   padding: 0 10px;
+  position: relative;
 
 
   &__container {
@@ -19,6 +20,7 @@
     margin-bottom: 5px;
     background-color: var(--color-chat-input-bg);
     border: 2px solid transparent;
+
 
     &:focus-within {
       border: 2px solid var(--color-chat-selected);
@@ -58,7 +60,10 @@
       outline: none;
     }
   }
+
 }
+
+
 
 @include respond-to(tablet) {
 

@@ -10,6 +10,12 @@ export interface IAuthRequestData {
   user: IAuthData;
 }
 
-export interface IAuthRsponseData {
+export interface IAuthResponseData {
   user: IUser;
+}
+
+export interface IAuthErrorResponse {
+  status: number,
+  messageError: string,
+  timeError: string,
 }

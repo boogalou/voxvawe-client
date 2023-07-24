@@ -1,156 +1,167 @@
 import React from 'react';
-import styles from './auth.module.scss'
-import cnBind from "classnames/bind";
-import {Icon, Input, useAppDispatch} from "../../shared";
-import {Link} from "react-router-dom";
-import {useShowPasswordToggle} from "./lib/use-show-password";
-import {registrationRequestAsync} from "./model";
-import { ErrorMessage, Field, Form, Formik } from 'formik';
+import styles from './auth.module.scss';
+import cnBind from 'classnames/bind';
+import { Icon, IconButton, Input, useAppDispatch, useAppSelector } from '../../shared';
+import { Link } from 'react-router-dom';
+import { useShowPasswordToggle } from './lib/use-show-password';
+import { registrationRequestAsync } from './model';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
 import { routes } from 'shared/constants';
-import { IAuthRequestData } from "shared/types";
+import { IAuthRequestData } from 'shared/types';
+import {
+  validationRulesRegistrationForm,
+  validName,
+  validPassword,
+} from 'entities/auth/validation-rules';
 
 const cx = cnBind.bind(styles);
 
-export interface formData {
+export interface RegistrationFormData {
   username: string;
   email: string;
   password: string;
   confirmPassword: string;
 }
 
-const initialValues: formData = {
+const initialValues: RegistrationFormData = {
   username: '',
   email: '',
   password: '',
   confirmPassword: '',
-}
+};
 
 export const Signup = () => {
-
+  const { isLoading, error, isAuth } = useAppSelector(state => state.authSlice);
   const [showPassword, togglePassword] = useShowPasswordToggle(false);
   const [showConfirmPassword, toggleConfirmPassword] = useShowPasswordToggle(false);
   const dispatch = useAppDispatch();
 
+  const formik = useFormik({
+    initialValues,
+
+    onSubmit: registrationData => {
+      console.log(JSON.stringify(registrationData, null, 2));
+      dispatch(
+        registrationRequestAsync({
+          user: {
+            ...registrationData,
+          },
+        })
+      );
+    },
+    validationSchema: validationRulesRegistrationForm,
+  });
+
+  const submitHandler = (evt: React.MouseEvent) => {
+    evt.preventDefault();
+    console.log('submitHandler: ', 'click!');
+    formik.handleSubmit();
+  };
 
   return (
-      <Formik
-          initialValues = { initialValues }
-          // validationSchema={''}
-          onSubmit={(values): void => {
-            const authData: IAuthRequestData = {
-              user: {
-                username: values.username,
-                email: values.email,
-                password: values.password
-              }
-            }
-            console.log(JSON.stringify(authData, null, 2));
-            if (authData.user.password === values.confirmPassword) {
-              dispatch(registrationRequestAsync(authData));
-            } else {
-              console.log('Пароли несовадают');
-            }
-          }}
-      >
-        {({isSubmitting, values}) => (
-            <div className={cx('container')}>
-              <span className={cx('container__title')}>Регистрация</span>
-              <Form className={cx('form')}>
+    <div className={cx('container')}>
+      <span className={cx('container__title')}>Регистрация</span>
+      <form className={cx('form')} onSubmit={formik.handleSubmit} noValidate={true}>
+        <div className={cx('form__field', 'field')}>
+          <Input
+            className={cx('field__input')}
+            id="username"
+            type="text"
+            name="username"
+            onChange={formik.handleChange}
+            placeholder="Enter your username"
+          />
+          <Icon typeIcon={'user'} className={cx('field__icon', 'field__icon--user')} />
+          {formik.touched.username && formik.errors.username && (
+            <div className={cx('field--error')}>{formik.errors.username}</div>
+          )}
+        </div>
 
-                <div className={cx('form__field', 'field')}>
-                  <label htmlFor="username"></label>
-                  <Field
-                      id='username'
-                      type='text'
-                      name='username'
-                      value={values.username}
-                      placeholder='Enter your email'
-                      className={cx('field__input')}
-                  />
-                  <Icon typeIcon={'user'} className={cx('field__icon', 'field__icon--user')}/>
-                  <ErrorMessage name='username'/>
-                </div>
+        <div className={cx('form__field', 'field')}>
+          <Input
+            className={cx('field__input')}
+            id="email"
+            type="email"
+            name="email"
+            onChange={formik.handleChange}
+            placeholder="Enter your email"
+          />
+          <Icon typeIcon={'envelope'} className={cx('field__icon', 'field__icon--envelope')} />
+          {formik.touched.email && formik.errors.email && (
+            <div className={cx('field--error')}>{formik.errors.email}</div>
+          )}
+        </div>
 
-                <div className={cx('form__field', 'field')}>
-                  <label htmlFor="email"></label>
-                  <Field
-                      id='email'
-                      type='email'
-                      name='email'
-                      value={values.email}
-                      placeholder='Enter your email'
-                      className={cx('field__input')}
-                  />
-                  <Icon typeIcon={'envelope'} className={cx('field__icon', 'field__icon--envelope')}/>
-                  <ErrorMessage name='email'/>
-                </div>
+        <div className={cx('form__field', 'field')}>
+          <Input
+            id="password"
+            type={showPassword ? 'text' : 'password'}
+            name="password"
+            onChange={formik.handleChange}
+            placeholder="Enter your password"
+            className={cx('field__input')}
+          />
+          <Icon typeIcon={'lock'} className={cx('field__icon', 'field__icon--lock')} />
+          <Icon
+            typeIcon={showPassword ? 'eye-off' : 'eye-on'}
+            className={cx('field__icon', 'field__icon--eye')}
+            onClick={togglePassword}
+          />
+          {formik.touched.password && formik.errors.password && (
+            <div className={cx('field--error')}>{formik.errors.password}</div>
+          )}
+        </div>
 
-                <div className={cx('form__field', 'field')}>
-                  <label htmlFor='password'></label>
-                  <Field
-                      id='password'
-                      type={showPassword ? 'text' : 'password'}
-                      name='password'
-                      value={values.password}
-                      placeholder='Enter your password'
-                      className={cx('field__input')}
-                  />
-                  <Icon
-                      typeIcon={'lock'}
-                      className={cx('field__icon', 'field__icon--lock')}/>
-                  <Icon
-                      typeIcon={showPassword ? 'eye-off' : 'eye-on'}
-                      className={cx('field__icon', 'field__icon--eye')}
-                      onClick={togglePassword}
-                  />
-                  <ErrorMessage name='password'/>
-                </div>
+        <div className={cx('form__field', 'field')}>
+          <Input
+            className={cx('field__input')}
+            id="confirmPassword"
+            type={showConfirmPassword ? 'text' : 'password'}
+            name="confirmPassword"
+            onChange={formik.handleChange}
+            placeholder="Confirm password"
+          />
+          <Icon typeIcon={'lock'} className={cx('field__icon', 'field__icon--lock')} />
+          <Icon
+            typeIcon={showConfirmPassword ? 'eye-off' : 'eye-on'}
+            className={cx('field__icon', 'field__icon--eye')}
+            onClick={toggleConfirmPassword}
+          />
+          {formik.touched.confirmPassword && formik.errors.confirmPassword && (
+            <div className={cx('field--error')}>{formik.errors.confirmPassword}</div>
+          )}
+        </div>
 
-                <div className={cx('form__field', 'field')}>
-                  <label htmlFor="confirmPassword"></label>
-                  <Field
-                      id='confirmPassword'
-                      type={showConfirmPassword ? 'text' : 'password'}
-                      name='confirmPassword'
-                      value={values.confirmPassword}
-                      placeholder='Confirm password'
-                      className={cx('field__input')}
-                  />
-                  <Icon typeIcon={'lock'} className={cx('field__icon', 'field__icon--lock')}/>
-                  <Icon
-                      typeIcon={showConfirmPassword ? 'eye-off' : 'eye-on'}
-                      className={cx('field__icon', 'field__icon--eye')}
-                      onClick={toggleConfirmPassword}
-                  />
-                  <ErrorMessage name='confirmPassword'/>
-                </div>
-
-                <label className={cx("form__footer")}>
-                  <div className={cx('form__checkbox', 'checkbox')}>
-                    <div className={cx("checkbox__input")}>
-                      <Input type={'checkbox'}
-                      />
-                    </div>
-                    <span className={cx("checkbox__text")}>Принять условия</span>
-                  </div>
-
-                  <div className={cx('form__submit', 'submit')}>
-                    <input
-                        className={cx('submit__btn')}
-                        type="submit"
-                        value='Зарегистрировать'
-                    />
-                  </div>
-                </label>
-              </Form>
-              <div className={cx("form__link, link")}>
-                          <span className={cx('link__text')}>Есть аккаунт?
-                              <Link to={routes.SIGNIN_PAGE} className="link__link">Войти</Link>
-                          </span>
-              </div>
+        <label className={cx('form__footer')}>
+          <div className={cx('form__checkbox', 'checkbox')}>
+            <div className={cx('checkbox__input')}>
+              <Input type="checkbox" />
             </div>
-        )}
+            <span className={cx('checkbox__text')}>Принять условия</span>
+          </div>
 
-      </Formik>
-  )
+          <div className={cx('form__submit', 'submit')}>
+            <IconButton
+              className={cx('submit__button')}
+              classNameIcon={cx('submit__icon')}
+              typeIcon={isLoading ? 'preloader' : undefined}
+              onClick={submitHandler}
+              disabled={isLoading}
+            >
+              {isLoading ? '' : 'Зарегистрировать'}
+            </IconButton>
+          </div>
+        </label>
+      </form>
+      <div className={cx('form__link, link')}>
+        <span className={cx('link__text')}>
+          Есть аккаунт?
+          <Link to={routes.SIGNIN_PAGE} className="link__link">
+            Войти
+          </Link>
+        </span>
+      </div>
+    </div>
+  );
 };

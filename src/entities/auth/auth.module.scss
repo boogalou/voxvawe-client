@@ -47,6 +47,12 @@
     flex-direction: column;
     row-gap: 20px;
   }
+
+  &__field {
+    &:focus-within .field__icon svg {
+      stroke: #4070f4;
+    }
+  }
 }
 
 .field {
@@ -71,10 +77,13 @@
     &:is(:focus) {
       border-bottom-color: #4070f4;
     }
+  }
 
-    &:focus ~ .field__icon svg {
-      stroke: #4070f4;
-    }
+  &--error {
+    position: absolute;
+    font-size: 14px;
+    top: -20px;
+    color: tomato;
   }
 
   &__icon {
@@ -84,7 +93,7 @@
     color: #999;
     transition: all 0.2s ease;
 
-    &--eye{
+    &--eye {
       right: 0;
       cursor: pointer;
     }
@@ -94,6 +103,16 @@
       height: 23px;
     }
 
+  }
+
+  &__error {
+    &--active {
+      font-size: 12px;
+      position: absolute;
+      top: -20px;
+      left: 0;
+      color: tomato;
+    }
   }
 }
 
@@ -109,20 +128,29 @@
   }
 }
 
-.submit__btn {
-  cursor: pointer;
-  width: 100%;
-  height: 40px;
-  border: none;
-  color: #fff;
-  font-size: 17px;
-  font-weight: 500;
-  letter-spacing: 1px;
-  border-radius: 6px;
-  background-color: #4070f4;
-  transition: all 0.3s ease;
+.submit {
+  &__button {
+    cursor: pointer;
+    width: 100%;
+    height: 40px;
+    border: none;
+    color: #fff;
+    font-size: 17px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    border-radius: 6px;
+    background-color: #4070f4;
+    transition: all 0.3s ease;
 
-  &:hover {
-    background-color: #265df2;
+
+    &:hover {
+      background-color: #265df2;
+    }
+  }
+
+  &__icon {
+    svg {
+      stroke: #fff;
+    }
   }
 }

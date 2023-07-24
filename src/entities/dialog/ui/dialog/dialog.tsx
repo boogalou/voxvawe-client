@@ -52,7 +52,7 @@ export const Dialog: FC<IDialogProps> = ({
       className={cx('dialog', { 'dialog--selected': account_id === selectedDialog })}
       onClick={clickOnDialogTab}
     >
-      <Link to={`/im/@${account_id}`} className={cx('dialog__link')}>
+      <Link to={`/id${account_id}`} className={cx('dialog__link')}>
         <div className={cx('dialog__container')}>
           <div className={cx('dialog__avatar')}>
             <Avatar avatarImg={avatar} isOnline={is_online} />

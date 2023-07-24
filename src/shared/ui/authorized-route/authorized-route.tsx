@@ -8,5 +8,5 @@ export interface AuthorizedRouteProps {
 
 export const AuthorizedRoute: FC<AuthorizedRouteProps> = ({ children }) => {
   const { isAuth } = useAppSelector(state => state.authSlice);
-  return isAuth ? <Navigate to="/im" /> : children;
+  return isAuth ? <Navigate to="/" /> : children;
 };

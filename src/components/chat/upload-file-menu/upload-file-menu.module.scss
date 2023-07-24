@@ -1,0 +1,66 @@
+.dropdown__menu {
+  width: 100%;
+  &-element {
+  }
+}
+
+.dropdown__input {
+  opacity: 0;
+  width: 0;
+}
+
+.dropdown__label {
+  cursor: pointer;
+}
+
+.attach-menu {
+  position: absolute;
+  opacity: 0;
+  z-index: -100;
+
+  &--isActive {
+    position: absolute;
+    right: 75px;
+    bottom: 100%;
+    margin-bottom: 10px;
+    opacity: 1;
+    z-index: 100;
+  }
+}
+
+
+//Animation
+
+.scale-up-bottom {
+  -webkit-animation: scale-up-bottom 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+  animation: scale-up-bottom 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+}
+
+@-webkit-keyframes scale-up-bottom {
+  0% {
+    -webkit-transform: scale(0.2);
+    transform: scale(0.2);
+    -webkit-transform-origin: 50% 100%;
+    transform-origin: 50% 100%;
+  }
+  100% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    -webkit-transform-origin: 50% 100%;
+    transform-origin: 50% 100%;
+  }
+}
+@keyframes scale-up-bottom {
+  0% {
+    -webkit-transform: scale(0.2);
+    transform: scale(0.2);
+    -webkit-transform-origin: 50% 100%;
+    transform-origin: 50% 100%;
+  }
+  100% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    -webkit-transform-origin: 50% 100%;
+    transform-origin: 50% 100%;
+  }
+}

@@ -1,78 +1,102 @@
-import React, {
-  ChangeEvent,
-  KeyboardEvent,
-  MouseEvent,
-  useCallback,
-  useEffect,
-  useState,
-} from 'react';
+import React, { ChangeEvent, KeyboardEvent, useEffect, useRef, useState } from 'react';
 import cnBind from 'classnames/bind';
 import styles from './message-box.module.scss';
-import { Textarea } from 'shared/ui';
+import { Portal, Textarea } from 'shared/ui';
 import { EmojiButton } from './ui/emoji-button';
 import { AttachButton } from './ui/attach-button';
 import { SendButton } from './ui/send-button/send-button';
 import { useResizeTextarea } from './lib/use-textarea-auto-height';
-import { useAppDispatch, useAppSelector } from 'shared/hooks';
-import { IMessage } from 'shared/types';
+import { useAppDispatch, useAppSelector, useHandleActiveModal } from 'shared/hooks';
 import { sendMessageAsync } from 'entities/dialog/api';
+import { UploadFileMenu } from 'components/chat/upload-file-menu/upload-file-menu';
+import { Modal } from 'shared/ui/modal/modal';
+import { ModalContent } from 'components/chat/modal-content';
+import { useSelectedUploadFiles } from 'components/chat/message-box/use-selected-upload-files';
+import { IOutMessage } from 'shared/types/message.interface';
 
 const cx = cnBind.bind(styles);
 
 export const MessageBox = () => {
   const dispatch = useAppDispatch();
-  const  sendeerId  = useAppSelector(state => state.userSlice.user.account_id);
+  const senderId = useAppSelector(state => state.userSlice.user.account_id);
   const recipientId = useAppSelector(state => state.dialogSlice.currentDialog.account_id);
   const chatId = useAppSelector(state => state.dialogSlice.currentDialog.id);
   const { selectedEmoji } = useAppSelector(state => state.messageInputSlice);
+
   const [textValue, setTextValue] = useState('');
+  const [attachments, setAttachment] = useState<FormData | null>(null);
+
   const textAreaRef = useResizeTextarea(textValue);
   const buttonType = textValue ? 'send' : 'microphone';
 
-  type OutMessage = Omit<IMessage, 'id' | 'message_id' | 'is_read' | 'is_delivered' | 'is_deleted' | 'edit_at'>;
+  const [attachButtonIsPressed, setAttachButtonIsPressed] = useState(false);
 
-  const newMessage: OutMessage = {
+  const newMessage: IOutMessage = {
     chat_id: chatId,
-    sender_id: sendeerId,
+    sender_id: senderId,
     recipient_id: recipientId,
     content: textValue,
     sent_at: new Date(),
-    attachments: [],
+    attachments,
   };
+
+  const attachButtonRef = useRef<HTMLDivElement>(null);
 
   const keyboardSendMessageSettings = {
     default: false,
   };
-
   const keyboardSendMessageHandler = (evt: KeyboardEvent<HTMLTextAreaElement>): void => {
     if (keyboardSendMessageSettings.default) {
       if (evt.key === 'Enter' && !evt.shiftKey) {
         evt.preventDefault();
-        dispatch(sendMessageAsync(newMessage as IMessage));
+        dispatch(sendMessageAsync(newMessage));
         setTextValue('');
+        clearSelectedFiles()
+        setAttachment(null);
+
       }
     } else {
       if (evt.key === 'Enter' && evt.shiftKey) {
         evt.preventDefault();
-        dispatch(sendMessageAsync(newMessage as IMessage));
+        dispatch(sendMessageAsync(newMessage));
         setTextValue('');
+        clearSelectedFiles();
+        setAttachment(null);
       }
     }
   };
-
   const clickSendMessageHandler = (): void => {
-    dispatch(sendMessageAsync(newMessage as IMessage));
+    dispatch(sendMessageAsync(newMessage));
     setTextValue('');
+    clearSelectedFiles();
+    setAttachment(null);
+    handleCloseModal();
   };
-
   const sendVoiceMessageButtonHandler = () => {
     console.log('voiceMessage');
   };
-
   const onChangeTextInputHandler = (evt: ChangeEvent<HTMLTextAreaElement>): void => {
     const text = evt.target.value;
     setTextValue(text);
   };
+  const handleClickOnAttachButton = () => {
+    setAttachButtonIsPressed(prevState => !prevState);
+  };
+
+  const { isOpen, handleOpenModal, handleCloseModal } = useHandleActiveModal();
+
+  const { fileList, previews, handleFileSelect, clearSelectedFiles } =
+    useSelectedUploadFiles(handleOpenModal);
+
+  useEffect(() => {
+    if (fileList) {
+      const formData = new FormData();
+      Array.from(fileList).forEach(file => {
+        formData.append('file', file);
+      });
+      setAttachment(formData);
+    }
+  }, [fileList]);
 
   useEffect(() => {
     if (selectedEmoji) {
@@ -91,21 +115,44 @@ export const MessageBox = () => {
             onKeyDown={keyboardSendMessageHandler}
             className={cx('message-box__input')}
             onChange={onChangeTextInputHandler}
-            value={textValue}
+            value={isOpen ? '' : textValue}
             rows={1}
             ref={textAreaRef}
             placeholder={'Message...'}
           />
         </div>
         <div className={cx('message-box__icon')}>
-          <AttachButton />
+          <AttachButton ref={attachButtonRef} onClick={handleClickOnAttachButton} />
         </div>
+
+        <UploadFileMenu
+          attachButtonRef={attachButtonRef}
+          attachButtonIsPressed={attachButtonIsPressed}
+          setAttachButtonIsPressed={setAttachButtonIsPressed}
+          handleFileSelect={handleFileSelect}
+        />
       </div>
       <SendButton
         onClickSendText={clickSendMessageHandler}
         onClickSendVoice={sendVoiceMessageButtonHandler}
         buttonType={buttonType}
       />
+      <Portal>
+        <Modal
+          className={cx('modal')}
+          isOpen={fileList ? isOpen : false}
+        >
+          <ModalContent
+            files={fileList}
+            previews={previews}
+            clearSelectedFiles={clearSelectedFiles}
+            handleCloseModal={handleCloseModal}
+            messageText={textValue}
+            setTextValue={setTextValue}
+            clickSendMessageHandler={clickSendMessageHandler}
+          />
+        </Modal>
+      </Portal>
     </div>
   );
 };

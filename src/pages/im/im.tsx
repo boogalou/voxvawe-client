@@ -1,8 +1,8 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from 'react';
 import cnBind from 'classnames/bind';
 import styles from './im.module.scss';
 import { Chat } from 'components/chat';
-import { useAppDispatch, useAppSelector, useSocketConnectionMonitor } from 'shared/hooks';
+import { useAppDispatch, useAppSelector } from 'shared/hooks';
 import { LeftSidebar } from 'components/left-sidebar';
 import { RightSidebar } from 'components/right-sidebar';
 import { getCurrentUserAsync } from 'entities/user';

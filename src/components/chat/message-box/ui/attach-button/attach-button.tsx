@@ -1,17 +1,27 @@
-import React from 'react';
-import cnBind from "classnames/bind";
-import styles from "./attach-button.module.scss";
-import { IconButton } from "@/shared/ui";
+import React, { FC, ForwardedRef } from 'react';
+import cnBind from 'classnames/bind';
+import styles from './attach-button.module.scss';
+import { IconButton } from 'shared/ui';
 
 const cx = cnBind.bind(styles);
 
-export const AttachButton = () => {
+export interface AttachButtonPropps {
+  onClick?: (evt: React.MouseEvent<HTMLDivElement>) => void;
+  ref?: ForwardedRef<HTMLDivElement>
+}
+
+export const AttachButton: FC<AttachButtonPropps> = React.forwardRef( ({ onClick }, ref: ForwardedRef<HTMLDivElement>) => {
   return (
-      <>
-        <IconButton
-            className={cx("btn__attach")}
-            typeIcon={"attach"}
-        />
-      </>
+    <div
+      className={cx('attach__button')}
+      onClick={onClick}
+      ref={ref}
+    >
+
+      <IconButton
+        className={cx("btn__attach")}
+        typeIcon={"attach"}
+      />
+    </div>
   );
-};
+});

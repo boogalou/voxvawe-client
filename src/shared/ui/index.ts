@@ -17,6 +17,7 @@ import Layout from './layout';
 import Preloader from './preloader';
 import PrivateRoute from './private-route';
 import AuthorizedRoute from './authorized-route';
+import Portal from './portal';
 
 export {
   Content,
@@ -38,4 +39,5 @@ export {
   Preloader,
   PrivateRoute,
   AuthorizedRoute,
+  Portal,
 };

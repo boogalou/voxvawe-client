@@ -1,8 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IMessage } from 'shared/types';
+import { InMessage } from "shared/types/message.interface";
 
 export interface MessageState {
-  messages: Record<string, IMessage[]>;
+  messages: Record<string, InMessage[]>;
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
   error: string | null;
 }
@@ -17,7 +18,7 @@ const messageSlice = createSlice({
   name: 'messageSlice',
   initialState,
   reducers: {
-    addMessage(state, { payload }: PayloadAction<IMessage>) {
+    addMessage(state, { payload }: PayloadAction<InMessage>) {
       const chatId = String(payload.chat_id);
       if (!state.messages[chatId]) {
         state.messages[chatId] = [];
@@ -37,7 +38,7 @@ const messageSlice = createSlice({
       state.error = payload;
     },
 
-    dataReceived(state, { payload }: PayloadAction<{ chat_id: number; messages: IMessage[] }>) {
+    dataReceived(state, { payload }: PayloadAction<{ chat_id: number; messages: InMessage[] }>) {
       const chatId = String(payload.chat_id);
       if (!state.messages[chatId]) {
         state.messages[chatId] = []
