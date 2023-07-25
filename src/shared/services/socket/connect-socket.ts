@@ -1,7 +1,7 @@
 import { getAccessToken } from 'entities/user';
 import io, { Socket } from 'socket.io-client';
 import { socketConfig } from './socket-config';
-import { API_URL } from 'shared//constants';
+import { API_URL } from 'shared/constants';
 
 
 const activeSockets: Socket[] = [];
