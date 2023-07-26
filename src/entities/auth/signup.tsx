@@ -39,7 +39,9 @@ export const Signup = () => {
       dispatch(
         registrationRequestAsync({
           user: {
-            ...registrationData,
+            username: registrationData.username,
+            email: registrationData.email,
+            password: registrationData.password,
           },
         })
       );
