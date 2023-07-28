@@ -46,18 +46,18 @@ export const Message: FC<InMessage> = ({ content, sender_id, is_read, sent_at, a
         </div>
       </div>
       <Portal>
-        <Modal isOpen={isOpen}>
-          <Content className={cx('modal__content')}>
+        <Modal className={cx('message-modal')} isOpen={isOpen}>
+          <Content className={cx('message-modal__content')}>
             {attachments && attachments.length > 0 ? (
-              <div className={cx('modal__image-container')}>
-                <img className={cx('modal__image')} src={attachments[0].largeSizeUrl} alt="" />
+              <div className={cx('message-modal__image-container')}>
+                <img className={cx('message-modal__image')} src={attachments[0].largeSizeUrl} alt="" />
               </div>
             ) : (
               ''
             )}
             <Icon
               typeIcon={'close'}
-              className={cx('modal__close-button')}
+              className={cx('message-modal__close-button')}
               onClick={handleCloseModal}
             />
           </Content>

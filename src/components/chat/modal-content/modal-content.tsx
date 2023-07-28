@@ -48,8 +48,8 @@ export const ModalContent: FC<ModalContentProps> = ({
         {files ? (
           Array.from(files).map((item, index) => (
             <React.Fragment key={index}>
-              <div>{item.name}</div>
-              <div>{formatFileSize(item.size)}</div>
+              <div className={cx('content__file-name')}>{item.name}</div>
+              <div className={cx('content__file-size')}>{formatFileSize(item.size)}</div>
               <div className={cx("content__preview")}>
                 {previews[index] && (
                   <img className={cx("content__image")} src={previews[index]} alt="Preview" />

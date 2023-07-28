@@ -63,14 +63,20 @@
 
 }
 
-
+.attach-modal {
+  align-items: end;
+}
 
 @include respond-to(tablet) {
-
+  .attach-modal {
+    align-items: center;
+    justify-content: center;
+  }
 }
 
 @include respond-to(desktop) {
   .message-box {
     margin-bottom: 30px;
   }
+
 }

@@ -142,7 +142,7 @@ export const MessageBox = () => {
         buttonType={buttonType}
       />
       <Portal>
-        <Modal className={cx('modal')} isOpen={fileList ? isOpen : false}>
+        <Modal className={cx('attach-modal')} isOpen={fileList ? isOpen : false}>
           <ModalContent
             files={fileList}
             previews={previews}
