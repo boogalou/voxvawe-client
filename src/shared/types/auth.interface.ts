@@ -14,8 +14,8 @@ export interface IAuthResponseData {
   user: IUser;
 }
 
-export interface IAuthErrorResponse {
-  status: number,
-  messageError: string,
-  timeError: string,
+export interface IErrorResponse {
+  status: number;
+  message: string;
+  time: string;
 }

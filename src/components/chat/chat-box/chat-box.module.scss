@@ -11,6 +11,32 @@
   margin: 0 auto;
   padding: 0.925rem;
 
+  &--nomessages {
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__placeholder {
+    position: relative;
+    max-width: 250px;
+    min-width: 150px;
+    border-radius: 8px;
+
+    text-align: center;
+    color: var(--color-primary-font);
+    user-select: none;
+    padding-bottom: 2rem;
+
+    &-icon {
+      position: absolute;
+      svg {
+        width: 300px;
+        height: auto;
+        fill: var(--color-secondary-font);
+      }
+    }
+  }
+
 }
 
 @include respond-to(deskotp) {

@@ -16,12 +16,7 @@ class ContactService {
   }
 
   public async addContactRequest(accountId: string): Promise<AxiosResponse> {
-    try {
-      return await apiService.patch('/add-contact', { accountId });
-    } catch (err) {
-      console.error(err);
-      throw new Error();
-    }
+     return await apiService.patch('/add-contact', { accountId });
   }
 
   public async deleteContactRequest(accountId: string): Promise<AxiosResponse> {

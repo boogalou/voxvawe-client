@@ -1,13 +1,14 @@
-import React from 'react';
+import React, { useEffect } from "react";
 import styles from './auth.module.scss';
 import cnBind from 'classnames/bind';
 import { Icon, IconButton, Input, useAppDispatch, useAppSelector } from '../../shared';
 import { Link } from 'react-router-dom';
 import { useShowPasswordToggle } from './lib/use-show-password';
-import { registrationRequestAsync } from './model';
+import { registrationRequestAsync, rejected } from "./model";
 import { useFormik } from 'formik';
 import { routes } from 'shared/constants';
 import { validationRulesRegistrationForm } from 'entities/auth/validation-rules';
+import toast from "react-hot-toast";
 
 const cx = cnBind.bind(styles);
 
@@ -49,9 +50,15 @@ export const Signup = () => {
     validationSchema: validationRulesRegistrationForm,
   });
 
+  useEffect(() => {
+    if (error && error.time) {
+      toast.error(error.message);
+      dispatch(rejected(null))
+    }
+  }, [error]);
+
   const submitHandler = (evt: React.MouseEvent) => {
     evt.preventDefault();
-    console.log('submitHandler: ', 'click!');
     formik.handleSubmit();
   };
 

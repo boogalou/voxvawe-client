@@ -1,7 +1,7 @@
 import {differenceInCalendarDays, differenceInDays, format, isSameYear, parseISO} from 'date-fns';
 import {ru} from 'date-fns/locale';
 
-export function formatTimePassed(date: Date) {
+export function formatTimePassed(date: Date | undefined) {
 if (date) {
   const fromDate = parseISO(new Date(date).toISOString())
   const nowDate = new Date();

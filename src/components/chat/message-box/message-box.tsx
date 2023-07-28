@@ -13,6 +13,7 @@ import { Modal } from 'shared/ui/modal/modal';
 import { ModalContent } from 'components/chat/modal-content';
 import { useSelectedUploadFiles } from 'components/chat/message-box/use-selected-upload-files';
 import { IOutMessage } from 'shared/types/message.interface';
+import { typingTextAsync } from 'entities/dialog/api/dialog.actions';
 
 const cx = cnBind.bind(styles);
 
@@ -51,9 +52,8 @@ export const MessageBox = () => {
         evt.preventDefault();
         dispatch(sendMessageAsync(newMessage));
         setTextValue('');
-        clearSelectedFiles()
+        clearSelectedFiles();
         setAttachment(null);
-
       }
     } else {
       if (evt.key === 'Enter' && evt.shiftKey) {
@@ -78,6 +78,10 @@ export const MessageBox = () => {
   const onChangeTextInputHandler = (evt: ChangeEvent<HTMLTextAreaElement>): void => {
     const text = evt.target.value;
     setTextValue(text);
+
+    if (text) {
+      dispatch(typingTextAsync({ chatId }));
+    }
   };
   const handleClickOnAttachButton = () => {
     setAttachButtonIsPressed(prevState => !prevState);
@@ -138,10 +142,7 @@ export const MessageBox = () => {
         buttonType={buttonType}
       />
       <Portal>
-        <Modal
-          className={cx('modal')}
-          isOpen={fileList ? isOpen : false}
-        >
+        <Modal className={cx('modal')} isOpen={fileList ? isOpen : false}>
           <ModalContent
             files={fileList}
             previews={previews}

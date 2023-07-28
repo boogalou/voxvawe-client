@@ -23,6 +23,8 @@ import { ReactComponent as Preloader } from 'shared/assets/icons/dual-ring_.svg'
 import { ReactComponent as FileImg } from 'shared/assets/icons/file_image_.svg';
 import { ReactComponent as File } from 'shared/assets/icons/file-icon_.svg';
 import { ReactComponent as Trash } from 'shared/assets/icons/trash_.svg';
+import { ReactComponent as ChatPlaceholder } from 'shared/assets/icons/empty_speech_balloon_.svg';
+import { ReactComponent as Typing } from 'shared/assets/icons/typing_.svg';
 
 export type IconType =
   | 'send'
@@ -48,7 +50,9 @@ export type IconType =
   | 'preloader'
   | 'file-img'
   | 'file'
-  | 'trash';
+  | 'trash'
+  | 'chat-placeholder'
+  | 'typing';
 
 export const iconTypes = new Map([
   ['send', <Send key={getKey()} />],
@@ -75,4 +79,6 @@ export const iconTypes = new Map([
   ['file-img', <FileImg key={getKey()} />],
   ['file', <File key={getKey()} />],
   ['trash', <Trash key={getKey()} />],
+  ['chat-placeholder', <ChatPlaceholder key={getKey()} />],
+  ['typing', <Typing key={getKey()} />],
 ]);

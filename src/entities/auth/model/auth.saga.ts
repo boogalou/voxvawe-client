@@ -43,7 +43,7 @@ function* signupSagaWorker(action: ReturnType<typeof registrationRequestAsync>) 
     yield put(finishLoading());
   } catch (err) {
     if (axios.isAxiosError(err)) {
-      yield put(rejected(err.response?.data.message));
+      yield put(rejected(err.response?.data));
       yield put(finishLoading());
     }
   }

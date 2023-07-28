@@ -17,7 +17,7 @@ export const Auth = () => {
           </div>
         </div>
         <Portal>
-          <Toaster position={'top-left'}/>
+          <Toaster position='top-left'/>
         </Portal>
       </div>
   );

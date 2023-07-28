@@ -3,7 +3,7 @@ export interface IDialog {
   username: string;
   avatar: string;
   account_id: string;
-  lastMessageText: string;
+  lastMessage: string;
   lastMessageStatus: string;
   unreadMessages: number;
   lastMessageTime: Date;

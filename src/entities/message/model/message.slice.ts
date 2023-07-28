@@ -46,9 +46,16 @@ const messageSlice = createSlice({
 
       state.messages[chatId].push(...payload.messages);
     },
+
   },
 });
 
-export const { addMessage, dataReceived, startLoading, finishLoading, rejected } =
+export const {
+  addMessage,
+  dataReceived,
+  startLoading,
+  finishLoading,
+  rejected,
+} =
   messageSlice.actions;
 export default messageSlice.reducer;
