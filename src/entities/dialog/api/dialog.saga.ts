@@ -1,12 +1,12 @@
 import { Socket } from 'socket.io-client';
 import { AxiosResponse } from 'axios';
-import { call, fork, put, take, takeEvery } from 'redux-saga/effects';
+import { call, debounce, fork, put, take, takeEvery } from "redux-saga/effects";
 import { EventChannel, eventChannel } from 'redux-saga';
 import {
   connectToRoomAsync,
   getDialogsAsync,
-  sendMessageAsync,
-} from 'entities/dialog/api/dialog.actions';
+  sendMessageAsync, typingTextAsync
+} from "entities/dialog/api/dialog.actions";
 import { dataReceived, finishLoading, startLoading } from '../model/dialogs.slice';
 import { dialogService } from 'entities/dialog/api/index';
 import { getAccessToken } from 'entities/user';
@@ -17,10 +17,12 @@ import {
   JOIN_PRIVATE_ROOM,
   JOINED_PRIVATE_ROOM,
   NEW_MESSAGE,
-  SEND_MESSAGE,
-} from 'entities/dialog/api/dialog.constants';
+  SEND_MESSAGE, TYPING_NOTIFY, TYPING_TEXT
+} from "entities/dialog/api/dialog.constants";
 import { connectSocket } from 'shared/services/socket/connect-socket';
 import { IDialog } from 'shared/types';
+import { store } from "app/store";
+import { playSoundOnNewMessage } from "shared/lib";
 
 function* getDialogsWorker() {
   try {
@@ -66,6 +68,23 @@ function* sendMessage(socket: Socket, action: ReturnType<typeof sendMessageAsync
   }
 }
 
+function* notifyTypingWorker(socket: Socket, action: ReturnType<typeof typingTextAsync>) {
+  try {
+    if (socket) {
+      yield call([socket, socket.emit], TYPING_TEXT, action.payload)
+    }
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+function* playSoundOnNewMessageWorker({ payload }: MessageResponse) {
+  const accountId = store.getState().userSlice.user.account_id;
+  if (payload.sender_id !== accountId) {
+    playSoundOnNewMessage();
+  }
+}
+
 function createSocketChannel(socket: Socket): EventChannel<any> {
   return eventChannel(emit => {
     const eventHandler = (payload: MessageResponse) => {
@@ -78,11 +97,13 @@ function createSocketChannel(socket: Socket): EventChannel<any> {
 
     socket.on(JOINED_PRIVATE_ROOM, eventHandler);
     socket.on(NEW_MESSAGE, eventHandler);
+    socket.on(TYPING_NOTIFY, eventHandler);
     socket.on(ERROR_RESPONSE, errorHandler);
 
     const unsubscribe = () => {
       socket.off(JOINED_PRIVATE_ROOM, eventHandler);
       socket.off(NEW_MESSAGE, eventHandler);
+      socket.off(TYPING_NOTIFY, eventHandler);
     };
 
     return unsubscribe;
@@ -95,13 +116,20 @@ function* fetchMessageWorker(socket: Socket): Generator<any, void, any> {
     while (true) {
       try {
         const response: MessageResponse = yield take(socketChannel);
+        console.log('fetchMessageWorker: ', response.type);
         switch (response.type) {
           case JOINED_PRIVATE_ROOM:
             break;
 
           case NEW_MESSAGE:
+            yield call(playSoundOnNewMessageWorker, response)
             yield put(addMessage(response.payload));
             break;
+
+          case TYPING_NOTIFY:
+            yield put(dataReceived(response.payload));
+            break;
+
 
           default:
             console.log('default case');
@@ -121,5 +149,6 @@ export function* dialogSagaWatcher(): Generator<any, void, any> {
 
   yield takeEvery(connectToRoomAsync.type, connectToRoom, socket);
   yield takeEvery(sendMessageAsync.type, sendMessage, socket);
+  yield debounce(1000, typingTextAsync.type, notifyTypingWorker, socket);
   yield fork(fetchMessageWorker, socket);
 }

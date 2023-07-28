@@ -2,21 +2,21 @@ import {
   addContact,
   dataReceived,
   deleteContact,
-  finishLoading,
+  finishLoading, rejected,
   searchContacts,
-  startLoading,
-} from 'entities/contact';
+  startLoading
+} from "entities/contact";
 import { call, fork, put, take, takeEvery } from 'redux-saga/effects';
 import { Socket } from 'socket.io-client';
 import { eventChannel, EventChannel } from 'redux-saga';
 import { IContact } from 'shared/types';
 import axios, { AxiosResponse } from 'axios';
 import { contactService } from './contact.service';
-import { rejected } from 'entities/auth';
 import { getContacts } from './contacts.actions';
 import { setSearchResult } from '../model/contacts.slice';
 import { getAccessToken } from 'entities/user/api/user.actions';
 import { connectSocket } from 'shared/services/socket/connect-socket';
+
 function* searchContactsWorker(socket: Socket, action: ReturnType<typeof searchContacts>) {
   if (socket) {
     console.log('searchContactsWorker', action.payload);
@@ -26,45 +26,50 @@ function* searchContactsWorker(socket: Socket, action: ReturnType<typeof searchC
 
 function* getContactsWorker() {
   try {
-    yield put(startLoading());
+    yield put(startLoading('loading'));
     const response: AxiosResponse<IContact[]> = yield call(contactService.getContacts);
     yield put(dataReceived(response.data));
-    yield put(finishLoading());
+    yield put(finishLoading('succeeded'));
   } catch (err) {
     if (axios.isAxiosError(err)) {
       yield put(rejected(err.response?.data.message));
+      yield put(finishLoading('failed'));
     }
   }
 }
 
 function* addContactWorker(action: ReturnType<typeof addContact>) {
-  console.log('addContactWorker отправка id для добавления в котакт лист: ', action.payload);
+  console.log('add contact saga', action.payload);
   try {
-    yield put(startLoading());
+    yield put(startLoading('loading'));
     const response: AxiosResponse<IContact[]> = yield call(
       contactService.addContactRequest,
       action.payload
     );
-    put(dataReceived(response.data));
-    yield put(finishLoading());
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      yield put(rejected(error.response?.data.message));
+    console.log(response.data);
+    yield put(dataReceived(response.data));
+    yield put(finishLoading('succeeded'));
+  } catch (err) {
+    if (axios.isAxiosError(err)) {
+      yield put(rejected(err.response?.data));
+      yield put(finishLoading('failed'));
     }
   }
 }
 
 function* deleteContactWorker(action: ReturnType<typeof deleteContact>) {
   try {
-    yield put(startLoading());
+    yield put(startLoading('loading'));
     const response: AxiosResponse<IContact[]> = yield call(
       contactService.deleteContactRequest,
       action.payload
     );
     yield put(dataReceived(response.data));
+    yield put(finishLoading('succeeded'));
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      yield put(rejected(error.response?.data.message));
+      yield put(rejected(error.response?.data));
+      yield put(finishLoading('failed'));
     }
   }
 }

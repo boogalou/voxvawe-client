@@ -4,7 +4,7 @@ import toast from 'react-hot-toast';
 import cnBind from 'classnames/bind';
 import styles from './auth.module.scss';
 import { Icon, IconButton, Input, useAppDispatch, useAppSelector } from "../../shared";
-import { loginRequestAsync } from './model';
+import { loginRequestAsync, rejected } from "./model";
 import { useShowPasswordToggle } from './lib/use-show-password';
 import { routes } from 'shared/constants';
 import { useFormik } from 'formik';
@@ -47,20 +47,23 @@ export const Signin: FC = () => {
     validationSchema: validationRulesLoginForm,
   });
 
+
+
+
   useEffect(() => {
     if (isAuth) {
       navigate(routes.IM_PAGE);
     }
 
-    if (error && error.timeError) {
-      toast.error(error.messageError);
+    if (error && error.time) {
+      toast.error(error.message);
+      dispatch(rejected(null))
     }
   }, [isAuth, error]);
 
 
   const submitHandler = (evt: React.MouseEvent) => {
     evt.preventDefault();
-    console.log('submitHandler: ', 'click!');
     formik.handleSubmit();
   }
 

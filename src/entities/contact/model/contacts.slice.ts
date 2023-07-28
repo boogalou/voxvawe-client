@@ -1,12 +1,13 @@
 import { IContact, IDialog } from 'shared/types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { IErrorResponse } from "shared/types/auth.interface";
 
 export interface IContactsState {
   contacts: IContact[];
   searchResult: IContact[];
   currentContact: null | IContact;
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
-  error: string | null;
+  error: IErrorResponse | null;
 }
 
 const initialState: IContactsState = {
@@ -21,28 +22,29 @@ const contactsSlice = createSlice({
   name: 'contactsSlice',
   initialState,
   reducers: {
-    startLoading(state) {
-      state.status = 'loading';
+    startLoading(state, { payload }: PayloadAction<'loading'>) {
+      state.status = payload;
     },
 
-    dataReceived(state, action: PayloadAction<IContact[]>) {
-      state.contacts = action.payload;
+    dataReceived(state, { payload }: PayloadAction<IContact[]>) {
+      state.contacts = payload;
     },
 
     setSearchResult(state, action: PayloadAction<IContact[]>) {
       state.searchResult = action.payload;
     },
 
-    finishLoading(state) {
-      state.status = 'succeeded';
+    finishLoading(state, { payload }: PayloadAction<'idle' | 'loading' | 'succeeded' | 'failed'>) {
+      state.status = payload;
     },
 
     setContacts(state, action: PayloadAction<IContact[]>) {
       state.contacts = action.payload;
     },
 
-    rejected(state, action: PayloadAction<string>) {
-      state.error = action.payload;
+    rejected(state, { payload }: PayloadAction<IErrorResponse>) {
+      console.log('contact slice :', payload);
+      state.error = payload;
     },
 
     updateContactStatus(state, action: PayloadAction<{ accountId: string; status: boolean }>) {
@@ -57,10 +59,15 @@ const contactsSlice = createSlice({
       state.searchResult = [];
     },
 
-    setSelectedContact(state, action: PayloadAction<string>) {
-      const result = state.searchResult.find(contact => contact.account_id === action.payload);
+    setSelectedContact(state, { payload }: PayloadAction<string>) {
+      const result = state.searchResult.find(contact => contact.account_id === payload);
       state.currentContact = result ? result : null;
     },
+
+    setCurrentContact(state, {payload}: PayloadAction<string>) {
+      const result = state.contacts.find(contact => contact.account_id === payload);
+      state.currentContact = result ? result : null;
+    }
   },
 });
 
@@ -74,5 +81,6 @@ export const {
   setSearchResult,
   updateContactStatus,
   setContacts,
+  setCurrentContact,
 } = contactsSlice.actions;
 export default contactsSlice.reducer;

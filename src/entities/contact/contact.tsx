@@ -12,7 +12,7 @@ const cx = cnBind.bind(styles);
 export interface IContactProps extends IContact {
   className?: string;
   children?: React.ReactNode;
-  handleSetCurrentContact?: (arg: string) => void;
+  handleSetCurrentContact: (arg: string) => void;
 }
 
 export const Contact: FC<IContactProps> = ({ avatar, username, last_seen, account_id, handleSetCurrentContact,  is_online }) => {
