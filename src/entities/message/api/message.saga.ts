@@ -1,16 +1,18 @@
 import { eventChannel, EventChannel } from 'redux-saga';
-import { call, fork, put, take, takeEvery, takeLatest } from "redux-saga/effects";
+import { call, fork, put, take, takeEvery, takeLatest } from 'redux-saga/effects';
 import {
   dataReceived,
   ERROR_RESPONSE,
   finishLoading,
-  GET_MESSAGE_IS_READ,
+  GET_MESSAGE_STATUS,
   getLatestMessagesAsync,
-  IMessageActions, SET_MESSAGE_IS_READ, setMessageIsRead,
+  IMessageActions,
+  messagesService,
+  SET_MESSAGE_STATUS,
+  setMessageIsRead,
   setMessageIsReadAsync,
-  startLoading
-} from "entities/message";
-import { messagesService } from 'entities/message';
+  startLoading,
+} from 'entities/message';
 import { AxiosResponse } from 'axios';
 import { InMessage } from 'shared/types';
 import { Socket } from 'socket.io-client';
@@ -35,15 +37,13 @@ function* getLatestMessagesWorker(action: ReturnType<typeof getLatestMessagesAsy
 
 function* setMessageIsReadWorker(socket: Socket, action: ReturnType<typeof setMessageIsReadAsync>) {
   if (socket) {
-    console.log('REQUEST SET IS REACD');
-    yield call([socket, socket.emit], SET_MESSAGE_IS_READ, action.payload)
+    yield call([socket, socket.emit], SET_MESSAGE_STATUS, action.payload)
   }
 }
 
 function createSocketChannel(socket: Socket): EventChannel<any> {
   return eventChannel(emit => {
     const eventHandler = (payload: IMessageActions) => {
-      console.log('eventHandler: ', payload);
       emit(payload);
     };
 
@@ -51,7 +51,7 @@ function createSocketChannel(socket: Socket): EventChannel<any> {
       emit(new Error(errorEvent.reason));
     };
 
-    socket.on('MESSAGE:GET_MESSAGE_IS_READ', eventHandler);
+    socket.on(GET_MESSAGE_STATUS, eventHandler);
     socket.on(ERROR_RESPONSE, errorHandler);
 
     const unsubscribe = () => {
@@ -62,16 +62,14 @@ function createSocketChannel(socket: Socket): EventChannel<any> {
   });
 }
 
-function* fetchMessageWorker(socket: Socket): Generator<any, void, any> {
+function* fetchDataWorker(socket: Socket): Generator<any, void, any> {
   if (socket) {
     const socketChannel: EventChannel<any> = yield call(createSocketChannel, socket);
     while (true) {
       try {
         const response: IMessageActions = yield take(socketChannel);
-        console.log(response );
         switch (response.type) {
-          case 'MESSAGE:GET_MESSAGE_IS_READ':
-            console.log('GET_MESSAGE_IS_READ:', response.payload);
+          case GET_MESSAGE_STATUS:
             yield put(setMessageIsRead(response.payload))
             break;
 
@@ -93,6 +91,8 @@ export function* messagesSagaWatcher(): Generator<any, void, any> {
   const token = yield take(getAccessToken.type);
   const socket = yield call(connectSocket, token);
 
+
   yield takeEvery(setMessageIsReadAsync.type, setMessageIsReadWorker, socket);
-  yield fork(fetchMessageWorker, socket);
+  yield fork(fetchDataWorker, socket);
+
 }

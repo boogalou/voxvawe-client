@@ -4,14 +4,12 @@ import styles from './chat-box.module.scss';
 import { useAppDispatch, useAppSelector, useScrollBottom } from 'shared/hooks';
 import { Message, setMessageIsReadAsync } from "entities/message";
 import { Icon } from 'shared/ui';
-import { useSetMessageIsRead } from 'components/chat/chat-box/hooks/use-set-message-is-read';
+import { useSetMessageIsRead } from './hooks/use-set-message-is-read';
+
 
 const cx = cnBind.bind(styles);
 
-export interface IViewedMessage {
-  messageId: string | null;
-  isRead: boolean;
-}
+
 
 export const ChatBox: FC = () => {
 
@@ -28,7 +26,6 @@ export const ChatBox: FC = () => {
       if (entry?.isIntersecting) {
         const messageId = entry?.target.getAttribute('data-message-sender-id');
         if (!messageId?.startsWith(accountId)) {
-          console.log(messageId);
          const modifiedMsgId = Number(messageId?.split(' ').at(1));
 
          messages.forEach((msg) => {

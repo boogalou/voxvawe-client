@@ -34,7 +34,6 @@ const messageSlice = createSlice({
     },
 
     setMessageIsRead(state, { payload }: PayloadAction<{ chatId: number; messageId: number }>) {
-      console.log(payload);
       state.messages[payload.chatId].map((message) => {
         if (payload.messageId === message.id && !message.is_read) {
           message.is_read = true;

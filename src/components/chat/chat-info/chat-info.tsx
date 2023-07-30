@@ -18,12 +18,10 @@ export interface ChatInfoProps {
 export const ChatInfo: FC<ChatInfoProps> = ({ selectedDialog }) => {
   const dispatch = useAppDispatch();
   const { isTyping } = useAppSelector(state => state.dialogSlice);
-
   const contact = useAppSelector(state => state.contactsSlice.contacts.find(contact => contact?.account_id === selectedDialog));
 
   useEffect(() => {
     if (isTyping && isTyping.time) {
-      console.log(isTyping.time);
       const timeoutId = setTimeout(() => {
         dispatch(clearTyping(null));
       }, 2000);

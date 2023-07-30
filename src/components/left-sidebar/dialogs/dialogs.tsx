@@ -4,7 +4,7 @@ import styles from './dilogs.module.scss';
 import { useAppSelector } from 'shared/hooks';
 import { Dialog } from 'entities/dialog';
 import { Preloader } from 'shared/ui';
-import { getBindingIdentifiers } from '@babel/types';
+
 
 
 const cx = cnBind.bind(styles);

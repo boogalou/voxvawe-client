@@ -1,12 +1,13 @@
 import { Socket } from 'socket.io-client';
 import { AxiosResponse } from 'axios';
-import { call, debounce, fork, put, take, takeEvery } from "redux-saga/effects";
+import { call, debounce, fork, put, take, takeEvery } from 'redux-saga/effects';
 import { EventChannel, eventChannel } from 'redux-saga';
 import {
   connectToRoomAsync,
   getDialogsAsync,
-  sendMessageAsync, typingTextAsync
-} from "entities/dialog/api/dialog.actions";
+  sendMessageAsync,
+  typingTextAsync,
+} from 'entities/dialog/api/dialog.actions';
 import { dataReceived, finishLoading, startLoading } from '../model/dialogs.slice';
 import { dialogService } from 'entities/dialog/api/index';
 import { getAccessToken } from 'entities/user';
@@ -17,12 +18,14 @@ import {
   JOIN_PRIVATE_ROOM,
   JOINED_PRIVATE_ROOM,
   NEW_MESSAGE,
-  SEND_MESSAGE, TYPING_NOTIFY, TYPING_TEXT
-} from "entities/dialog/api/dialog.constants";
+  SEND_MESSAGE,
+  TYPING_NOTIFY,
+  TYPING_TEXT,
+} from 'entities/dialog/api/dialog.constants';
 import { connectSocket } from 'shared/services/socket/connect-socket';
 import { IDialog } from 'shared/types';
-import { store } from "app/store";
-import { playSoundOnNewMessage } from "shared/lib";
+import { store } from 'app/store';
+import { playSoundOnNewMessage } from 'shared/lib';
 
 function* getDialogsWorker() {
   try {
@@ -50,7 +53,6 @@ function* sendMessage(socket: Socket, action: ReturnType<typeof sendMessageAsync
   try {
     if (socket) {
       if (action.payload.attachments) {
-        console.log('отправлено attachments');
         const response: AxiosResponse = yield call(
           dialogService.uploadAttachments,
           action.payload.attachments
@@ -59,7 +61,6 @@ function* sendMessage(socket: Socket, action: ReturnType<typeof sendMessageAsync
         action.payload.attachments = yield response.data;
         yield call([socket, socket.emit], SEND_MESSAGE, action.payload);
       } else {
-        console.log('отправлено no attachments');
         yield call([socket, socket.emit], SEND_MESSAGE, action.payload);
       }
     }
@@ -83,7 +84,8 @@ function* playSoundOnNewMessageWorker({ payload }: MessageResponse) {
   if (payload.sender_id !== accountId) {
     playSoundOnNewMessage();
   }
-}
+};
+
 
 function createSocketChannel(socket: Socket): EventChannel<any> {
   return eventChannel(emit => {
@@ -129,8 +131,7 @@ function* fetchMessageWorker(socket: Socket): Generator<any, void, any> {
             yield put(dataReceived(response.payload));
             break;
 
-
-          default:
+            default:
             console.log('default case');
         }
       } catch (error) {
