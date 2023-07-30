@@ -50,7 +50,7 @@ function* sendMessage(socket: Socket, action: ReturnType<typeof sendMessageAsync
   try {
     if (socket) {
       if (action.payload.attachments) {
-        console.log('отправлено один');
+        console.log('отправлено attachments');
         const response: AxiosResponse = yield call(
           dialogService.uploadAttachments,
           action.payload.attachments
@@ -59,7 +59,7 @@ function* sendMessage(socket: Socket, action: ReturnType<typeof sendMessageAsync
         action.payload.attachments = yield response.data;
         yield call([socket, socket.emit], SEND_MESSAGE, action.payload);
       } else {
-        console.log('отправлено два');
+        console.log('отправлено no attachments');
         yield call([socket, socket.emit], SEND_MESSAGE, action.payload);
       }
     }
@@ -116,7 +116,6 @@ function* fetchMessageWorker(socket: Socket): Generator<any, void, any> {
     while (true) {
       try {
         const response: MessageResponse = yield take(socketChannel);
-        console.log('fetchMessageWorker: ', response.type);
         switch (response.type) {
           case JOINED_PRIVATE_ROOM:
             break;

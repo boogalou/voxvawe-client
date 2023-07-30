@@ -57,7 +57,6 @@ const dialogsSlice = createSlice({
     },
 
     dataReceived(state, { payload }: PayloadAction<IDialog[] | ITyping>) {
-      console.log(payload);
       if (Array.isArray(payload)) {
         state.dialogs = payload;
       }

@@ -8,7 +8,7 @@ import { useAppDispatch, useAppSelector } from 'shared/hooks';
 import { logoutRequestAsync } from 'entities/auth';
 import { setIsActive, setIsFocus } from 'components/left-sidebar/model/left-sidebar.slice';
 import { clearSearch } from 'entities/contact/model/contacts.slice';
-import { closeAllSocketConnection, getSocketConnectionCount } from "shared/services/socket/connect-socket";
+import { closeAllSocketConnection } from "shared/services";
 
 
 const cx = cnBind.bind(style);
@@ -74,7 +74,6 @@ export const MainMenu = () => {
   useOnClickOutside(dropdownRef, handleOutsideClick);
 
   useEffect(() => {
-    getSocketConnectionCount()
   }, [handleMenuItemClick])
 
   return (

@@ -5,7 +5,7 @@ import { Avatar, UnreadMsgBadge } from 'shared/ui';
 import { Link } from 'react-router-dom';
 import { IDialog } from 'shared/types';
 import { useAppDispatch, useAppSelector } from 'shared/hooks';
-import { formatTimePassed } from 'shared/lib';
+import { formatTimePassed, generateColor, getInitials } from 'shared/lib';
 import { moveFrontMiddleColumn, setSelectedDialogAction } from 'entities/dialog';
 import { connectToRoomAsync } from 'entities/dialog/api';
 import { getLatestMessagesAsync } from 'entities/message';
@@ -20,13 +20,23 @@ export const Dialog: FC<IDialogProps> = ({
   avatar,
   account_id,
   lastMessage,
-  unreadMessages = 10,
+  unreadMessages,
   lastMessageTime,
   is_online,
 }) => {
   const dispatch = useAppDispatch();
   const userJoinedId = useAppSelector(state => state.userSlice.user.account_id);
   const messages = useAppSelector(state => state.messageSlice.messages[String(id)]?.at(-1));
+  // const unread = useAppSelector(state => state.messageSlice.messages);
+  //
+  // const unreadMessages = unread[id]?.reduce((unread, message) => {
+  //   if (!message.is_read) {
+  //     unread += 1;
+  //   }
+  //   return unread;
+  // }, 0);
+
+  // console.log('unreadMessages: ', unreadMessages);
 
   const [checkedId, setCheckedIs] = useState<number[]>([]);
 
@@ -42,7 +52,8 @@ export const Dialog: FC<IDialogProps> = ({
 
   const { selectedDialog } = useAppSelector(state => state.dialogSlice);
   const dateLastMessageTime = formatTimePassed(lastMessageTime);
-
+  const avatarPlaceholder = generateColor(account_id);
+  const initials = getInitials(username);
   return (
     <li
       className={cx('dialog', { 'dialog--selected': account_id === selectedDialog })}
@@ -51,7 +62,12 @@ export const Dialog: FC<IDialogProps> = ({
       <Link to={`/id${account_id}`} className={cx('dialog__link')}>
         <div className={cx('dialog__container')}>
           <div className={cx('dialog__avatar')}>
-            <Avatar avatarImg={avatar} isOnline={is_online} />
+            <Avatar
+              avatarImg={avatar}
+              isOnline={is_online}
+              avatarPlaceholder={avatarPlaceholder}
+              initials={initials}
+            />
           </div>
           <div className={cx('dialog__name')}>{username}</div>
           {dateLastMessageTime && (
@@ -64,7 +80,7 @@ export const Dialog: FC<IDialogProps> = ({
               {messages?.content ? messages.content : lastMessage}
             </div>
           )}
-          {unreadMessages <= 0 ? null : (
+          {!unreadMessages ? null : (
             <div className={cx('dialog__unread-message')}>
               <UnreadMsgBadge count={unreadMessages} />
             </div>

@@ -11,7 +11,12 @@ import { getDialogsAsync } from 'entities/dialog/api/dialog.actions';
 
 const cx = cnBind.bind(styles);
 
+let counter = 0
+
 export const Im = () => {
+
+  console.log('Im количество рендеров: ', counter += 1);
+
   const dispatch = useAppDispatch();
   const { isOpen } = useAppSelector(state => state.dialogSlice);
   const { rightIsOpen } = useAppSelector(state => state.rightSidebarSlice);

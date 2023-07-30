@@ -43,12 +43,10 @@ const contactsSlice = createSlice({
     },
 
     rejected(state, { payload }: PayloadAction<IErrorResponse>) {
-      console.log('contact slice :', payload);
       state.error = payload;
     },
 
     updateContactStatus(state, action: PayloadAction<{ accountId: string; status: boolean }>) {
-      console.log('updateContactStatus: ', action.payload);
       state.contacts.forEach(contact => {
         if (contact.account_id === action.payload.accountId)
           contact.is_online = action.payload.status;

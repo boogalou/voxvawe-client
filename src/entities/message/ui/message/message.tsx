@@ -10,11 +10,20 @@ import { useOnClickOutside } from 'usehooks-ts';
 
 const cx = cnBind.bind(styles);
 
-export const Message: FC<InMessage> = ({ content, sender_id, is_read, sent_at, attachments }) => {
+
+
+export const Message: FC<InMessage> = ({
+  id,
+  content,
+  sender_id,
+  is_read,
+  sent_at,
+  attachments,
+}) => {
   const messageRef = useRef(null);
 
   const sentAt = format(new Date(sent_at!), 'HH:mm');
-  const accountId = useAppSelector(state => state.userSlice.user.account_id);
+  const {account_id: accountId } = useAppSelector(state => state.userSlice.user);
   const { avatar } = useAppSelector(state => state.dialogSlice.currentDialog!);
 
   const { isOpen, handleOpenModal, handleCloseModal } = useHandleActiveModal();
@@ -24,7 +33,11 @@ export const Message: FC<InMessage> = ({ content, sender_id, is_read, sent_at, a
   useOnClickOutside(messageRef, outsideClickHandler);
 
   return (
-    <div className={cx('message', { 'message--you': sender_id === accountId })}>
+    <div
+      className={cx('message', { 'message--you': sender_id === accountId })}
+      data-message-sender-id={sender_id === accountId ? accountId + ` ${id}`: sender_id + ` ${id}` }
+      ref={messageRef}
+    >
       <div className={cx('message__inner')}>
         <div className={cx('message__avatar')}>
           <Avatar className={cx('message__avatar-img')} avatarImg={avatar} />
@@ -39,8 +52,11 @@ export const Message: FC<InMessage> = ({ content, sender_id, is_read, sent_at, a
 
           <div className={cx('message__info')}>
             <div className={cx('message__time')}>{sentAt}</div>
-            <div className={cx('message__status', { 'message__status--read': is_read })}>
-              <Icon className={cx('message__status-icon')} typeIcon={'msg-status'} />
+            <div className={cx('message__status')}>
+              <Icon
+                className={cx('message__icon', { 'message__icon--read': is_read })}
+                typeIcon={'msg-status'}
+              />
             </div>
           </div>
         </div>
@@ -50,7 +66,11 @@ export const Message: FC<InMessage> = ({ content, sender_id, is_read, sent_at, a
           <Content className={cx('message-modal__content')}>
             {attachments && attachments.length > 0 ? (
               <div className={cx('message-modal__image-container')}>
-                <img className={cx('message-modal__image')} src={attachments[0].largeSizeUrl} alt="" />
+                <img
+                  className={cx('message-modal__image')}
+                  src={attachments[0].largeSizeUrl}
+                  alt=""
+                />
               </div>
             ) : (
               ''

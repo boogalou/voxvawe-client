@@ -1,1 +1,1 @@
-export { addMessage } from './message.slice';
+export * from './message.slice';

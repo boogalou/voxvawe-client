@@ -5,14 +5,15 @@ import { useAppSelector } from 'shared/hooks';
 import { Dialog } from 'entities/dialog';
 import { Preloader } from 'shared/ui';
 import { getBindingIdentifiers } from '@babel/types';
-import keys = getBindingIdentifiers.keys;
+
 
 const cx = cnBind.bind(styles);
 
 export const Dialogs: FC = () => {
-  const { dialogs, status } = useAppSelector(state => state.dialogSlice);
+  const { dialogs, status,  } = useAppSelector(state => state.dialogSlice);
   const { contacts } = useAppSelector(state => state.contactsSlice);
   const { messages } = useAppSelector(state => state.messageSlice);
+
 
   const onlineIds = contacts
     .filter(contact => contact.is_online)

@@ -5,3 +5,4 @@ export type { IAuthRequestData } from './auth.interface';
 export type { IAuthData } from './auth.interface';
 export type { IContact } from './contact.interface';
 export type { ExtendSocket } from './extend-socket';
+export type { InMessage } from './message.interface';

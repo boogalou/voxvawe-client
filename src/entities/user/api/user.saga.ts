@@ -83,7 +83,6 @@ function* fetchUserStatusWorker(socket: Socket) {
 }
 
 function* handleAccessToken(action: ReturnType<typeof getAccessToken>): Generator<any, void, any> {
-  console.log(action);
   const socket = yield call(connectSocket, action);
   yield fork(fetchUserStatusWorker, socket);
 }

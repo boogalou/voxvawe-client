@@ -21,8 +21,6 @@ export const RightSidebar = () => {
 
   const deleteContactOnClickHandler = () => dispatch(deleteContact(account_id));
 
-  console.log('currnent contact: ', account_id);
-
   return (
     <>
       <Header className={cx('right-sidebar__header')}>

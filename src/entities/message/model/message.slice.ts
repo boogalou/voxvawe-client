@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { IMessage } from 'shared/types';
-import { InMessage } from "shared/types/message.interface";
+import { InMessage } from 'shared/types';
 
 export interface MessageState {
   messages: Record<string, InMessage[]>;
@@ -34,6 +33,15 @@ const messageSlice = createSlice({
       state.status = 'succeeded';
     },
 
+    setMessageIsRead(state, { payload }: PayloadAction<{ chatId: number; messageId: number }>) {
+      console.log(payload);
+      state.messages[payload.chatId].map((message) => {
+        if (payload.messageId === message.id && !message.is_read) {
+          message.is_read = true;
+        }
+      })
+      },
+
     rejected(state, { payload }: PayloadAction<string>) {
       state.error = payload;
     },
@@ -41,7 +49,7 @@ const messageSlice = createSlice({
     dataReceived(state, { payload }: PayloadAction<{ chat_id: number; messages: InMessage[] }>) {
       const chatId = String(payload.chat_id);
       if (!state.messages[chatId]) {
-        state.messages[chatId] = []
+        state.messages[chatId] = [];
       }
 
       state.messages[chatId].push(...payload.messages);
@@ -51,11 +59,11 @@ const messageSlice = createSlice({
 });
 
 export const {
-  addMessage,
-  dataReceived,
-  startLoading,
-  finishLoading,
-  rejected,
-} =
-  messageSlice.actions;
+  addMessage
+  , dataReceived
+  , startLoading
+  , finishLoading
+  , rejected,
+  setMessageIsRead
+} = messageSlice.actions;
 export default messageSlice.reducer;
