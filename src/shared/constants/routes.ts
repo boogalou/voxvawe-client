@@ -4,4 +4,5 @@ export const routes = {
   AUTH_PAGE: '/auth',
   SIGNUP_PAGE: '/auth/signup',
   SIGNIN_PAGE: '/auth/signin',
+  CONTACTS_PAGE: '/contacts',
 }

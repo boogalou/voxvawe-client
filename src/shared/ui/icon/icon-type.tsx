@@ -25,6 +25,8 @@ import { ReactComponent as File } from 'shared/assets/icons/file-icon_.svg';
 import { ReactComponent as Trash } from 'shared/assets/icons/trash_.svg';
 import { ReactComponent as ChatPlaceholder } from 'shared/assets/icons/empty_speech_balloon_.svg';
 import { ReactComponent as Typing } from 'shared/assets/icons/typing_.svg';
+import { ReactComponent as Group } from 'shared/assets/icons/group_.svg';
+import { ReactComponent as Camera } from 'shared/assets/icons/camera_.svg';
 
 export type IconType =
   | 'send'
@@ -52,7 +54,9 @@ export type IconType =
   | 'file'
   | 'trash'
   | 'chat-placeholder'
-  | 'typing';
+  | 'typing'
+  | 'group'
+  | 'camera';
 
 export const iconTypes = new Map([
   ['send', <Send key={getKey()} />],
@@ -81,4 +85,6 @@ export const iconTypes = new Map([
   ['trash', <Trash key={getKey()} />],
   ['chat-placeholder', <ChatPlaceholder key={getKey()} />],
   ['typing', <Typing key={getKey()} />],
+  ['group', <Group key={getKey()} />],
+  ['camera', <Camera key={getKey()} />],
 ]);

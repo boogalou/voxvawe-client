@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from "react";
 import styles from './contactlist.module.scss';
 import cnBind from 'classnames/bind';
 import { Preloader } from 'shared/ui';
@@ -8,8 +8,11 @@ import { setCurrentContact } from 'entities/contact/model/contacts.slice';
 
 const cx = cnBind.bind(styles);
 
+export interface ContactlistProps {
+  ignoreClick?: boolean
+}
 
-export const Contactlist = () => {
+export const Contactlist: FC<ContactlistProps> = ({ ignoreClick }) => {
 
   const dispatch = useAppDispatch();
   const  contacts  = useAppSelector(state => state.contactsSlice.contacts);
@@ -26,7 +29,7 @@ export const Contactlist = () => {
       {status === 'loading' ? (
         <Preloader className={cx('contactlist__preloader')} />
       ) : (
-        contacts.map(contact => <Contact key={contact.id} {...contact} handleSetCurrentContact={handleSetCurrentContact} />)
+        contacts.map(contact => <Contact key={contact.id} {...contact} handleSetCurrentContact={handleSetCurrentContact} ignoreClick={ignoreClick} />)
       )}
     </ul>
   );

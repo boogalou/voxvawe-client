@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useState } from 'react';
 import styles from './dialog.module.scss';
 import cnBind from 'classnames/bind';
 import { Avatar, UnreadMsgBadge } from 'shared/ui';
@@ -18,6 +18,9 @@ export const Dialog: FC<IDialogProps> = ({
   id,
   username,
   avatar,
+  group_avatar,
+  group_name,
+  is_group,
   account_id,
   lastMessage,
   unreadMessages,
@@ -25,35 +28,25 @@ export const Dialog: FC<IDialogProps> = ({
   is_online,
 }) => {
   const dispatch = useAppDispatch();
-  const userJoinedId = useAppSelector(state => state.userSlice.user.account_id);
+  const {account_id: accountId } = useAppSelector(state => state.userSlice.user);
   const messages = useAppSelector(state => state.messageSlice.messages[String(id)]?.at(-1));
-  // const unread = useAppSelector(state => state.messageSlice.messages);
-  //
-  // const unreadMessages = unread[id]?.reduce((unread, message) => {
-  //   if (!message.is_read) {
-  //     unread += 1;
-  //   }
-  //   return unread;
-  // }, 0);
-
-  // console.log('unreadMessages: ', unreadMessages);
-
+  const { selectedDialog } = useAppSelector(state => state.dialogSlice);
   const [checkedId, setCheckedIs] = useState<number[]>([]);
+  const dateLastMessageTime = formatTimePassed(lastMessageTime);
+  const avatarPlaceholder = generateColor(account_id);
+  const initials = getInitials(username);
 
   const clickOnDialogTab = () => {
     dispatch(setSelectedDialogAction(account_id));
     dispatch(moveFrontMiddleColumn(true));
-    dispatch(connectToRoomAsync({ chatId: id, userJoinedId }));
+    dispatch(connectToRoomAsync({ chatId: id, accountId }));
     if (!checkedId.includes(id)) {
       dispatch(getLatestMessagesAsync(id));
       setCheckedIs(prevState => [...prevState, id]);
     }
   };
 
-  const { selectedDialog } = useAppSelector(state => state.dialogSlice);
-  const dateLastMessageTime = formatTimePassed(lastMessageTime);
-  const avatarPlaceholder = generateColor(account_id);
-  const initials = getInitials(username);
+
   return (
     <li
       className={cx('dialog', { 'dialog--selected': account_id === selectedDialog })}
@@ -63,13 +56,13 @@ export const Dialog: FC<IDialogProps> = ({
         <div className={cx('dialog__container')}>
           <div className={cx('dialog__avatar')}>
             <Avatar
-              avatarImg={avatar}
-              isOnline={is_online}
+              avatarImg={group_avatar ? group_avatar : avatar}
+              isOnline={!is_group ? is_online : false}
               avatarPlaceholder={avatarPlaceholder}
-              initials={initials}
+              initials={ initials }
             />
           </div>
-          <div className={cx('dialog__name')}>{username}</div>
+          <div className={cx('dialog__name')}>{ is_group ? group_name : username }</div>
           {dateLastMessageTime && (
             <div className={cx('dialog__time-date')}>
               {messages?.sent_at ? formatTimePassed(messages.sent_at) : dateLastMessageTime}

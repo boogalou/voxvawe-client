@@ -2,7 +2,7 @@ import axios from 'axios';
 import { store } from 'app/store';
 import { checkAuthRequestAsync } from 'entities/auth';
 
-const API_URL = 'http://localhost:3000/api';
+const API_URL = `${import.meta.env.VITE_API_URL}`;
 
 export const apiService = axios.create({
   baseURL: API_URL,

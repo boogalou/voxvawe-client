@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './switch-panels.module.scss';
 import cnBind from "classnames/bind";
 import { IconButton } from "shared/ui";
-import { closeChat, moveBackMiddleColumn } from 'entities/dialog';
+import { closeChat, connectToRoomAsync, moveBackMiddleColumn } from "entities/dialog";
 import { useAppDispatch, useAppSelector } from 'shared/hooks';
 
 
@@ -20,6 +20,7 @@ export const SwitchPanel = () => {
       dispatch(moveBackMiddleColumn(false));
     } else {
       dispatch(closeChat(true));
+      dispatch(connectToRoomAsync(null))
     }
 
   }

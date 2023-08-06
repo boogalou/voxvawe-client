@@ -11,7 +11,7 @@ import { sendMessageAsync } from 'entities/dialog/api';
 import { UploadFileMenu } from 'components/chat/upload-file-menu/upload-file-menu';
 import { Modal } from 'shared/ui/modal/modal';
 import { ModalContent } from 'components/chat/modal-content';
-import { useSelectedUploadFiles } from 'components/chat/message-box/use-selected-upload-files';
+import { useSelectedUploadFiles } from 'shared/hooks';
 import { IOutMessage } from 'shared/types/message.interface';
 import { typingTextAsync } from 'entities/dialog/api/dialog.actions';
 

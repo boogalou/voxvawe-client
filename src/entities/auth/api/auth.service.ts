@@ -12,7 +12,7 @@ class AuthService {
   }
 
   public async checkAuth() {
-    return await axios.get<IAuthResponseData>(`http://localhost:3000/api/refresh`, {
+    return await axios.get<IAuthResponseData>(`${import.meta.env.VITE_API_URL}/refresh`, {
       withCredentials: true,
     });
   }

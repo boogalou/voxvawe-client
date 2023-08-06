@@ -1,4 +1,4 @@
-@import 'src/app/index';
+@import 'src/app/index.scss';
 
 .left-sidebar {
   &__header {
@@ -11,5 +11,22 @@
 
   &__content {
     height: 100%;
+
+  }
+
+  &__footer {
+    grid-column: 2/3;
   }
 }
+
+.modal {
+  align-items: center;
+  justify-content: center;
+}
+
+//@include respond-to(tablet) {
+//  .modal {
+//    align-items: center;
+//    justify-content: center;
+//  }
+//}

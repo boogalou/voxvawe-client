@@ -32,6 +32,8 @@ export const Message: FC<InMessage> = ({
 
   useOnClickOutside(messageRef, outsideClickHandler);
 
+  console.log(avatar);
+
   return (
     <div
       className={cx('message', { 'message--you': sender_id === accountId })}

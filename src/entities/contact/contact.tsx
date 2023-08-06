@@ -13,9 +13,18 @@ export interface IContactProps extends IContact {
   className?: string;
   children?: React.ReactNode;
   handleSetCurrentContact: (arg: string) => void;
+  ignoreClick?: boolean;
 }
 
-export const Contact: FC<IContactProps> = ({ avatar, username, last_seen, account_id, handleSetCurrentContact,  is_online }) => {
+export const Contact: FC<IContactProps> = ({
+  avatar,
+  username,
+  last_seen,
+  account_id,
+  handleSetCurrentContact,
+  is_online,
+  ignoreClick,
+}) => {
   const dispatch = useAppDispatch();
 
   const lastSeenDate = formatTimePassed(last_seen);
@@ -24,10 +33,10 @@ export const Contact: FC<IContactProps> = ({ avatar, username, last_seen, accoun
     if (handleSetCurrentContact) {
       handleSetCurrentContact(account_id);
     }
+  if (!ignoreClick) {
     dispatch(openRightSidebar(true));
+  }
   };
-
-
 
   return (
     <li className={cx('contact')} onClick={handleOnclick}>
@@ -37,7 +46,8 @@ export const Contact: FC<IContactProps> = ({ avatar, username, last_seen, accoun
             avatarImg={avatar}
             accountId={account_id}
             username={username}
-            isOnline={is_online}/>
+            isOnline={is_online}
+          />
         </div>
         <div className={cx('contact__name')}>{username}</div>
         <div className={cx('contact__last-visit')}>{lastSeenDate}</div>

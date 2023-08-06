@@ -1,0 +1,238 @@
+@import 'src/app/index';
+
+.content {
+  $this: &;
+  padding: 1rem;
+  width: 100%;
+  border-radius: .30rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  background-color: var(--color-primary);
+  color: var(--color-primary-font);
+
+  &__body {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    grid-template-rows: repeat(2, 1fr);
+    gap: 10px;
+  }
+}
+
+.column {
+  &__left {
+    grid-column: 1 / 2;
+    grid-row: 1 / -1;
+    align-self: center;
+    justify-content: center;
+  }
+
+  &__right {
+    grid-column: 2 / 3;
+    grid-row: 1 / 2;
+  }
+}
+
+.field {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &__label {
+    background-color: var(--color-chat-selected);
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    svg {
+      margin-top: 7px;
+      width: 35px;
+      height: 35px;
+      stroke: var(--color-primary-font);
+      z-index: 100;
+    }
+  }
+
+  &__icon {
+    &-wrapper {
+      position: relative;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      top: 4px;
+      left: 0;
+      background-color: var(--color-chat-selected);
+
+
+    }
+
+    &-close {
+      position: absolute;
+      transform: rotate(90deg);
+      top: -3px;
+      left: -3px;
+      svg {
+        width: 20px;
+        height: 20px;
+        stroke: var(--color-primary);
+      }
+    }
+  }
+
+
+  &__input {
+    width: 100%;
+    height: 2.5rem;
+    padding: 0 5px;
+    border: none;
+    outline: none;
+    font-size: 1rem;
+    background-color: var(--color-primary);
+    border-bottom: 2px solid var(--color-chat-selected);
+    color: var(--color-primary-font);
+    border-top: 2px solid transparent;
+    transition: all 0.2s ease;
+  }
+
+  &__preview {
+    position: absolute;
+
+    &-inner {
+      position: relative;
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background-color: var(--color-chat-selected);
+    }
+
+    &-img {
+      margin-top: 5px;
+      position: absolute;
+      top: -2px;
+      left: 2px;
+      width: 75px;
+      height: 75px;
+      border-radius: 50%;
+    }
+  }
+
+  &__attach {
+    display: none;
+  }
+}
+
+
+.footer {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  gap: 10px;
+  grid-column: 2 / 3;
+  grid-row: 2 /3;
+
+  &__button {
+    padding: 8px 15px;
+
+
+    &-accept {
+      text-decoration: none;
+      color: var(--color-primary-font);
+    }
+  }
+}
+
+.wrapper {
+
+}
+
+.contactlist {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 320px;
+  max-height: 45%;
+  padding: 10px;
+  background-color: var(--color-chat-bg);
+  border-radius: 6px;
+  overflow: scroll;
+
+  &__title {
+    font-size: 20px;
+    text-align: center;
+    color: var(--color-primary-font);
+    margin-bottom: 20px;
+  }
+
+  &__added {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    overflow: hidden;
+
+
+    &-name {
+      display: flex;
+      column-gap: 5px;
+      align-items: center;
+      width: fit-content;
+      padding: 0 8px;
+      color: var(--color-primary-font);
+      font-size: 12px;
+      border: solid 1px var(--color-chat-selected);
+      border-radius: 25px;
+
+      svg {
+        width: 12px;
+        height: 12px;
+        stroke: var(--color-chat-selected);
+        margin-top: 6px;
+      }
+    }
+  }
+
+
+  &__footer {
+    display: flex;
+    justify-content: space-around;
+
+  }
+
+  &__button {
+    width: 100px;
+    height: 45px;
+    padding: 8px 15px;
+    font-size: 16px;
+    background-color: var(--color-primary-opacity);
+    border-radius: 6px;
+    border: none;
+    color: var(--color-primary-font);
+
+  }
+}
+
+@include respond-to('tablet') {
+  .footer {
+    &__button {
+      padding: 8px 15px;
+
+      &:hover {
+        background-color: var(--color-primary-opacity);
+      }
+    }
+  }
+
+  .contactlist {
+    &__button {
+      background-color: transparent;
+
+      &:hover {
+        background-color: var(--color-primary-opacity);
+      }
+    }
+  }
+}

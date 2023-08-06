@@ -18,6 +18,7 @@
     "compose-function": "^3.0.3",
     "date-fns": "^2.29.3",
     "emoji-mart": "^5.5.2",
+    "file-upload-with-preview": "^6.0.2",
     "formik": "^2.2.9",
     "howler": "^2.2.3",
     "jwt-decode": "^3.1.2",

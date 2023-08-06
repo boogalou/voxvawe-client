@@ -62,10 +62,15 @@ const contactsSlice = createSlice({
       state.currentContact = result ? result : null;
     },
 
-    setCurrentContact(state, {payload}: PayloadAction<string>) {
+    setCurrentContact(state, { payload }: PayloadAction<string>) {
       const result = state.contacts.find(contact => contact.account_id === payload);
       state.currentContact = result ? result : null;
-    }
+    },
+
+    clearCurrentContact(state) {
+      console.log('clearCurrentContact is work');
+      state.currentContact = null;
+    },
   },
 });
 
@@ -80,5 +85,6 @@ export const {
   updateContactStatus,
   setContacts,
   setCurrentContact,
+  clearCurrentContact,
 } = contactsSlice.actions;
 export default contactsSlice.reducer;

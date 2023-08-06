@@ -51,7 +51,7 @@ export const Chat: FC = () => {
         {status === 'loading' ? <Preloader className={cx('chat__preloader')} /> : <ChatBox />}
       </Content>
       <Footer className={cx('chat__footer')}>
-        {  selectedDialog && <MessageBox /> }
+        { selectedDialog && <MessageBox /> }
       </Footer>
     </div>
   );

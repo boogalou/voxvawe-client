@@ -9,7 +9,7 @@ import { Icon } from "shared/ui";
 const cx = cnBind.bind(styles)
 
 interface IconInputProps extends InputProps {
-  icon: IconType;
+  typeIcon: IconType;
   iconClassName?: string;
   onClickClear?: () => void;
   error?: string
@@ -17,11 +17,11 @@ interface IconInputProps extends InputProps {
 
 export const IconInput = forwardRef(
     ({
-       className, name, type, value, error, icon, iconClassName, onClickClear, ...restProps
+       className, name, type, value, error, typeIcon, iconClassName, onClickClear, ...restProps
      }: IconInputProps, ref: ForwardedRef<HTMLInputElement>): JSX.Element => {
 
       return (
-          <div className={cx('input-container')}>
+          <>
             <input
                 className={cx('input', className, {'input--error': error})}
                 name={name}
@@ -33,9 +33,9 @@ export const IconInput = forwardRef(
             <Icon
                 className={cx('input__icon', iconClassName)}
                 onClick={onClickClear}
-                typeIcon={icon}
+                typeIcon={typeIcon}
             />
-          </div>
+          </>
       );
     });
 

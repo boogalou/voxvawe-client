@@ -21,7 +21,9 @@ export const leftSidebarSlice = createSlice({
 
     setIsFocus(state, action: PayloadAction<boolean>) {
       state.isFocus = action.payload;
-    }
+    },
+
+    createGroup() {},
   }
 });
 

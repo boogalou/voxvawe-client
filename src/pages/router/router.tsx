@@ -5,6 +5,7 @@ import { Im } from 'src/pages/im';
 import { Chat } from 'components/chat';
 import { Signin, Signup } from 'entities/auth';
 import { AuthorizedRoute, PrivateRoute } from 'shared/ui';
+import { Contactlist } from "components/left-sidebar/contactlist/contactlist";
 
 export const router = createBrowserRouter([
   {

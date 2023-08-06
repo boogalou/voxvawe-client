@@ -8,6 +8,7 @@ import { RightSidebar } from 'components/right-sidebar';
 import { getCurrentUserAsync } from 'entities/user';
 import { getAccessToken } from 'entities/user/api/user.actions';
 import { getDialogsAsync } from 'entities/dialog/api/dialog.actions';
+import { Portal } from "shared/ui";
 
 const cx = cnBind.bind(styles);
 

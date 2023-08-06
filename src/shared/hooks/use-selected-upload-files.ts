@@ -7,7 +7,7 @@ export interface UseSelectedUploadFiles {
   clearSelectedFiles: () => void;
 }
 
-export const useSelectedUploadFiles = (handleOpenModal: () => void): UseSelectedUploadFiles => {
+export const useSelectedUploadFiles = (handleOpenModal?: () => void): UseSelectedUploadFiles => {
   const [fileList, setFilesList] = useState<FileList | null>(null);
   const [previews, setPreviews] = useState<string[]>([]);
 
@@ -31,7 +31,7 @@ export const useSelectedUploadFiles = (handleOpenModal: () => void): UseSelected
           reader.readAsDataURL(file);
         }
       });
-      handleOpenModal();
+      handleOpenModal && handleOpenModal();
     }
   };
 

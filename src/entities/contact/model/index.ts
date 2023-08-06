@@ -1,1 +1,1 @@
-export { startLoading, dataReceived, rejected, finishLoading } from './contacts.slice'
+export * from './contacts.slice'

@@ -1,22 +1,14 @@
 import { getAccessToken } from 'entities/user';
 import io, { Socket } from 'socket.io-client';
 import { socketConfig } from './socket-config';
-import { API_URL } from 'shared/constants';
 
-
-const activeSockets: Socket[] = [];
-
-export async function connectSocket(action: ReturnType<typeof getAccessToken>): Promise<Socket> {
+export async function connectSocket({ payload }: ReturnType<typeof getAccessToken>): Promise<Socket> {
   return new Promise((resolve, reject) => {
-
-    const stackTrace = new Error().stack;
-
-    socketConfig.auth.authorization = 'Bearer ' + action.payload.access_token;
-
-    const newSocket = io(API_URL, socketConfig);
+    socketConfig.auth.authorization = 'Bearer ' + payload.access_token;
+    const newSocket = io(`${import.meta.env.VITE_SOKCET_SERVER}`, socketConfig);
     newSocket.on('connect', () => {
       console.log('Connect to server success');
-      activeSockets.push(newSocket)
+
       resolve(newSocket);
     });
 
@@ -28,14 +20,3 @@ export async function connectSocket(action: ReturnType<typeof getAccessToken>): 
     newSocket.connect();
   });
 }
-
- export function closeAllSocketConnection() {
-    activeSockets.forEach(socket => socket.disconnect());
-
-    activeSockets.length = 0;
-  }
-
-  export function getSocketConnectionCount() {
-    console.log('Открыто socket-соединений ' + activeSockets.length);
-  }
-

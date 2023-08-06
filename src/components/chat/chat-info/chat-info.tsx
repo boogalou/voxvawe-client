@@ -19,22 +19,22 @@ export const ChatInfo: FC<ChatInfoProps> = ({ selectedDialog }) => {
   const dispatch = useAppDispatch();
   const { isTyping } = useAppSelector(state => state.dialogSlice);
   const contact = useAppSelector(state => state.contactsSlice.contacts.find(contact => contact?.account_id === selectedDialog));
+  const {group_avatar, group_name, lastMessage} = useAppSelector(state => state.dialogSlice.currentDialog);
 
   useEffect(() => {
     if (isTyping && isTyping.time) {
       const timeoutId = setTimeout(() => {
         dispatch(clearTyping(null));
-      }, 2000);
+      }, 500);
       return () => clearTimeout(timeoutId);
     }
   }, [isTyping]);
 
-  if (contact === undefined) return null;
-  const { username, avatar, last_seen, is_online, account_id: accountId } = contact;
+  const { username, avatar, last_seen, is_online, account_id: accountId } = contact || {};
 
   const lastSeen = formatTimePassed(last_seen);
-  const avatarPlaceholder = generateColor(accountId);
-  const initials = getInitials(username);
+  const avatarPlaceholder = generateColor(accountId!);
+  const initials = getInitials(username!);
 
   const handleOnClick = () => {
     dispatch(openRightSidebar(true));
@@ -45,10 +45,10 @@ export const ChatInfo: FC<ChatInfoProps> = ({ selectedDialog }) => {
       <SwitchPanel />
       <Link to={''} className={cx('chat-info__link')}>
         <div className={cx('chat-info__avatar')}>
-          <Avatar avatarImg={avatar ? avatar : ''} avatarPlaceholder={avatarPlaceholder} initials={initials}/>
+          <Avatar avatarImg={group_avatar ? group_avatar : avatar} avatarPlaceholder={avatarPlaceholder} initials={initials}/>
         </div>
         <div className={cx('chat-info__info')}>
-          <div className={cx('chat-info__name')}>{username}</div>
+          <div className={cx('chat-info__name')}>{group_name ? group_name : username}</div>
           {isTyping?.time ? (
             <div className={cx('chat-info__typing')}>
               <Icon className={cx('chat-info__typing-icon')} typeIcon={'typing'} />
@@ -56,7 +56,7 @@ export const ChatInfo: FC<ChatInfoProps> = ({ selectedDialog }) => {
           ) : is_online ? (
             <div className={cx('chat-info__status')}>{'в сети'}</div>
           ) : (
-             <div className={cx('chat-info__last-seen')}>{ lastSeen ? 'был(а) ' + lastSeen : 'был(а) очень давно'}</div>
+             <div className={cx('chat-info__last-seen')}>{ lastSeen ? 'был(а) ' + lastSeen : ''}</div>
           )}
         </div>
       </Link>
