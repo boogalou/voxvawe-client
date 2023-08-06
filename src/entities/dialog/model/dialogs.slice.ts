@@ -8,7 +8,7 @@ export interface DialogsState {
   isTyping: null | ITyping;
   error: null | string;
   isActive: boolean;
-  selectedDialog: string;
+  selectedDialog: number;
   currentDialog: IDialog;
   isOpen: boolean;
   isClose: boolean;
@@ -20,7 +20,7 @@ const initialState: DialogsState = {
   isTyping: null,
   error: null,
   isActive: false,
-  selectedDialog: '',
+  selectedDialog: -1,
   currentDialog: {} as IDialog,
   isOpen: false,
   isClose: false,
@@ -30,9 +30,9 @@ const dialogsSlice = createSlice({
   name: 'dialogsSlice',
   initialState,
   reducers: {
-    setSelectedDialogAction(state, action: PayloadAction<string >) {
-      state.selectedDialog = action.payload;
-      const currentDialog = state.dialogs.find(dialog => dialog.account_id === action.payload);
+    setSelectedDialogAction(state, { payload }: PayloadAction<{chatId: number }>) {
+      state.selectedDialog = payload.chatId;
+      const currentDialog = state.dialogs.find(dialog => dialog.id === payload.chatId);
       state.currentDialog = currentDialog ? { ...currentDialog } : ({} as IDialog);
     },
 
@@ -49,7 +49,7 @@ const dialogsSlice = createSlice({
 
     closeChat(state, action: PayloadAction<boolean>) {
       state.isClose = action.payload;
-      state.selectedDialog = '';
+      state.selectedDialog = -1;
     },
 
     startLoading(state) {

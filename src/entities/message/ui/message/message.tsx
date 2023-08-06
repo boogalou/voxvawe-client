@@ -10,12 +10,10 @@ import { useOnClickOutside } from 'usehooks-ts';
 
 const cx = cnBind.bind(styles);
 
-
-
 export const Message: FC<InMessage> = ({
   id,
   content,
-  sender_id,
+  sender_id: senderId,
   is_read,
   sent_at,
   attachments,
@@ -23,26 +21,25 @@ export const Message: FC<InMessage> = ({
   const messageRef = useRef(null);
 
   const sentAt = format(new Date(sent_at!), 'HH:mm');
-  const {account_id: accountId } = useAppSelector(state => state.userSlice.user);
-  const { avatar } = useAppSelector(state => state.dialogSlice.currentDialog!);
-
+  const { account_id: accountId } = useAppSelector(state => state.userSlice.user);
+  const senderMember = useAppSelector(state =>
+    state.dialogSlice.currentDialog.members.find(member => member.account_id === senderId!)
+  );
   const { isOpen, handleOpenModal, handleCloseModal } = useHandleActiveModal();
 
   const outsideClickHandler = () => {};
 
   useOnClickOutside(messageRef, outsideClickHandler);
 
-  console.log(avatar);
-
   return (
     <div
-      className={cx('message', { 'message--you': sender_id === accountId })}
-      data-message-sender-id={sender_id === accountId ? accountId + ` ${id}`: sender_id + ` ${id}` }
+      className={cx('message', { 'message--you': senderId === accountId })}
+      data-message-sender-id={senderId === accountId ? accountId + ` ${id}` : senderId + ` ${id}`}
       ref={messageRef}
     >
       <div className={cx('message__inner')}>
         <div className={cx('message__avatar')}>
-          <Avatar className={cx('message__avatar-img')} avatarImg={avatar} />
+          <Avatar className={cx('message__avatar-img')} avatarImg={senderMember?.avatar} />
         </div>
         <div className={cx('message__body')}>
           {attachments && attachments.length > 0 ? (

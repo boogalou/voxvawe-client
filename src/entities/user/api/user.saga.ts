@@ -14,6 +14,7 @@ import {
 import { Socket } from 'socket.io-client';
 import { setContacts, updateContactStatus } from 'entities/contact/model/contacts.slice';
 import { connectSocket } from 'shared/services/socket/connect-socket';
+import { IStatusUpdateResponse } from "entities/user/api/status.interface";
 
 function* getCurrentUserWorker() {
   try {
@@ -35,22 +36,23 @@ function* getCurrentUserWorker() {
 
 function createSocketChannel(socket: Socket) {
   return eventChannel(emit => {
-    const eventHandler = (eventType: string, accountId: string) => {
-      emit({ eventType, accountId });
+    const eventHandler = (payload: IStatusUpdateResponse) => {
+      console.log(payload);
+      emit(payload);
     };
 
     const errorHandler = (errorEvent: { reason: string | undefined }) => {
       emit(new Error(errorEvent.reason));
     };
 
-    socket.on(ONLINE, payload => eventHandler(ONLINE, payload));
-    socket.on(OFFLINE, payload => eventHandler(OFFLINE, payload));
+    socket.on(ONLINE, errorHandler);
+    socket.on(OFFLINE, eventHandler);
     socket.on(ERROR, errorHandler);
 
     const unsubscribe = () => {
       socket.off(ONLINE, eventHandler);
       socket.off(OFFLINE, eventHandler);
-      socket.off(ERROR, eventHandler);
+
     };
 
     return unsubscribe;
@@ -59,21 +61,20 @@ function createSocketChannel(socket: Socket) {
 
 function* fetchUserStatusWorker(socket: Socket) {
   if (socket) {
-    const socketChannel: EventChannel<Socket> = yield call(createSocketChannel, socket);
-
+    const socketChannel: EventChannel<any> = yield call(createSocketChannel, socket);
     while (true) {
       try {
-        const { eventType, accountId }: { eventType: string; accountId: string } = yield take(
+        const response: IStatusUpdateResponse = yield take(
           socketChannel
         );
-        console.log('contact ' + accountId + ' online');
-        if (eventType === ONLINE) {
-          yield put(updateContactStatus({ accountId, status: true }));
+        console.log('contact ' + response.payload + ' online');
+        if (response.type === ONLINE) {
+          yield put(updateContactStatus(response.payload));
         }
 
-        if (eventType === OFFLINE) {
-          console.log('contact ' + accountId + ' offline');
-          yield put(updateContactStatus({ accountId, status: false }));
+        if (response.type === OFFLINE) {
+          console.log('contact ' + response.payload + ' offline');
+          yield put(updateContactStatus(response.payload));
         }
       } catch (error) {
         console.log(error);
@@ -85,6 +86,7 @@ function* fetchUserStatusWorker(socket: Socket) {
 function* handleAccessToken(action: ReturnType<typeof getAccessToken>): Generator<any, void, any> {
   const socket = yield call(connectSocket, action);
   yield fork(fetchUserStatusWorker, socket);
+  console.log(socket);
 }
 
 export function* userSagaWatcher(): Generator<any, void, any> {

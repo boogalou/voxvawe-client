@@ -18,8 +18,6 @@ export const Dialog: FC<IDialogProps> = ({
   id,
   username,
   avatar,
-  group_avatar,
-  group_name,
   is_group,
   account_id,
   lastMessage,
@@ -37,7 +35,7 @@ export const Dialog: FC<IDialogProps> = ({
   const initials = getInitials(username);
 
   const clickOnDialogTab = () => {
-    dispatch(setSelectedDialogAction(account_id));
+    dispatch(setSelectedDialogAction({chatId: id}));
     dispatch(moveFrontMiddleColumn(true));
     dispatch(connectToRoomAsync({ chatId: id, accountId }));
     if (!checkedId.includes(id)) {
@@ -46,23 +44,22 @@ export const Dialog: FC<IDialogProps> = ({
     }
   };
 
-
   return (
     <li
-      className={cx('dialog', { 'dialog--selected': account_id === selectedDialog })}
+      className={cx('dialog', { 'dialog--selected': id === selectedDialog })}
       onClick={clickOnDialogTab}
     >
       <Link to={`/id${account_id}`} className={cx('dialog__link')}>
         <div className={cx('dialog__container')}>
           <div className={cx('dialog__avatar')}>
             <Avatar
-              avatarImg={group_avatar ? group_avatar : avatar}
-              isOnline={!is_group ? is_online : false}
+              avatarImg={ avatar}
+              isOnline={is_group ? !is_online : is_online  }
               avatarPlaceholder={avatarPlaceholder}
               initials={ initials }
             />
           </div>
-          <div className={cx('dialog__name')}>{ is_group ? group_name : username }</div>
+          <div className={cx('dialog__name')}>{ username }</div>
           {dateLastMessageTime && (
             <div className={cx('dialog__time-date')}>
               {messages?.sent_at ? formatTimePassed(messages.sent_at) : dateLastMessageTime}

@@ -45,7 +45,7 @@ export const Chat: FC = () => {
   return (
     <div className={cx('chat', { 'chat--close': isClose })}>
       <Header className={cx('chat__header')}>
-         <ChatInfo selectedDialog={selectedDialog} />
+        {selectedDialog && <ChatInfo/>}
       </Header>
       <Content className={cx('chat__content')}>
         {status === 'loading' ? <Preloader className={cx('chat__preloader')} /> : <ChatBox />}

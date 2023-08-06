@@ -1,3 +1,5 @@
+import { IContact } from "@/src/shared";
+
 export interface IDialog {
   id: number;
   username: string;
@@ -12,6 +14,7 @@ export interface IDialog {
   lastMessageTime: Date;
   createdAt: Date;
   updatedAt: Date;
+  members: IContact[]
   isActive: boolean;
   is_online: boolean;
 }
