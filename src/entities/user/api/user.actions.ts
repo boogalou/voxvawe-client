@@ -10,4 +10,4 @@ export const disconnectSocket = createAction('USER:SOCKET_DISCONNECT');
 
 export const  ONLINE = 'USER:STATUS_ONLINE'
 export const OFFLINE = 'USER:STATUS_OFFLINE'
-export const ERROR = 'USER:ERROR'
+export const ERROR_RESPONSE = 'USER:ERROR_RESPONSE'

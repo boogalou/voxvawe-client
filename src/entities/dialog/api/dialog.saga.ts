@@ -32,7 +32,6 @@ import { IDialog } from 'shared/types';
 import { store } from 'app/store';
 import { playSoundOnNewMessage } from 'shared/lib';
 import { Attachments } from 'shared/types/message.interface';
-import { instanceOf } from 'prop-types';
 
 function* getDialogsWorker() {
   try {
@@ -138,15 +137,13 @@ function createSocketChannel(socket: Socket): EventChannel<any> {
     socket.on(LEFT_PRIVATE_ROOM, eventHandler);
     socket.on(ERROR_RESPONSE, errorHandler);
 
-    const unsubscribe = () => {
+    return () => {
       socket.off(JOINED_PRIVATE_ROOM, eventHandler);
       socket.off(NEW_MESSAGE, eventHandler);
       socket.off(TYPING_NOTIFY, eventHandler);
       socket.off(GET_MESSAGE_STATUS, eventHandler);
       socket.off(LEFT_PRIVATE_ROOM, eventHandler);
     };
-
-    return unsubscribe;
   });
 }
 

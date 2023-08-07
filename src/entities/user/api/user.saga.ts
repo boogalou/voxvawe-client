@@ -1,6 +1,6 @@
-import { call, fork, put, take, takeEvery, takeLatest } from 'redux-saga/effects';
+import { call, fork, put, take, takeLatest } from 'redux-saga/effects';
 import { EventChannel, eventChannel } from 'redux-saga';
-import { ERROR, getAccessToken, getCurrentUserAsync, OFFLINE, ONLINE } from './user.actions';
+import { ERROR_RESPONSE, getAccessToken, getCurrentUserAsync, OFFLINE, ONLINE } from './user.actions';
 
 import { AxiosResponse } from 'axios';
 import { IUser } from 'shared/types';
@@ -14,7 +14,7 @@ import {
 import { Socket } from 'socket.io-client';
 import { setContacts, updateContactStatus } from 'entities/contact/model/contacts.slice';
 import { connectSocket } from 'shared/services/socket/connect-socket';
-import { IStatusUpdateResponse } from "entities/user/api/status.interface";
+import { IStatusUpdateResponse } from 'entities/user/api/status.interface';
 
 function* getCurrentUserWorker() {
   try {
@@ -36,46 +36,49 @@ function* getCurrentUserWorker() {
 
 function createSocketChannel(socket: Socket) {
   return eventChannel(emit => {
-    const eventHandler = (payload: IStatusUpdateResponse) => {
-      console.log(payload);
-      emit(payload);
+    const eventHandler = (response: IStatusUpdateResponse) => {
+      console.log(response);
+      emit(response);
     };
 
     const errorHandler = (errorEvent: { reason: string | undefined }) => {
       emit(new Error(errorEvent.reason));
     };
 
-    socket.on(ONLINE, errorHandler);
+    socket.on(ONLINE, eventHandler);
     socket.on(OFFLINE, eventHandler);
-    socket.on(ERROR, errorHandler);
+    socket.on(ERROR_RESPONSE, errorHandler);
 
-    const unsubscribe = () => {
+    return () => {
       socket.off(ONLINE, eventHandler);
       socket.off(OFFLINE, eventHandler);
 
     };
-
-    return unsubscribe;
   });
 }
 
 function* fetchUserStatusWorker(socket: Socket) {
   if (socket) {
-    const socketChannel: EventChannel<any> = yield call(createSocketChannel, socket);
+    const socketChannel: EventChannel<Socket> = yield call(createSocketChannel, socket);
     while (true) {
       try {
-        const response: IStatusUpdateResponse = yield take(
-          socketChannel
-        );
-        console.log('contact ' + response.payload + ' online');
-        if (response.type === ONLINE) {
-          yield put(updateContactStatus(response.payload));
+        const response: IStatusUpdateResponse = yield take(socketChannel);
+
+        switch (response.type) {
+          case ONLINE:
+            console.log('contact ' + response.payload + ' online');
+            yield put(updateContactStatus({ accountId: response.payload, status: true }));
+            break;
+
+          case OFFLINE:
+            console.log('contact ' + response.payload + ' online');
+            yield put(updateContactStatus({ accountId: response.payload, status: false }));
+            break;
+
+          default:
+            console.log('default case');
         }
 
-        if (response.type === OFFLINE) {
-          console.log('contact ' + response.payload + ' offline');
-          yield put(updateContactStatus(response.payload));
-        }
       } catch (error) {
         console.log(error);
       }
@@ -86,7 +89,6 @@ function* fetchUserStatusWorker(socket: Socket) {
 function* handleAccessToken(action: ReturnType<typeof getAccessToken>): Generator<any, void, any> {
   const socket = yield call(connectSocket, action);
   yield fork(fetchUserStatusWorker, socket);
-  console.log(socket);
 }
 
 export function* userSagaWatcher(): Generator<any, void, any> {
