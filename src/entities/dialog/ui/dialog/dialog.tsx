@@ -12,30 +12,31 @@ import { getLatestMessagesAsync } from 'entities/message';
 
 const cx = cnBind.bind(styles);
 
-export interface IDialogProps extends IDialog {}
+export interface IDialogProps extends IDialog {
+  is_online: boolean;
+}
 
 export const Dialog: FC<IDialogProps> = ({
   id,
   username,
   avatar,
   is_group,
-  account_id,
   lastMessage,
   unreadMessages,
   lastMessageTime,
   is_online,
 }) => {
   const dispatch = useAppDispatch();
-  const {account_id: accountId } = useAppSelector(state => state.userSlice.user);
+  const { account_id: accountId } = useAppSelector(state => state.userSlice.user);
   const messages = useAppSelector(state => state.messageSlice.messages[String(id)]?.at(-1));
-  const { selectedDialog } = useAppSelector(state => state.dialogSlice);
+  const { selectedDialog, dialogs } = useAppSelector(state => state.dialogSlice);
   const [checkedId, setCheckedIs] = useState<number[]>([]);
   const dateLastMessageTime = formatTimePassed(lastMessageTime);
-  const avatarPlaceholder = generateColor(account_id);
+  const avatarPlaceholder = generateColor('1596987564231');
   const initials = getInitials(username);
 
   const clickOnDialogTab = () => {
-    dispatch(setSelectedDialogAction({chatId: id}));
+    dispatch(setSelectedDialogAction({ chatId: id }));
     dispatch(moveFrontMiddleColumn(true));
     dispatch(connectToRoomAsync({ chatId: id, accountId }));
     if (!checkedId.includes(id)) {
@@ -44,22 +45,24 @@ export const Dialog: FC<IDialogProps> = ({
     }
   };
 
+  console.log('dialog: ', dialogs);
+
   return (
     <li
       className={cx('dialog', { 'dialog--selected': id === selectedDialog })}
       onClick={clickOnDialogTab}
     >
-      <Link to={`/id${account_id}`} className={cx('dialog__link')}>
+      <Link to={`/id${username}`} className={cx('dialog__link')}>
         <div className={cx('dialog__container')}>
           <div className={cx('dialog__avatar')}>
             <Avatar
-              avatarImg={ avatar}
-              isOnline={is_group ? !is_online : is_online  }
+              avatarImg={avatar}
+              isOnline={!is_group ? is_online : false}
               avatarPlaceholder={avatarPlaceholder}
-              initials={ initials }
+              initials={initials}
             />
           </div>
-          <div className={cx('dialog__name')}>{ username }</div>
+          <div className={cx('dialog__name')}>{username}</div>
           {dateLastMessageTime && (
             <div className={cx('dialog__time-date')}>
               {messages?.sent_at ? formatTimePassed(messages.sent_at) : dateLastMessageTime}

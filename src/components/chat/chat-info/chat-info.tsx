@@ -57,7 +57,7 @@ export const ChatInfo = () => {
           ) : is_online ? (
             <div className={cx('chat-info__status')}>{'в сети'}</div>
           ) : (
-             <div className={cx('chat-info__last-seen')}>{ lastSeen ? 'был(а) ' + lastSeen : is_group ? members. length + ' участника' : ''}</div>
+             <div className={cx('chat-info__last-seen')}>{is_group ? members.length + ' участника' : lastSeen ? 'был(а) ' + lastSeen  : ''}</div>
           )}
         </div>
       </Link>

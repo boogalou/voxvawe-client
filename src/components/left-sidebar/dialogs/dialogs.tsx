@@ -5,28 +5,26 @@ import { useAppSelector } from 'shared/hooks';
 import { Dialog } from 'entities/dialog';
 import { Preloader } from 'shared/ui';
 
-
-
 const cx = cnBind.bind(styles);
 
 export const Dialogs: FC = () => {
-  const { dialogs, status,  } = useAppSelector(state => state.dialogSlice);
+  const { dialogs, status } = useAppSelector(state => state.dialogSlice);
   const { contacts } = useAppSelector(state => state.contactsSlice);
-  const { messages } = useAppSelector(state => state.messageSlice);
-
 
   const onlineIds = contacts
     .filter(contact => contact.is_online)
     .map(contact => contact.account_id);
+
   const modifiedDialogs = dialogs.map(dialog => {
-    if (onlineIds.includes(dialog.account_id)) {
-      return {
-        ...dialog,
-        is_online: true,
-      };
-    }
-    return dialog;
+    const isAnyMemberOnline = dialog.members.some(member => onlineIds.includes(member.account_id));
+
+    return {
+      ...dialog,
+      is_online: isAnyMemberOnline,
+    };
   });
+
+  console.log(modifiedDialogs);
 
   return (
     <ul className={cx('dialogs')}>

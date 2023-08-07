@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { IDialog, IUser } from 'shared/types';
+import { IDialog } from 'shared/types';
 import { ITyping } from 'shared/types/typing.interface';
 
 export interface DialogsState {
@@ -7,9 +7,9 @@ export interface DialogsState {
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
   isTyping: null | ITyping;
   error: null | string;
-  isActive: boolean;
   selectedDialog: number;
   currentDialog: IDialog;
+  isActive: boolean;
   isOpen: boolean;
   isClose: boolean;
 }
