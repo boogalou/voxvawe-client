@@ -17,12 +17,12 @@ const cx = cnBind.bind(styles);
 export const Chat= () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { selectedDialog, isClose } = useAppSelector(state => state.dialogSlice);
+  const { selectedDialog, isOpen } = useAppSelector(state => state.dialogSlice);
   const { status } = useAppSelector(state => state.messageSlice);
 
   const handlePopstate = () => {
-    if (!isClose) {
-      dispatch(closeChat(true));
+    if (isOpen) {
+      dispatch(closeChat(false));
       navigate('/');
     }
   };
@@ -35,12 +35,14 @@ export const Chat= () => {
     };
   }, [navigate]);
 
+  useEffect(() => {
+    window.history.replaceState({}, document.title, '/');
+  }, []);
 
 
-  console.log('selectedDialog: ', selectedDialog);
+  return selectedDialog === -1 ? null : (
 
-  return  (
-    <div className={cx('chat', { 'chat--close': isClose })}>
+     <div className={cx('chat')}>
       <Header className={cx('chat__header')}>
         {selectedDialog && <ChatInfo/>}
       </Header>
