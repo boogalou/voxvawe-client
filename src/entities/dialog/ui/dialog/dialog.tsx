@@ -41,12 +41,14 @@ export const Dialog: FC<IDialog> = ({
     }
   };
 
+  console.log('selectedDialog: ', selectedDialog);
+
   return (
     <li
       className={cx('dialog', { 'dialog--selected': id === selectedDialog })}
       onClick={clickOnDialogTab}
     >
-      <Link to={`/id${selectedDialog}`} className={cx('dialog__link')}>
+      <Link to={`/id${id}`} className={cx('dialog__link')}>
         <div className={cx('dialog__container')}>
           <div className={cx('dialog__avatar')}>
             <Avatar

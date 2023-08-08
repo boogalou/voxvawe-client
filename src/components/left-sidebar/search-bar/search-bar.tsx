@@ -42,7 +42,7 @@ export const SearchBar = () => {
             onClick={handleOnClickInput}
             onClickClear={handleInputFieldClear}
             onChange={handleOnChange}
-            icon={!searchTerm ? 'search' : 'clear'}
+            typeIcon={!searchTerm ? 'search' : 'clear'}
             value={searchTerm}
             className={cx('search__input')}
             iconClassName={cx('search__icon')}

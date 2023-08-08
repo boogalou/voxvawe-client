@@ -20,8 +20,8 @@ const cx = cnBind.bind(styles);
 export const MessageBox = () => {
   const dispatch = useAppDispatch();
   const senderId = useAppSelector(state => state.userSlice.user.account_id);
-  const recipientId = useAppSelector(state => state.dialogSlice.currentDialog.account_id);
-  const chatId = useAppSelector(state => state.dialogSlice.currentDialog.id);
+  const recipient = useAppSelector(state => state.dialogSlice.currentDialog.members.filter(member => member.account_id !== senderId));
+  const {id: chatId } = useAppSelector(state => state.dialogSlice.currentDialog);
   const { selectedEmoji } = useAppSelector(state => state.messageInputSlice);
 
   const [textValue, setTextValue] = useState('');
@@ -31,6 +31,8 @@ export const MessageBox = () => {
   const buttonType = textValue ? 'send' : 'microphone';
 
   const [attachButtonIsPressed, setAttachButtonIsPressed] = useState(false);
+
+  const recipientId = recipient[0].account_id
 
   const newMessage: IOutMessage = {
     chat_id: chatId,

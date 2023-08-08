@@ -1,57 +1,52 @@
-import React, { FC, useEffect } from 'react';
-import styles from './chat.module.scss';
-import cnBind from 'classnames/bind';
-import { Content, Footer, Preloader } from 'shared/ui';
-import { useAppDispatch, useAppSelector } from 'shared/hooks';
-import { MessageBox } from './message-box';
-import { ChatInfo } from './chat-info';
-import { ChatBox } from './chat-box';
-import { useParams } from 'react-router';
-import { useNavigate } from 'react-router-dom';
-import { Header } from 'shared/ui';
-import { closeChat } from 'entities/dialog';
-
+import React, { useEffect } from "react";
+import styles from "./chat.module.scss";
+import cnBind from "classnames/bind";
+import { Content, Footer, Header, Preloader } from "shared/ui";
+import { useAppDispatch, useAppSelector } from "shared/hooks";
+import { MessageBox } from "./message-box";
+import { ChatInfo } from "./chat-info";
+import { ChatBox } from "./chat-box";
+import { useNavigate } from "react-router-dom";
+import { closeChat } from "entities/dialog";
 
 const cx = cnBind.bind(styles);
 
-export const Chat= () => {
+export const Chat = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { selectedDialog, isOpen } = useAppSelector(state => state.dialogSlice);
+  const { selectedDialog, isClose } = useAppSelector(state => state.dialogSlice);
   const { status } = useAppSelector(state => state.messageSlice);
 
   const handlePopstate = () => {
-    if (isOpen) {
+    if (!isClose) {
       dispatch(closeChat(false));
-      navigate('/');
+      navigate("/");
     }
   };
 
   useEffect(() => {
-    window.addEventListener('popstate', handlePopstate);
+    window.addEventListener("popstate", handlePopstate);
 
     return () => {
-      window.addEventListener('popstate', handlePopstate);
+      window.addEventListener("popstate", handlePopstate);
     };
   }, [navigate]);
 
   useEffect(() => {
-    window.history.replaceState({}, document.title, '/');
+    window.history.replaceState({}, document.title, "/");
   }, []);
 
-
-  return selectedDialog === -1 ? null : (
-
-     <div className={cx('chat')}>
-      <Header className={cx('chat__header')}>
-        {selectedDialog && <ChatInfo/>}
+  return (
+    !!selectedDialog ? <div className={cx("chat")}>
+      <Header className={cx("chat__header")}>
+        <ChatInfo />
       </Header>
-      <Content className={cx('chat__content')}>
-        {status === 'loading' ? <Preloader className={cx('chat__preloader')} /> : <ChatBox />}
+      <Content className={cx("chat__content")}>
+        {status === "loading" ? <Preloader className={cx("chat__preloader")} /> : <ChatBox />}
       </Content>
-      <Footer className={cx('chat__footer')}>
-        { selectedDialog && <MessageBox /> }
+      <Footer className={cx("chat__footer")}>
+        <MessageBox />
       </Footer>
-    </div>
-  )
+    </div> : null
+  );
 };

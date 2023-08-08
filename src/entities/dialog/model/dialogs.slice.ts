@@ -7,7 +7,7 @@ export interface IDialogsState {
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
   isTyping: null | ITyping;
   error: null | string;
-  selectedDialog: number;
+  selectedDialog: number | null;
   currentDialog: IDialog;
   isActive: boolean;
   isOpen: boolean;
@@ -20,7 +20,7 @@ const initialState: IDialogsState = {
   isTyping: null,
   error: null,
   isActive: false,
-  selectedDialog: -1,
+  selectedDialog: null,
   currentDialog: {} as IDialog,
   isOpen: false,
   isClose: false,
@@ -55,7 +55,7 @@ const dialogsSlice = createSlice({
 
     closeChat(state, action: PayloadAction<boolean>) {
       state.isClose = action.payload;
-      state.selectedDialog = -1;
+      state.selectedDialog = null;
     },
 
     startLoading(state) {
