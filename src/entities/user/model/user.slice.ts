@@ -1,12 +1,11 @@
 import { IUser } from '@/src/shared';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-
 export interface UserState {
   user: IUser;
   error: string | null;
   isLoading: boolean;
-  isOnline: boolean,
+  isOnline: boolean;
 }
 
 const initialState: UserState = {
@@ -33,14 +32,26 @@ const userSlice = createSlice({
     },
 
     toggleOnlineStatus(state, action: PayloadAction<boolean>) {
-      state.isOnline = action.payload
+      state.isOnline = action.payload;
     },
 
     rejected(state, action: PayloadAction<string>) {
       state.error = action.payload;
-    }
-  }
-})
+    },
 
-export const { startLoading, finishLoading, dataReceived, rejected, toggleOnlineStatus } = userSlice.actions;
+    resetUserState() {
+      return initialState;
+    },
+  },
+});
+
+export const {
+  startLoading,
+  finishLoading,
+  dataReceived,
+  rejected,
+  toggleOnlineStatus,
+  resetUserState
+} =
+  userSlice.actions;
 export default userSlice.reducer;

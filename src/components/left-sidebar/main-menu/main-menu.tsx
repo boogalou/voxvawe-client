@@ -7,7 +7,10 @@ import { ThemeSwitcher } from 'components/left-sidebar/theme-switch';
 import { useAppDispatch, useAppSelector, useHandleActiveModal } from "shared/hooks";
 import { logoutRequestAsync } from 'entities/auth';
 import { setIsActive, setIsFocus } from 'components/left-sidebar/model/left-sidebar.slice';
-import { clearSearch } from 'entities/contact/model/contacts.slice';
+import { clearSearch, resetContactsState } from "entities/contact/model/contacts.slice";
+import { resetDialogsState } from "entities/dialog";
+import { resetMessagesState } from "entities/message";
+import { closeAllSocketConnection } from "shared/services";
 
 
 
@@ -64,6 +67,10 @@ export const MainMenu: FC<MainMenuProps> = ({handleOpenModal}) => {
   const handleMenuItemClick =  (id: number) => {
     setIsPressed(false);
     if (id === 5) {
+      closeAllSocketConnection();
+      dispatch(resetDialogsState());
+      dispatch(resetContactsState());
+      dispatch(resetMessagesState());
       dispatch(logoutRequestAsync());
     }
 

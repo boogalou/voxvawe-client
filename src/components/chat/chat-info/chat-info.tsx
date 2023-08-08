@@ -17,7 +17,8 @@ export const ChatInfo = () => {
   const dispatch = useAppDispatch();
   const {account_id: clientUserId} = useAppSelector(state => state.userSlice.user)
   const { isTyping } = useAppSelector(state => state.dialogSlice);
-  const {members, avatar, is_group, username, is_online } = useAppSelector(state => state.dialogSlice.currentDialog);
+  const {members, avatar, is_group, username} = useAppSelector(state => state.dialogSlice.currentDialog);
+  const contact  = useAppSelector(state => state.contactsSlice.contacts.find(contact => contact.username === username ));
 
   const [ member ] = members?.filter(member => member.account_id !== clientUserId)  || [];
 
@@ -30,8 +31,6 @@ export const ChatInfo = () => {
       return () => clearTimeout(timeoutId);
     }
   }, [isTyping]);
-
-
 
   const lastSeen = formatTimePassed(member?.last_seen);
   const avatarPlaceholder = generateColor(member?.account_id);
@@ -54,7 +53,7 @@ export const ChatInfo = () => {
             <div className={cx('chat-info__typing')}>
               <Icon className={cx('chat-info__typing-icon')} typeIcon={'typing'} />
             </div>
-          ) : is_online ? (
+          ) : contact?.is_online ? (
             <div className={cx('chat-info__status')}>{'в сети'}</div>
           ) : (
              <div className={cx('chat-info__last-seen')}>{is_group ? members.length + ' участника' : lastSeen ? 'был(а) ' + lastSeen  : ''}</div>

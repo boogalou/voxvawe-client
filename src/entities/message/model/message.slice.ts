@@ -34,12 +34,12 @@ const messageSlice = createSlice({
     },
 
     setMessageIsRead(state, { payload }: PayloadAction<{ chatId: number; messageId: number }>) {
-      state.messages[payload.chatId].map((message) => {
+      state.messages[payload.chatId].map(message => {
         if (payload.messageId === message.id && !message.is_read) {
           message.is_read = true;
         }
-      })
-      },
+      });
+    },
 
     rejected(state, { payload }: PayloadAction<string>) {
       state.error = payload;
@@ -54,15 +54,20 @@ const messageSlice = createSlice({
       state.messages[chatId].push(...payload.messages);
     },
 
+    resetMessagesState() {
+      return initialState;
+    },
   },
 });
 
 export const {
-  addMessage
-  , dataReceived
-  , startLoading
-  , finishLoading
-  , rejected,
-  setMessageIsRead
-} = messageSlice.actions;
+  addMessage,
+  dataReceived,
+  startLoading,
+  finishLoading,
+  rejected,
+  setMessageIsRead,
+  resetMessagesState
+} =
+  messageSlice.actions;
 export default messageSlice.reducer;

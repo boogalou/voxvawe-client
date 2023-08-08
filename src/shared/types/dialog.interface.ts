@@ -9,5 +9,6 @@ export interface IDialog {
   lastMessageStatus: string;
   unreadMessages: number;
   lastMessageTime: Date;
-  members: IContact[]
+  members: IContact[];
+  is_online?: boolean;
 }

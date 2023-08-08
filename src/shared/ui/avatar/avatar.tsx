@@ -1,8 +1,6 @@
 import React, { FC } from 'react';
 import cnBind from 'classnames/bind';
 import styles from './avatar.module.scss';
-import { generateColor, getInitials } from 'shared/lib';
-import { useAppDispatch } from 'shared/hooks';
 
 const cx = cnBind.bind(styles);
 

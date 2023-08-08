@@ -24,8 +24,6 @@ export const Dialogs: FC = () => {
     };
   });
 
-  console.log(modifiedDialogs);
-
   return (
     <ul className={cx('dialogs')}>
       {status === 'loading' ? (

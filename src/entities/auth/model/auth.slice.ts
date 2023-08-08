@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IAuthResponse } from 'shared/types/user.interface';
-import { IErrorResponse } from "shared/types/auth.interface";
+import { IErrorResponse } from 'shared/types/auth.interface';
 
 export interface AuthState {
   accessToken: null | string;
@@ -33,10 +33,8 @@ const authSlice = createSlice({
       state.isAuth = true;
     },
 
-    logout(state) {
-      state.accessToken = '';
-      state.isAuth = false;
-      state.error = null;
+    resetAuthState() {
+      return initialState;
     },
 
     finishLoading(state) {
@@ -49,6 +47,13 @@ const authSlice = createSlice({
   },
 });
 
-export const { startLoading, dataReceived, rejected, finishLoading, setIsAuth, logout } =
+export const {
+  startLoading,
+  dataReceived,
+  rejected,
+  finishLoading,
+  setIsAuth,
+  resetAuthState
+} =
   authSlice.actions;
 export default authSlice.reducer;

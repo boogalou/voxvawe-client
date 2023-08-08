@@ -12,11 +12,7 @@ import { getLatestMessagesAsync } from 'entities/message';
 
 const cx = cnBind.bind(styles);
 
-export interface IDialogProps extends IDialog {
-  is_online: boolean;
-}
-
-export const Dialog: FC<IDialogProps> = ({
+export const Dialog: FC<IDialog> = ({
   id,
   username,
   avatar,
@@ -29,8 +25,8 @@ export const Dialog: FC<IDialogProps> = ({
   const dispatch = useAppDispatch();
   const { account_id: accountId } = useAppSelector(state => state.userSlice.user);
   const messages = useAppSelector(state => state.messageSlice.messages[String(id)]?.at(-1));
-  const { selectedDialog, dialogs } = useAppSelector(state => state.dialogSlice);
-  const [checkedId, setCheckedIs] = useState<number[]>([]);
+  const { selectedDialog } = useAppSelector(state => state.dialogSlice);
+  const [touchedDialog, setTouchedDialog] = useState<number[]>([]);
   const dateLastMessageTime = formatTimePassed(lastMessageTime);
   const avatarPlaceholder = generateColor('1596987564231');
   const initials = getInitials(username);
@@ -39,20 +35,18 @@ export const Dialog: FC<IDialogProps> = ({
     dispatch(setSelectedDialogAction({ chatId: id }));
     dispatch(moveFrontMiddleColumn(true));
     dispatch(connectToRoomAsync({ chatId: id, accountId }));
-    if (!checkedId.includes(id)) {
+    if (!touchedDialog.includes(id)) {
       dispatch(getLatestMessagesAsync(id));
-      setCheckedIs(prevState => [...prevState, id]);
+      setTouchedDialog(prevState => [...prevState, id]);
     }
   };
-
-  console.log('dialog: ', dialogs);
 
   return (
     <li
       className={cx('dialog', { 'dialog--selected': id === selectedDialog })}
       onClick={clickOnDialogTab}
     >
-      <Link to={`/id${username}`} className={cx('dialog__link')}>
+      <Link to={`/id${selectedDialog}`} className={cx('dialog__link')}>
         <div className={cx('dialog__container')}>
           <div className={cx('dialog__avatar')}>
             <Avatar

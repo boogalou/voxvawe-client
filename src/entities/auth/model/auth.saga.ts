@@ -1,4 +1,4 @@
-import { call, put, takeEvery, takeLatest } from 'redux-saga/effects';
+import { call, put, select, takeEvery, takeLatest } from "redux-saga/effects";
 import {
   checkAuthRequestAsync,
   loginRequestAsync,
@@ -9,7 +9,7 @@ import { authService } from '../api';
 import {
   dataReceived,
   finishLoading,
-  logout,
+  resetAuthState,
   rejected,
   setIsAuth,
   startLoading,
@@ -70,7 +70,7 @@ function* authLogoutSagaWorker() {
     yield put(startLoading());
     const response: AxiosResponse<IAuthResponseData> = yield call(authService.logout);
     console.log('authLogoutSagaWorker', response);
-    yield put(logout());
+    yield put(resetAuthState());
     yield put(finishLoading());
     yield put(toggleOnlineStatus(false));
   } catch (err) {

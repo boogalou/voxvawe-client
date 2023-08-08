@@ -1,6 +1,6 @@
 import { call, fork, put, take, takeLatest } from 'redux-saga/effects';
 import { EventChannel, eventChannel } from 'redux-saga';
-import { ERROR_RESPONSE, getAccessToken, getCurrentUserAsync, OFFLINE, ONLINE } from './user.actions';
+import { disconnectSocket, ERROR_RESPONSE, getAccessToken, getCurrentUserAsync, OFFLINE, ONLINE } from "./user.actions";
 
 import { AxiosResponse } from 'axios';
 import { IUser } from 'shared/types';
@@ -13,8 +13,8 @@ import {
 } from 'entities/user';
 import { Socket } from 'socket.io-client';
 import { setContacts, updateContactStatus } from 'entities/contact/model/contacts.slice';
-import { connectSocket } from 'shared/services/socket/connect-socket';
-import { IStatusUpdateResponse } from 'entities/user/api/status.interface';
+import { connectSocket } from 'shared/services';
+import { IStatusUpdateResponse } from './status.interface';
 
 function* getCurrentUserWorker() {
   try {
@@ -36,9 +36,8 @@ function* getCurrentUserWorker() {
 
 function createSocketChannel(socket: Socket) {
   return eventChannel(emit => {
-    const eventHandler = (response: IStatusUpdateResponse) => {
-      console.log(response);
-      emit(response);
+    const eventHandler = (payload: IStatusUpdateResponse) => {
+      emit(payload);
     };
 
     const errorHandler = (errorEvent: { reason: string | undefined }) => {
@@ -57,13 +56,12 @@ function createSocketChannel(socket: Socket) {
   });
 }
 
-function* fetchUserStatusWorker(socket: Socket) {
+function* fetchUserStatusWorker(socket: Socket): Generator<any, void, any> {
   if (socket) {
     const socketChannel: EventChannel<Socket> = yield call(createSocketChannel, socket);
     while (true) {
       try {
         const response: IStatusUpdateResponse = yield take(socketChannel);
-
         switch (response.type) {
           case ONLINE:
             console.log('contact ' + response.payload + ' online');
@@ -89,7 +87,10 @@ function* fetchUserStatusWorker(socket: Socket) {
 function* handleAccessToken(action: ReturnType<typeof getAccessToken>): Generator<any, void, any> {
   const socket = yield call(connectSocket, action);
   yield fork(fetchUserStatusWorker, socket);
+
 }
+
+
 
 export function* userSagaWatcher(): Generator<any, void, any> {
   yield takeLatest(getCurrentUserAsync.type, getCurrentUserWorker);

@@ -149,7 +149,7 @@ function createSocketChannel(socket: Socket): EventChannel<any> {
 
 function* fetchMessageWorker(socket: Socket): Generator<any, void, any> {
   if (socket) {
-    const socketChannel: EventChannel<any> = yield call(createSocketChannel, socket);
+    const socketChannel: EventChannel<Socket> = yield call(createSocketChannel, socket);
     while (true) {
       try {
         const response: MessageResponse = yield take(socketChannel);

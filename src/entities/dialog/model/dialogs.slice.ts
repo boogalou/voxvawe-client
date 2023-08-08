@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IDialog } from 'shared/types';
 import { ITyping } from 'shared/types/typing.interface';
 
-export interface DialogsState {
+export interface IDialogsState {
   dialogs: IDialog[];
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
   isTyping: null | ITyping;
@@ -14,7 +14,7 @@ export interface DialogsState {
   isClose: boolean;
 }
 
-const initialState: DialogsState = {
+const initialState: IDialogsState = {
   dialogs: [],
   status: 'idle',
   isTyping: null,
@@ -30,10 +30,16 @@ const dialogsSlice = createSlice({
   name: 'dialogsSlice',
   initialState,
   reducers: {
-    setSelectedDialogAction(state, { payload }: PayloadAction<{chatId: number }>) {
-      state.selectedDialog = payload.chatId;
-      const currentDialog = state.dialogs.find(dialog => dialog.id === payload.chatId);
-      state.currentDialog = currentDialog ? { ...currentDialog } : ({} as IDialog);
+    setSelectedDialogAction(state, { payload }: PayloadAction<{chatId: number}>) {
+      if (payload && payload.chatId) {
+        state.selectedDialog = payload.chatId;
+        const currentDialog = state.dialogs.find(dialog => dialog.id === payload.chatId);
+        state.currentDialog = currentDialog ? { ...currentDialog, is_online: currentDialog.is_online } : ({} as IDialog);
+      }
+    },
+
+    resetCurrentDialog(state) {
+      state.currentDialog = initialState.currentDialog;
     },
 
     moveFrontMiddleColumn(state, action: PayloadAction<true>) {
@@ -73,6 +79,10 @@ const dialogsSlice = createSlice({
     finishLoading(state) {
       state.status = 'succeeded';
     },
+
+    resetDialogsState() {
+      return initialState;
+    }
   },
 });
 
@@ -85,6 +95,8 @@ export const {
   finishLoading,
   dataReceived,
   clearTyping,
+  resetDialogsState,
+  resetCurrentDialog
 } = dialogsSlice.actions;
 
 export default dialogsSlice.reducer;

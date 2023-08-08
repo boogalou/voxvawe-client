@@ -47,7 +47,6 @@ const contactsSlice = createSlice({
     },
 
     updateContactStatus(state, action: PayloadAction<{ accountId: string; status: boolean }>) {
-      console.log(action.payload);
       state.contacts.forEach(contact => {
         if (contact.account_id === action.payload.accountId)
           contact.is_online = action.payload.status;
@@ -69,9 +68,12 @@ const contactsSlice = createSlice({
     },
 
     clearCurrentContact(state) {
-      console.log('clearCurrentContact is work');
       state.currentContact = null;
     },
+
+    resetContactsState() {
+      return initialState
+    }
   },
 });
 
@@ -87,5 +89,6 @@ export const {
   setContacts,
   setCurrentContact,
   clearCurrentContact,
+  resetContactsState,
 } = contactsSlice.actions;
 export default contactsSlice.reducer;

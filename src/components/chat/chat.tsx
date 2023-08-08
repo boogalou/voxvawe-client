@@ -14,11 +14,10 @@ import { closeChat } from 'entities/dialog';
 
 const cx = cnBind.bind(styles);
 
-export const Chat: FC = () => {
+export const Chat= () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { userId } = useParams();
-  const { currentDialog, selectedDialog, isClose } = useAppSelector(state => state.dialogSlice);
+  const { selectedDialog, isClose } = useAppSelector(state => state.dialogSlice);
   const { status } = useAppSelector(state => state.messageSlice);
 
   const handlePopstate = () => {
@@ -28,12 +27,6 @@ export const Chat: FC = () => {
     }
   };
 
-  // useEffect(() => {
-  //   if (userId) {
-  //     dispatch(fetchMessagesThunk(userId));
-  //   }
-  // }, [userId]);
-
   useEffect(() => {
     window.addEventListener('popstate', handlePopstate);
 
@@ -42,7 +35,11 @@ export const Chat: FC = () => {
     };
   }, [navigate]);
 
-  return (
+
+
+  console.log('selectedDialog: ', selectedDialog);
+
+  return  (
     <div className={cx('chat', { 'chat--close': isClose })}>
       <Header className={cx('chat__header')}>
         {selectedDialog && <ChatInfo/>}
@@ -54,5 +51,5 @@ export const Chat: FC = () => {
         { selectedDialog && <MessageBox /> }
       </Footer>
     </div>
-  );
+  )
 };
