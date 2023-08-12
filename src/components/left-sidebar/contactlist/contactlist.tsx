@@ -4,7 +4,7 @@ import cnBind from 'classnames/bind';
 import { Preloader } from 'shared/ui';
 import Contact from 'entities/contact';
 import { useAppDispatch, useAppSelector } from 'shared/hooks';
-import { setCurrentContact } from 'entities/contact/model/contacts.slice';
+import { setCurrentContacts } from 'entities/contact/model/contacts.slice';
 
 const cx = cnBind.bind(styles);
 
@@ -21,7 +21,7 @@ export const Contactlist: FC<ContactlistProps> = ({ ignoreClick }) => {
 
 
   const handleSetCurrentContact = (accountId: string) => {
-    dispatch(setCurrentContact(accountId))
+    dispatch(setCurrentContacts(accountId))
   }
 
   return (

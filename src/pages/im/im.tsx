@@ -5,10 +5,8 @@ import { Chat } from 'components/chat';
 import { useAppDispatch, useAppSelector } from 'shared/hooks';
 import { LeftSidebar } from 'components/left-sidebar';
 import { RightSidebar } from 'components/right-sidebar';
-import { getCurrentUserAsync } from 'entities/user';
-import { getAccessToken } from 'entities/user/api/user.actions';
-import { getDialogsAsync } from 'entities/dialog/api/dialog.actions';
-import { Portal } from "shared/ui";
+import { getAccessToken, getCurrentUserAsync } from 'entities/user';
+import { getDialogsAsync } from 'entities/dialog';
 
 const cx = cnBind.bind(styles);
 

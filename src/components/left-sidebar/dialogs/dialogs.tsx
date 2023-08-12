@@ -15,6 +15,7 @@ export const Dialogs: FC = () => {
     .filter(contact => contact.is_online)
     .map(contact => contact.account_id);
 
+
   const modifiedDialogs = dialogs.map(dialog => {
     const isAnyMemberOnline = dialog.members.some(member => onlineIds.includes(member.account_id));
 

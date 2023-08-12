@@ -35,6 +35,7 @@
   @include element-position($position: fixed, $top: 0, $bottom: 0, $right: 0);
   background-color: var(--color-primary);
   width: 100%;
+  height: 100vh;
   transition: transform 0.5s ease-out;
   transform: translateX(100%);
   z-index: 2;
@@ -81,21 +82,6 @@
     width: 400px;
   }
 }
-
-@include respond-to("desktop") {
-
-  .main {
-    &--active {
-      margin-left: unset;
-      width: unset;
-    }
-
-    &--close {
-      transition: none;
-    }
-  }
-}
-
 
 @include respond-to("desktop") {
 

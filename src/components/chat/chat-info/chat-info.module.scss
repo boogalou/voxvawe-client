@@ -16,6 +16,11 @@
     color: #707579
   }
 
+  &__avatar {
+    width: 55px;
+    height: 55px;
+  }
+
   &__info {
     display: flex;
     flex-direction: column;

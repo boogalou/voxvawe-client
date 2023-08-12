@@ -43,7 +43,7 @@ export const ChatInfo = () => {
   return (
     <div className={cx('chat-info')} onClick={handleOnClick}>
       <SwitchPanel />
-      <Link to={''} className={cx('chat-info__link')}>
+      <div className={cx('chat-info__link')}>
         <div className={cx('chat-info__avatar')}>
           <Avatar avatarImg={ avatar } avatarPlaceholder={avatarPlaceholder} initials={initials}/>
         </div>
@@ -59,7 +59,7 @@ export const ChatInfo = () => {
              <div className={cx('chat-info__last-seen')}>{is_group ? members.length + ' участника' : lastSeen ? 'был(а) ' + lastSeen  : ''}</div>
           )}
         </div>
-      </Link>
+      </div>
     </div>
   );
 };

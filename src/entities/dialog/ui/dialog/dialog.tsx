@@ -6,14 +6,14 @@ import { Link } from 'react-router-dom';
 import { IDialog } from 'shared/types';
 import { useAppDispatch, useAppSelector } from 'shared/hooks';
 import { formatTimePassed, generateColor, getInitials } from 'shared/lib';
-import { moveFrontMiddleColumn, setSelectedDialogAction } from 'entities/dialog';
+import { moveFrontMiddleColumn, setCurrentDialogAction } from 'entities/dialog';
 import { connectToRoomAsync } from 'entities/dialog/api';
 import { getLatestMessagesAsync } from 'entities/message';
 
 const cx = cnBind.bind(styles);
 
 export const Dialog: FC<IDialog> = ({
-  id,
+  id: chatId,
   username,
   avatar,
   is_group,
@@ -24,31 +24,29 @@ export const Dialog: FC<IDialog> = ({
 }) => {
   const dispatch = useAppDispatch();
   const { account_id: accountId } = useAppSelector(state => state.userSlice.user);
-  const messages = useAppSelector(state => state.messageSlice.messages[String(id)]?.at(-1));
-  const { selectedDialog } = useAppSelector(state => state.dialogSlice);
+  const messages = useAppSelector(state => state.messageSlice.messages[String(chatId)]?.at(-1));
+  const { currentDialog } = useAppSelector(state => state.dialogSlice);
   const [touchedDialog, setTouchedDialog] = useState<number[]>([]);
   const dateLastMessageTime = formatTimePassed(lastMessageTime);
   const avatarPlaceholder = generateColor('1596987564231');
   const initials = getInitials(username);
 
   const clickOnDialogTab = () => {
-    dispatch(setSelectedDialogAction({ chatId: id }));
+    dispatch(setCurrentDialogAction({ chatId }));
     dispatch(moveFrontMiddleColumn(true));
-    dispatch(connectToRoomAsync({ chatId: id, accountId }));
-    if (!touchedDialog.includes(id)) {
-      dispatch(getLatestMessagesAsync(id));
-      setTouchedDialog(prevState => [...prevState, id]);
+    dispatch(connectToRoomAsync({ chatId, accountId }));
+    if (!touchedDialog.includes(chatId)) {
+      dispatch(getLatestMessagesAsync(chatId));
+      setTouchedDialog(prevState => [...prevState, chatId]);
     }
   };
 
-  console.log('selectedDialog: ', selectedDialog);
-
   return (
     <li
-      className={cx('dialog', { 'dialog--selected': id === selectedDialog })}
+      className={cx('dialog', { 'dialog--selected': chatId === currentDialog.id })}
       onClick={clickOnDialogTab}
     >
-      <Link to={`/id${id}`} className={cx('dialog__link')}>
+      <Link to={`/id${chatId}`} className={cx('dialog__link')}>
         <div className={cx('dialog__container')}>
           <div className={cx('dialog__avatar')}>
             <Avatar

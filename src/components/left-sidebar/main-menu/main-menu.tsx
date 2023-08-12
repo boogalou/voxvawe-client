@@ -1,18 +1,16 @@
-import React, { FC, useEffect, useRef, useState } from "react";
+import React, { FC, useEffect, useRef, useState } from 'react';
 import style from './main-menu.module.scss';
 import cnBind from 'classnames/bind';
 import { useOnClickOutside } from 'usehooks-ts';
 import { Dropdown, Icon, IconButton } from 'shared/ui';
 import { ThemeSwitcher } from 'components/left-sidebar/theme-switch';
-import { useAppDispatch, useAppSelector, useHandleActiveModal } from "shared/hooks";
+import { useAppDispatch, useAppSelector } from 'shared/hooks';
 import { logoutRequestAsync } from 'entities/auth';
 import { setIsActive, setIsFocus } from 'components/left-sidebar/model/left-sidebar.slice';
-import { clearSearch, resetContactsState } from "entities/contact/model/contacts.slice";
-import { resetDialogsState } from "entities/dialog";
-import { resetMessagesState } from "entities/message";
-import { closeAllSocketConnection } from "shared/services";
-
-
+import { clearCurrentContact, clearSearch, resetContactsState } from 'entities/contact';
+import { resetDialogsState } from 'entities/dialog';
+import { resetMessagesState } from 'entities/message';
+import { closeAllSocketConnection } from 'shared/services';
 
 const cx = cnBind.bind(style);
 
@@ -62,6 +60,7 @@ export const MainMenu: FC<MainMenuProps> = ({handleOpenModal}) => {
     dispatch(setIsFocus(false));
     dispatch(setIsActive(false))
     dispatch(clearSearch());
+    dispatch(clearCurrentContact());
   }
 
   const handleMenuItemClick =  (id: number) => {

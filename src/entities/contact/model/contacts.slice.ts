@@ -6,6 +6,7 @@ export interface IContactsState {
   contacts: IContact[];
   searchResult: IContact[];
   currentContact: null | IContact;
+  searchCurrentContact: null | IContact;
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
   error: IErrorResponse | null;
 }
@@ -14,6 +15,7 @@ const initialState: IContactsState = {
   contacts: [],
   searchResult: [],
   currentContact: null,
+  searchCurrentContact: null,
   status: 'idle',
   error: null,
 };
@@ -57,18 +59,19 @@ const contactsSlice = createSlice({
       state.searchResult = [];
     },
 
-    setSelectedContact(state, { payload }: PayloadAction<string>) {
+    setSearchContact(state, { payload }: PayloadAction<string>) {
       const result = state.searchResult.find(contact => contact.account_id === payload);
       state.currentContact = result ? result : null;
     },
 
-    setCurrentContact(state, { payload }: PayloadAction<string>) {
+    setCurrentContacts(state, { payload }: PayloadAction<string>) {
       const result = state.contacts.find(contact => contact.account_id === payload);
       state.currentContact = result ? result : null;
     },
 
     clearCurrentContact(state) {
       state.currentContact = null;
+      state.searchCurrentContact = null;
     },
 
     resetContactsState() {
@@ -83,11 +86,11 @@ export const {
   dataReceived,
   rejected,
   clearSearch,
-  setSelectedContact,
+  setSearchContact,
   setSearchResult,
   updateContactStatus,
   setContacts,
-  setCurrentContact,
+  setCurrentContacts,
   clearCurrentContact,
   resetContactsState,
 } = contactsSlice.actions;

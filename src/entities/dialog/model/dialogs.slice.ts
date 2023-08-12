@@ -30,11 +30,11 @@ const dialogsSlice = createSlice({
   name: 'dialogsSlice',
   initialState,
   reducers: {
-    setSelectedDialogAction(state, { payload }: PayloadAction<{chatId: number}>) {
+    setCurrentDialogAction(state, { payload }: PayloadAction<{ chatId: number }>) {
       if (payload && payload.chatId) {
         state.selectedDialog = payload.chatId;
         const currentDialog = state.dialogs.find(dialog => dialog.id === payload.chatId);
-        state.currentDialog = currentDialog ? { ...currentDialog, is_online: currentDialog.is_online } : ({} as IDialog);
+        state.currentDialog = currentDialog ? { ...currentDialog } : ({} as IDialog);
       }
     },
 
@@ -62,14 +62,23 @@ const dialogsSlice = createSlice({
       state.status = 'loading';
     },
 
-    dataReceived(state, { payload }: PayloadAction<IDialog[] | ITyping>) {
+    dataReceived(state, { payload }: PayloadAction<IDialog[]>) {
       if (Array.isArray(payload)) {
         state.dialogs = payload;
       }
+    },
 
-      if (!Array.isArray(payload)) {
-        state.isTyping = payload;
-      }
+    updateDialogs(state, { payload }: PayloadAction<IDialog>) {
+      state.dialogs = state.dialogs.map(dialog => {
+        if (dialog.id === payload.id) {
+          dialog = payload;
+        }
+        return dialog;
+      });
+    },
+
+    setTyping(state, { payload }: PayloadAction<ITyping>) {
+      state.isTyping = payload;
     },
 
     clearTyping(state, { payload }: PayloadAction<null>) {
@@ -82,12 +91,12 @@ const dialogsSlice = createSlice({
 
     resetDialogsState() {
       return initialState;
-    }
+    },
   },
 });
 
 export const {
-  setSelectedDialogAction,
+  setCurrentDialogAction,
   moveFrontMiddleColumn,
   moveBackMiddleColumn,
   closeChat,
@@ -96,7 +105,9 @@ export const {
   dataReceived,
   clearTyping,
   resetDialogsState,
-  resetCurrentDialog
+  resetCurrentDialog,
+  setTyping,
+  updateDialogs,
 } = dialogsSlice.actions;
 
 export default dialogsSlice.reducer;

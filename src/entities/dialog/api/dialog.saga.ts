@@ -3,14 +3,15 @@ import { AxiosResponse } from 'axios';
 import { call, debounce, fork, put, take, takeEvery, takeLatest } from 'redux-saga/effects';
 import { EventChannel, eventChannel } from 'redux-saga';
 import {
+  addNewMemberToGroupAsync,
   connectToRoomAsync,
   createGroupDataAsync,
   getDialogsAsync,
   sendMessageAsync,
   setMessageIsReadAsync,
-  typingTextAsync,
-} from 'entities/dialog/api/dialog.actions';
-import { dataReceived, finishLoading, startLoading } from 'entities/dialog';
+  typingTextAsync
+} from "entities/dialog/api/dialog.actions";
+import { dataReceived, finishLoading, setTyping, startLoading, updateDialogs } from "entities/dialog";
 import { dialogService } from './dialog.service';
 import { getAccessToken } from 'entities/user';
 import { addMessage, setMessageIsRead } from 'entities/message';
@@ -65,6 +66,23 @@ function* createGroupDataWorker({ payload }: ReturnType<typeof createGroupDataAs
 
   console.log('createGroupDataWorker: ', payload);
   const response: AxiosResponse = yield call(dialogService.createGroup, payload);
+}
+
+function* addNewMemberWorker({ payload }: ReturnType<typeof addNewMemberToGroupAsync>) {
+  try {
+    if (!payload) {
+      throw new Error('Нет данных');
+    }
+
+    yield put(startLoading());
+    const response: AxiosResponse = yield call(dialogService.addNewMeber, payload);
+    yield put(updateDialogs(response.data));
+    yield put(finishLoading());
+  } catch (error) {
+    console.log(error);
+    yield put(finishLoading());
+  }
+
 }
 
 function* connectToRoom(socket: Socket, action: ReturnType<typeof connectToRoomAsync>) {
@@ -122,8 +140,8 @@ function* playSoundOnNewMessageWorker({ payload }: MessageResponse) {
 
 function createSocketChannel(socket: Socket): EventChannel<any> {
   return eventChannel(emit => {
-    const eventHandler = (payload: MessageResponse) => {
-      emit(payload);
+    const eventHandler = (response: MessageResponse) => {
+      emit(response);
     };
 
     const errorHandler = (errorEvent: { reason: string | undefined }) => {
@@ -168,7 +186,7 @@ function* fetchMessageWorker(socket: Socket): Generator<any, void, any> {
             break;
 
           case TYPING_NOTIFY:
-            yield put(dataReceived(response.payload));
+            yield put(setTyping(response.payload));
             break;
 
           case GET_MESSAGE_STATUS:
@@ -188,6 +206,7 @@ function* fetchMessageWorker(socket: Socket): Generator<any, void, any> {
 export function* dialogSagaWatcher(): Generator<any, void, any> {
   yield takeEvery(getDialogsAsync.type, getDialogsWorker);
   yield takeLatest(createGroupDataAsync.type, createGroupDataWorker);
+  yield takeLatest(addNewMemberToGroupAsync.type, addNewMemberWorker);
 
   const token = yield take(getAccessToken.type);
   const socket = yield call(connectSocket, token);

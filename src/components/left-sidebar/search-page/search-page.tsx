@@ -3,7 +3,7 @@ import styles from './search-page.module.scss';
 import cnBind from 'classnames/bind';
 import { useAppDispatch, useAppSelector } from 'shared/hooks';
 import Contact from 'entities/contact';
-import { setSelectedContact } from 'entities/contact/model/contacts.slice';
+import { setSearchContact } from 'entities/contact/model/contacts.slice';
 
 
 const cx = cnBind.bind(styles);
@@ -14,7 +14,7 @@ export const SearchPage: FC = ({}) => {
   const [currentContact, setCurrentContact] = useState('');
 
   const handleSetCurrentContact = (accountId: string) => {
-    dispatch(setSelectedContact(accountId))
+    dispatch(setSearchContact(accountId))
   };
 
   console.log(currentContact);

@@ -7,7 +7,7 @@ import {
   connectToRoomAsync,
   moveBackMiddleColumn,
   resetCurrentDialog,
-  setSelectedDialogAction,
+  setCurrentDialogAction,
 } from 'entities/dialog';
 import { useAppDispatch, useAppSelector } from 'shared/hooks';
 
@@ -19,6 +19,8 @@ export const SwitchPanel = () => {
   const { isOpen } = useAppSelector(state => state.dialogSlice);
 
   const handleOnClick = (evt: React.MouseEvent) => {
+    console.log('chat-info 2');
+    evt.preventDefault();
     evt.stopPropagation();
     if (isOpen) {
       dispatch(moveBackMiddleColumn(false));

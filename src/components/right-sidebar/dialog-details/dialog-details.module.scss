@@ -1,0 +1,195 @@
+@import 'src/app/index';
+
+.details {
+  $this: &;
+
+  height: 100%;
+  display: grid;
+  grid-template-columns: 100%;
+  grid-template-rows: min-content 400px 1fr;
+  gap: 10px;
+
+  &__header {
+    grid-row: 1 / 2;
+    display: flex;
+    align-items: center;
+    padding: .5rem .8125rem;
+    column-gap: .5rem;
+    color: var(--color-primary-font);
+    box-shadow: 0 21px 46px -30px rgba(0, 0, 0, 0.35);
+  }
+
+  &__title {
+    font-size: 24px;
+    font-weight: bold;
+  }
+
+  &__contactlist {
+    position: relative;
+    grid-row: 2 / -1;
+    overflow: auto;
+    padding: 5px;
+  }
+
+  &__added {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    overflow: hidden;
+
+
+    &-name {
+      display: flex;
+      column-gap: 5px;
+      align-items: center;
+      width: fit-content;
+      padding: 0 8px;
+      color: var(--color-primary-font);
+      font-size: 12px;
+      border: solid 1px var(--color-chat-selected);
+      border-radius: 25px;
+
+      svg {
+        width: 12px;
+        height: 12px;
+        stroke: var(--color-chat-selected);
+        margin-top: 6px;
+      }
+    }
+  }
+
+  &__image {
+    position: relative;
+    grid-row: 2 / 3;
+  }
+
+  &__avatar {
+    width: 100%;
+    height: 400px;
+  }
+
+  &__userpic {
+    width: 100%;
+    height: 100%;
+
+    &-bar {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      padding-left: 15px;
+      background: rgba(255, 255, 255, 0.1);
+
+    }
+  }
+
+  &__name {
+    font-size: 16px;
+    font-weight: 600;
+    padding: 5px;
+    color: var(--color-secondary-font);
+  }
+
+  &__status {
+    padding: 3px 0;
+    color: var(--color-secondary-font);
+  }
+
+  &__content {
+    width: 100%;
+    position: relative;
+
+  }
+
+  &__button-add--position {
+    position: absolute;
+    right: 5%;
+    bottom: 5%;
+  }
+
+  &__controls {
+    padding: 5px;
+  }
+
+  &__button {
+
+    &-close, &-back {
+      background: none;
+      border: none;
+
+      svg {
+        width: 35px;
+        height: 35px;
+        stroke: var(--color-icon-primary);
+      }
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+
+    &-add-member {
+      border-radius: 50%;
+      padding: 14px;
+      border: none;
+      background-color: var(--color-chat-selected);
+
+      svg {
+        width: 100%;
+        height: 100%;
+        stroke: var(--color-primary-font);
+      }
+
+      &--visible {
+        display: none;
+      }
+    }
+
+    &-delete-contact, &-add-contact {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      background-color: var(--color-primary-opacity);
+      color: var(--color-primary-font);
+      font-weight: normal;
+      font-size: medium;
+      border-radius: 6px;
+    }
+
+    &-add-request {
+      border-radius: 50%;
+      padding: 14px;
+      border: none;
+      background-color: var(--color-chat-selected);
+
+      svg {
+        transform: rotate(180deg);
+        width: 100%;
+        height: 100%;
+        stroke: var(--color-primary-font);
+      }
+
+      &--visible {
+        display: none;
+      }
+    }
+  }
+}
+
+@media (min-width: 601px) {
+  .details {
+    $this: &;
+
+    &__avatar {
+      width: 100%;
+      height: 400px;
+    }
+
+    &__userpic {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+}
