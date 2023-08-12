@@ -1,6 +1,7 @@
 import { apiService } from 'shared/services';
 import { AxiosResponse } from 'axios';
-import { INewMember } from "components/right-sidebar/dialog-details/details";
+import { INewMember } from 'components/right-sidebar/dialog-details/details';
+
 
 class DialogService {
   public async getDialogs(): Promise<AxiosResponse> {
@@ -12,7 +13,7 @@ class DialogService {
     return await apiService.post('/dialogs/create', groupData);
   }
 
-  public async addNewMeber(data: INewMember[]) {
+  public async addNewMember(data: INewMember[]) {
     data.map(item => delete item.username);
     return await apiService.post('/dialogs/add-member', data)
   }

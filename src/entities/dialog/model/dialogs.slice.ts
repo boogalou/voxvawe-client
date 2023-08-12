@@ -58,14 +58,16 @@ const dialogsSlice = createSlice({
       state.selectedDialog = null;
     },
 
-    startLoading(state) {
-      state.status = 'loading';
+    startLoading(state, {payload}: PayloadAction<'loading'>) {
+      state.status = payload;
     },
 
-    dataReceived(state, { payload }: PayloadAction<IDialog[]>) {
-      if (Array.isArray(payload)) {
+    dataReceived(state, { payload }: PayloadAction<IDialog[] | IDialog>) {
+      if (Array.isArray(payload))
         state.dialogs = payload;
-      }
+
+      if (!Array.isArray(payload))
+        state.dialogs = [...state.dialogs, payload]
     },
 
     updateDialogs(state, { payload }: PayloadAction<IDialog>) {
@@ -85,8 +87,12 @@ const dialogsSlice = createSlice({
       state.isTyping = payload;
     },
 
-    finishLoading(state) {
-      state.status = 'succeeded';
+    finishLoading(state, { payload }: PayloadAction<'succeeded'>) {
+      state.status = payload;
+    },
+
+    rejected (state, { payload }: PayloadAction<'failed'>) {
+      state.status = payload;
     },
 
     resetDialogsState() {

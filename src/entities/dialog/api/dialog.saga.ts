@@ -36,13 +36,13 @@ import { Attachments } from 'shared/types/message.interface';
 
 function* getDialogsWorker() {
   try {
-    yield put(startLoading());
+    yield put(startLoading('loading'));
     const response: AxiosResponse<IDialog[]> = yield call(dialogService.getDialogs);
     yield put(dataReceived(response.data));
-    yield put(finishLoading());
+    yield put(finishLoading('succeeded'));
   } catch (error) {
     console.log(error);
-    yield put(finishLoading());
+    yield put(finishLoading('succeeded'));
   }
 }
 
@@ -51,22 +51,21 @@ function* createGroupDataWorker({ payload }: ReturnType<typeof createGroupDataAs
     const file = payload.files;
     const formDataFile = new FormData();
     formDataFile.append('file', file, file.name);
-    const response: AxiosResponse<Attachments> = yield call(
+    yield put(startLoading('loading'));
+    const response: AxiosResponse<Attachments[]> = yield call(
       dialogService.uploadAttachments,
       formDataFile
     );
 
     const groupData = {
       ...payload,
-      files: response.data.mediumSizeUrl,
+      files: response.data[0].mediumSizeUrl,
     };
 
     yield call(dialogService.createGroup, groupData);
+    yield put(finishLoading('succeeded'));
   }
-
-  console.log('createGroupDataWorker: ', payload);
-  const response: AxiosResponse = yield call(dialogService.createGroup, payload);
-}
+};
 
 function* addNewMemberWorker({ payload }: ReturnType<typeof addNewMemberToGroupAsync>) {
   try {
@@ -74,13 +73,13 @@ function* addNewMemberWorker({ payload }: ReturnType<typeof addNewMemberToGroupA
       throw new Error('Нет данных');
     }
 
-    yield put(startLoading());
-    const response: AxiosResponse = yield call(dialogService.addNewMeber, payload);
+    yield put(startLoading('loading'));
+    const response: AxiosResponse = yield call(dialogService.addNewMember, payload);
     yield put(updateDialogs(response.data));
-    yield put(finishLoading());
+    yield put(finishLoading('succeeded'));
   } catch (error) {
     console.log(error);
-    yield put(finishLoading());
+    yield put(finishLoading('succeeded'));
   }
 
 }
