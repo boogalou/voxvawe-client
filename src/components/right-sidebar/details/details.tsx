@@ -10,6 +10,7 @@ import { Contactlist } from 'components/left-sidebar/contactlist/contactlist';
 import { clearCurrentContact } from 'entities/contact';
 import { addNewMemberToGroupAsync } from 'entities/dialog';
 import { useParams } from 'react-router-dom';
+import { AddedContacts } from "components/left-sidebar/create-group-dialog/added-contacts/added-contacts";
 
 const cx = cnBind.bind(styles);
 
@@ -50,34 +51,21 @@ export const Details: FC<DialogDetailsProps> = ({
   );
 
   const formattedLastSeen = formatTimePassed(lastSeen);
-
   const [addMemberIsPressed, setAddMemberIsPressed] = useState(false);
-
   const [selectedMembers, setSelectedMembers] = useState<INewMember[]>([]);
-
-  const path = useParams();
-
-  const chatId = Number(path['userId']?.match(/[0-9]/g));
+  const chatId = Number(useParams()['id']?.split('id').join('')!);
 
   const addMemberToGroupHandler = () => {
     setAddMemberIsPressed(prevState => !prevState);
   };
 
   const deleteSelectedMemberHandler = (index: number) => {
-    clearCurrentContact();
     const newSelectedMembers = selectedMembers.filter((_, idx) => idx !== index);
     setSelectedMembers(newSelectedMembers);
   };
 
-  useEffect(() => {
-    clearCurrentContact();
-
-    if (accountId && chatId && username) {
-      selectedMembersHandler();
-    }
-  }, [chatId, accountId, username]);
-
-  const selectedMembersHandler = () => {
+  const selectedMembersHandler = (accountId: string, username: string) => {
+    console.log(accountId, username, chatId);
     const newMember: INewMember = { chatId: -1, accountId: '', username: '' };
     if (accountId && chatId && username) {
       newMember.chatId = chatId;
@@ -85,15 +73,21 @@ export const Details: FC<DialogDetailsProps> = ({
       newMember.username = username;
     }
 
-    setSelectedMembers(prevState => [...prevState, newMember]);
+    setSelectedMembers(prevState => {
+      const memberExists = prevState.some(item => item.accountId === accountId);
+      if (memberExists) {
+        return prevState;
+      }
+
+      return [...prevState, newMember];
+    });
   };
 
   const sendRequestHandler = () => {
     dispatch(addNewMemberToGroupAsync(selectedMembers));
   };
 
-  console.log('CHAT_ID: ', chatId);
-  console.log(selectedMembers);
+
 
   return (
     <div className={cx('details')}>
@@ -131,7 +125,7 @@ export const Details: FC<DialogDetailsProps> = ({
               ))}
             </div>
           )}
-          <Contactlist ignoreClick={true} />
+          <AddedContacts callback={selectedMembersHandler}/>
           <div className={cx('details__button-add--position')}>
             <IconButton
               className={cx('details__button-add-request', {
