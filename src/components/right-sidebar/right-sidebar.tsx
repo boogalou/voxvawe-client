@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './right-sidebar.module.scss';
 import cnBind from 'classnames/bind';
 import { useAppSelector } from 'shared/hooks';
-import { Details } from './dialog-details';
+import { Details } from './details';
 
 const cx = cnBind.bind(styles);
 

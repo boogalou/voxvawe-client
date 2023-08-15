@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import cnBind from 'classnames/bind';
-import styles from './dialog-details.module.scss';
+import styles from './details.module.scss';
 import { Button, Icon, IconButton } from 'shared/ui';
 import { useAppDispatch, useAppSelector } from 'shared/hooks';
 import { closeRightSidebar } from 'components/right-sidebar/model';

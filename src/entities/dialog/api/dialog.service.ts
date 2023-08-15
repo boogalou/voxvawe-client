@@ -1,7 +1,11 @@
 import { apiService } from 'shared/services';
 import { AxiosResponse } from 'axios';
-import { INewMember } from 'components/right-sidebar/dialog-details/details';
 
+
+
+=======
+import { INewMember } from "components/right-sidebar/details/details";
+>>>>>>> feature
 
 class DialogService {
   public async getDialogs(): Promise<AxiosResponse> {
