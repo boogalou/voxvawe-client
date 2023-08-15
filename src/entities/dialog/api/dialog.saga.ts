@@ -47,25 +47,23 @@ function* getDialogsWorker() {
 }
 
 function* createGroupDataWorker({ payload }: ReturnType<typeof createGroupDataAsync>) {
-  if (payload.files && payload.files instanceof File) {
+  if (payload && payload.files instanceof File) {
     const file = payload.files;
     const formDataFile = new FormData();
     formDataFile.append('file', file, file.name);
-    const response: AxiosResponse<Attachments> = yield call(
+    const responseFile: AxiosResponse<Attachments[]> = yield call(
       dialogService.uploadAttachments,
       formDataFile
     );
 
     const groupData = {
       ...payload,
-      files: response.data.mediumSizeUrl,
+      files: responseFile.data[0].mediumSizeUrl,
     };
 
-    yield call(dialogService.createGroup, groupData);
+   const response: AxiosResponse = yield call(dialogService.createGroup, groupData);
   }
 
-  console.log('createGroupDataWorker: ', payload);
-  const response: AxiosResponse = yield call(dialogService.createGroup, payload);
 }
 
 function* addNewMemberWorker({ payload }: ReturnType<typeof addNewMemberToGroupAsync>) {

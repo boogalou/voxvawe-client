@@ -8,7 +8,7 @@ export interface IListProps<T> {
 export function List<T>({ items, renderItem }: IListProps<T>) {
   return (
       <>
-        {items.map(renderItem)}
+        { items.map(renderItem) }
       </>
   );
 };

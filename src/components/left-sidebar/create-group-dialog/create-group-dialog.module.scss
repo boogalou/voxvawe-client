@@ -75,6 +75,7 @@
       transform: rotate(90deg);
       top: -3px;
       left: -3px;
+
       svg {
         width: 20px;
         height: 20px;
@@ -145,9 +146,6 @@
   }
 }
 
-.wrapper {
-
-}
 
 .contactlist {
   display: flex;
@@ -195,11 +193,9 @@
     }
   }
 
-
   &__footer {
     display: flex;
-    justify-content: space-around;
-
+    justify-content: space-evenly;
   }
 
   &__button {
@@ -215,9 +211,28 @@
   }
 }
 
+.footer {
+  display: flex;
+  justify-content: space-between;
+
+  &__button {
+    width: 100px;
+    height: 40px;
+    padding: 8px 15px;
+    font-size: 16px;
+    background-color: var(--color-primary-opacity);
+    border-radius: 6px;
+    border: none;
+    color: var(--color-primary-font);
+  }
+
+
+}
+
 @include respond-to('tablet') {
   .footer {
     &__button {
+      background-color: transparent;
       padding: 8px 15px;
 
       &:hover {

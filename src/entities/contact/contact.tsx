@@ -51,7 +51,6 @@ export const Contact: FC<IContactProps> = ({
         </div>
         <div className={cx('contact__name')}>{username}</div>
         <div className={cx('contact__last-visit')}>{lastSeenDate}</div>
-
       </div>
     </li>
   );

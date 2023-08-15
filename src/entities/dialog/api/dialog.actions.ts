@@ -1,7 +1,7 @@
 import { createAction } from '@reduxjs/toolkit';
 import { IOutMessage } from "shared/types/message.interface";
 import { ICreateGroupData } from "components/left-sidebar/create-group-dialog/create-group-dialog";
-import { INewMember } from "components/right-sidebar/dialog-details/details";
+import { INewMember } from "components/right-sidebar/details/details";
 
 
 export const getDialogsAsync = createAction('DIALOG:GET_DIALOGS');
