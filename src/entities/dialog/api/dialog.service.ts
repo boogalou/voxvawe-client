@@ -9,7 +9,6 @@ class DialogService {
   }
 
   public async createGroup(groupData: unknown): Promise<AxiosResponse> {
-    console.log('apiService groupData: ', groupData);
     return await apiService.post('/dialogs/create', groupData);
   }
 
