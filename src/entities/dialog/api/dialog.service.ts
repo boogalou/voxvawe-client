@@ -12,7 +12,7 @@ class DialogService {
     return await apiService.post('/dialogs/create', groupData);
   }
 
-  public async addNewMeber(data: INewMember[]) {
+  public async addNewMember(data: INewMember[]) {
     data.map(item => delete item.username);
     return await apiService.post('/dialogs/add-member', data)
   }
