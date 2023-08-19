@@ -9,9 +9,15 @@ import {
   getDialogsAsync,
   sendMessageAsync,
   setMessageIsReadAsync,
-  typingTextAsync
-} from "entities/dialog/api/dialog.actions";
-import { dataReceived, finishLoading, setTyping, startLoading, updateDialogs } from "entities/dialog";
+  typingTextAsync,
+} from 'entities/dialog/api/dialog.actions';
+import {
+  dataReceived,
+  finishLoading,
+  setTyping,
+  startLoading,
+  updateDialogs,
+} from 'entities/dialog';
 import { dialogService } from './dialog.service';
 import { getAccessToken } from 'entities/user';
 import { addMessage, setMessageIsRead } from 'entities/message';
@@ -31,7 +37,7 @@ import {
 import { connectSocket } from 'shared/services/socket/connect-socket';
 import { IDialog } from 'shared/types';
 import { store } from 'app/store';
-import { playSoundOnNewMessage } from 'shared/lib';
+import { createNotification, playSoundOnNewMessage } from 'shared/lib';
 import { Attachments } from 'shared/types/message.interface';
 
 function* getDialogsWorker() {
@@ -65,7 +71,7 @@ function* createGroupDataWorker({ payload }: ReturnType<typeof createGroupDataAs
     yield call(dialogService.createGroup, groupData);
     yield put(finishLoading('succeeded'));
   }
-};
+}
 
 function* addNewMemberWorker({ payload }: ReturnType<typeof addNewMemberToGroupAsync>) {
   try {
@@ -81,7 +87,6 @@ function* addNewMemberWorker({ payload }: ReturnType<typeof addNewMemberToGroupA
     console.log(error);
     yield put(finishLoading('succeeded'));
   }
-
 }
 
 function* connectToRoom(socket: Socket, action: ReturnType<typeof connectToRoomAsync>) {
@@ -130,10 +135,13 @@ function* updateMessageWorker(socket: Socket, action: ReturnType<typeof setMessa
   }
 }
 
-function* playSoundOnNewMessageWorker({ payload }: MessageResponse) {
+function* notificationWorker({ payload }: MessageResponse) {
   const accountId = store.getState().userSlice.user.account_id;
   if (payload.sender_id !== accountId) {
-    playSoundOnNewMessage();
+    yield call(playSoundOnNewMessage);
+    yield call(createNotification, {
+      body: payload.content,
+    });
   }
 }
 
@@ -180,7 +188,7 @@ function* fetchMessageWorker(socket: Socket): Generator<any, void, any> {
             break;
 
           case NEW_MESSAGE:
-            yield call(playSoundOnNewMessageWorker, response);
+            yield call(notificationWorker, response);
             yield put(addMessage(response.payload));
             break;
 

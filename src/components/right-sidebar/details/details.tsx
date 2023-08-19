@@ -1,16 +1,14 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useState } from 'react';
 import cnBind from 'classnames/bind';
 import styles from './details.module.scss';
 import { Button, Icon, IconButton } from 'shared/ui';
 import { useAppDispatch, useAppSelector } from 'shared/hooks';
 import { closeRightSidebar } from 'components/right-sidebar/model';
 import { formatTimePassed } from 'shared/lib';
-import { IContact } from '@/src/shared';
-import { Contactlist } from 'components/left-sidebar/contactlist/contactlist';
-import { clearCurrentContact } from 'entities/contact';
+import { IContact } from 'shared/types';
 import { addNewMemberToGroupAsync } from 'entities/dialog';
 import { useParams } from 'react-router-dom';
-import { AddedContacts } from "components/left-sidebar/create-group-dialog/added-contacts/added-contacts";
+import { AddedContacts } from 'components/left-sidebar/create-group-dialog/added-contacts/added-contacts';
 
 const cx = cnBind.bind(styles);
 

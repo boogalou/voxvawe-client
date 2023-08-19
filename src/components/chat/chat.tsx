@@ -7,7 +7,7 @@ import { MessageBox } from "./message-box";
 import { ChatInfo } from "./chat-info";
 import { ChatBox } from "./chat-box";
 import { useNavigate } from "react-router-dom";
-import { closeChat } from "entities/dialog";
+import { closeChat, connectToRoomAsync } from "entities/dialog";
 
 const cx = cnBind.bind(styles);
 
@@ -21,6 +21,7 @@ export const Chat = () => {
     if (!isClose) {
       dispatch(closeChat(false));
       navigate("/");
+      dispatch(connectToRoomAsync(null));
     }
   };
 

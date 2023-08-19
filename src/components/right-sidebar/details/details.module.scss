@@ -3,11 +3,12 @@
 .details {
   $this: &;
 
-  height: 100%;
+  height: 100dvh;
   display: grid;
   grid-template-columns: 100%;
   grid-template-rows: min-content 400px 1fr;
   gap: 10px;
+  border: solid 1px tomato;
 
   &__header {
     grid-row: 1 / 2;

@@ -1,9 +1,11 @@
-import { Howl } from "howler";
+// import { Howl } from "howler";
 
-const sound = new Howl({
-  src: ['public/sounds/pull_out.ogg']
-})
+// const sound = new Howl({
+//   src: ['public/sounds/pull_out.ogg']
+// })
 
-export function playSoundOnNewMessage() {
-  sound.play();
+export async function  playSoundOnNewMessage() {
+  const sound = new Audio('./public/sounds/pull_out.ogg')
+ await sound.play();
+
 }
