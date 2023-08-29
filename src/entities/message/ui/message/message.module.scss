@@ -21,11 +21,13 @@
   &__body {
     display: grid;
     position: relative;
+    max-width: 25rem;
+    min-width: 100%;
+    word-break: break-word;
     grid-template-rows: repeat(2, auto);
     column-gap: 10px;
     background-color: var(--color-in-boubble);
     color: var(--color-out-font);
-    //background-color: #DEDEDE;
     padding: 10px 10px 3px;
     border-radius: 16px 16px 16px 0;
     z-index: 1;
@@ -41,7 +43,6 @@
       border-style: solid;
       border-width: 0 0 25px 25px;
       border-color: transparent transparent var(--color-in-boubble) transparent;
-      //border-color: transparent transparent #DEDEDE transparent;
       z-index: -1;
     }
   }
@@ -93,12 +94,11 @@
     #{$this}__body {
       background-color: var(--color-out-boubble);
       color: var(--color-out-font);
-      //background-color: #F7DEAD;
+
 
       &:before {
         border-color: transparent transparent var(--color-out-boubble) transparent;
 
-        //border-color: transparent transparent #F7DEAD transparent;
       }
     }
 

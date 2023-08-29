@@ -34,7 +34,7 @@ export const Dialog: FC<IDialog> = ({
   const clickOnDialogTab = () => {
     dispatch(setCurrentDialogAction({ chatId }));
     dispatch(moveFrontMiddleColumn(true));
-    dispatch(connectToRoomAsync({ chatId, accountId }));
+    dispatch(connectToRoomAsync({ chatId, accountId}));
     if (!touchedDialog.includes(chatId)) {
       dispatch(getLatestMessagesAsync(chatId));
       setTouchedDialog(prevState => [...prevState, chatId]);

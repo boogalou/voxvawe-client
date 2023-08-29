@@ -69,7 +69,7 @@ function* fetchUserStatusWorker(socket: Socket): Generator<any, void, any> {
             break;
 
           case OFFLINE:
-            console.log('contact ' + response.payload + ' online');
+            console.log('contact ' + response.payload + ' offline');
             yield put(updateContactStatus({ accountId: response.payload, status: false }));
             break;
 

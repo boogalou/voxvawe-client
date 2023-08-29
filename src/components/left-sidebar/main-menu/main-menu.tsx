@@ -40,7 +40,7 @@ export const MainMenu: FC<MainMenuProps> = ({handleOpenModal}) => {
   const dropdownRef = useRef<HTMLUListElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const { isFocus, isActive } = useAppSelector(state => state.leftSidebarSlice);
-  const  {account_id, username}  = useAppSelector(state => state.userSlice.user);
+
 
   const [isPressed, setIsPressed] = useState<boolean>(false);
 

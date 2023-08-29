@@ -19,7 +19,7 @@ import { IAuthResponseData } from 'shared/types/auth.interface';
 import { toggleOnlineStatus } from 'entities/user';
 
 function* signinSagaWorker(action: ReturnType<typeof loginRequestAsync>) {
-  console.log('signi: ', action.payload);
+
   try {
     yield put(startLoading());
     const response: AxiosResponse<IAuthResponseData> = yield call(authService.signin, action.payload);

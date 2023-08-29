@@ -32,12 +32,12 @@ export const MessageBox = () => {
 
   const [attachButtonIsPressed, setAttachButtonIsPressed] = useState(false);
 
-  const recipientId = recipient[0].account_id
+  const recipientId = recipient.map(recipient => recipient.account_id);
 
   const newMessage: IOutMessage = {
     chat_id: chatId,
     sender_id: senderId,
-    recipient_id: recipientId,
+    recipient_id: JSON.stringify(recipientId),
     content: textValue,
     sent_at: new Date(),
     attachments,

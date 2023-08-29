@@ -4,10 +4,14 @@ import { socketConfig } from './socket-config';
 
 const activeSockets: Socket[] = [];
 
-export async function connectSocket(action: ReturnType<typeof getAccessToken>): Promise<Socket> {
+export async function connectSocket({
+  payload,
+}: ReturnType<typeof getAccessToken>): Promise<Socket> {
   return new Promise((resolve, reject) => {
-    socketConfig.auth.authorization = 'Bearer ' + action.payload.access_token;
+    const accessToken = payload.access_token;
+    socketConfig.auth.authorization = 'Bearer ' + accessToken;
     const newSocket = io(`${import.meta.env.VITE_SOKCET_SERVER}`, socketConfig);
+
     newSocket.on('connect', () => {
       console.log('Connect to server success');
       activeSockets.push(newSocket)
@@ -23,9 +27,7 @@ export async function connectSocket(action: ReturnType<typeof getAccessToken>): 
   });
 }
 
- export function closeAllSocketConnection() {
-    activeSockets.forEach(socket => socket.disconnect());
-    activeSockets.length = 0;
-  }
-
-
+export function closeAllSocketConnection() {
+  activeSockets.forEach(socket => socket.disconnect());
+  activeSockets.length = 0;
+}

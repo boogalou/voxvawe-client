@@ -8,7 +8,6 @@
   grid-template-columns: 100%;
   grid-template-rows: min-content 400px 1fr;
   gap: 10px;
-  border: solid 1px tomato;
 
   &__header {
     grid-row: 1 / 2;
@@ -151,11 +150,15 @@
       width: 100%;
       padding: 10px;
       border: none;
-      background-color: var(--color-primary-opacity);
       color: var(--color-primary-font);
       font-weight: normal;
       font-size: medium;
       border-radius: 6px;
+    }
+
+    &-add-contact {
+      background-color: var(--color-chat-selected);
+      color: white;
     }
 
     &-add-request {

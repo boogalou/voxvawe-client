@@ -9,6 +9,7 @@ import { IContact } from 'shared/types';
 import { addNewMemberToGroupAsync } from 'entities/dialog';
 import { useParams } from 'react-router-dom';
 import { AddedContacts } from 'components/left-sidebar/create-group-dialog/added-contacts/added-contacts';
+import { addContactAsync } from 'entities/contact';
 
 const cx = cnBind.bind(styles);
 
@@ -85,7 +86,9 @@ export const Details: FC<DialogDetailsProps> = ({
     dispatch(addNewMemberToGroupAsync(selectedMembers));
   };
 
-
+  const addContactToContactListHandler = () => {
+    if (accountId) dispatch(addContactAsync(accountId));
+  };
 
   return (
     <div className={cx('details')}>
@@ -123,7 +126,7 @@ export const Details: FC<DialogDetailsProps> = ({
               ))}
             </div>
           )}
-          <AddedContacts callback={selectedMembersHandler}/>
+          <AddedContacts callback={selectedMembersHandler} />
           <div className={cx('details__button-add--position')}>
             <IconButton
               className={cx('details__button-add-request', {
@@ -176,7 +179,10 @@ export const Details: FC<DialogDetailsProps> = ({
                   Улалить из списка котактов
                 </Button>
               ) : (
-                <Button className={cx('details__button', 'details__button-add-contact')}>
+                <Button
+                  className={cx('details__button', 'details__button-add-contact')}
+                  onClick={addContactToContactListHandler}
+                >
                   Добавить в список контактов
                 </Button>
               )}

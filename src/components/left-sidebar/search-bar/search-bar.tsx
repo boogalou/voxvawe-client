@@ -3,7 +3,7 @@ import cnBind from 'classnames/bind';
 import styles from './search-bar.module.scss';
 import { IconInput } from 'shared/ui';
 import { useAppDispatch } from 'shared/hooks';
-import { searchContacts } from 'entities/contact';
+import { searchContactsAsync } from 'entities/contact';
 import { setIsFocus } from 'components/left-sidebar/model/left-sidebar.slice';
 import { clearSearch } from 'entities/contact/model/contacts.slice';
 
@@ -24,12 +24,12 @@ export const SearchBar = () => {
 
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
-    dispatch(searchContacts({ query: searchTerm }));
+    dispatch(searchContactsAsync({ query: searchTerm }));
   };
 
   const handleOnChange = (evt: ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(evt.target.value);
-    dispatch(searchContacts({ query: evt.target.value }));
+    dispatch(searchContactsAsync({ query: evt.target.value }));
   };
 
   return (

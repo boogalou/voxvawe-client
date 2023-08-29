@@ -2,31 +2,29 @@ import React from 'react';
 import styles from './switch-panels.module.scss';
 import cnBind from 'classnames/bind';
 import { IconButton } from 'shared/ui';
-import {
-  closeChat,
-  connectToRoomAsync,
-  moveBackMiddleColumn,
-  resetCurrentDialog,
-  setCurrentDialogAction,
-} from 'entities/dialog';
+import { closeChat, leaveRoomAsync, moveBackMiddleColumn } from "entities/dialog";
 import { useAppDispatch, useAppSelector } from 'shared/hooks';
+import { useNavigate } from "react-router-dom";
 
 const cx = cnBind.bind(styles);
 
 export const SwitchPanel = () => {
   const dispatch = useAppDispatch();
 
+  const navigate = useNavigate();
   const { isOpen } = useAppSelector(state => state.dialogSlice);
+  const { id: chatId } = useAppSelector(state => state.dialogSlice.currentDialog);
+  const { account_id: accountId } = useAppSelector(state => state.userSlice.user);
 
   const handleOnClick = (evt: React.MouseEvent) => {
-    console.log('chat-info 2');
     evt.preventDefault();
     evt.stopPropagation();
     if (isOpen) {
       dispatch(moveBackMiddleColumn(false));
     } else {
+      dispatch(leaveRoomAsync({chatId,  accountId}));
       dispatch(closeChat(true));
-      dispatch(connectToRoomAsync(null));
+      navigate('/');
     }
   };
 

@@ -2,13 +2,12 @@ import React, { useEffect } from 'react';
 import cnBind from 'classnames/bind';
 import styles from './im.module.scss';
 import { Chat } from 'components/chat';
-import { useAppDispatch, useAppSelector } from "shared/hooks";
+import { useAppDispatch, useAppSelector } from 'shared/hooks';
 import { LeftSidebar } from 'components/left-sidebar';
 import { RightSidebar } from 'components/right-sidebar';
 import { getAccessToken, getCurrentUserAsync } from 'entities/user';
-import { getDialogsAsync } from 'entities/dialog';
-import { requestNotificationPermission } from "shared/lib";
-
+import { closeChat, getDialogsAsync, leaveRoomAsync } from "entities/dialog";
+import { useLocation } from "react-router-dom";
 
 const cx = cnBind.bind(styles);
 
@@ -21,17 +20,9 @@ export const Im = () => {
   const { rightIsOpen } = useAppSelector(state => state.rightSidebarSlice);
   const { accessToken } = useAppSelector(state => state.authSlice);
 
-
-
-
   useEffect(() => {
-    const fn = async () => {
-     await requestNotificationPermission();
-    }
     dispatch(getCurrentUserAsync());
     dispatch(getDialogsAsync());
-
-    fn();
   }, []);
 
   useEffect(() => {

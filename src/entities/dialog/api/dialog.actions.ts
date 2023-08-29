@@ -5,7 +5,8 @@ import { INewMember } from "components/right-sidebar/details/details";
 
 
 export const getDialogsAsync = createAction('DIALOG:GET_DIALOGS');
-export const connectToRoomAsync = createAction<{chatId: number, accountId: string} | null>('DIALOG:CONNECT_TO_ROOM');
+export const connectToRoomAsync = createAction<{ chatId: number, accountId: string }>('DIALOG:CONNECT_TO_ROOM');
+export const leaveRoomAsync = createAction<{chatId: number, accountId: string }>('DIALOG:LEAVE_ROOM');
 export const sendMessageAsync = createAction<IOutMessage>('DIALOG:SEND_MESSAGE');
 export const typingTextAsync = createAction<{chatId: number }>('DIALOG:TYPING');
 export const setMessageIsReadAsync = createAction<{chatId: number, messageId: number}>('DIALOG:UPDATE_MESSAGE_STATUS');
