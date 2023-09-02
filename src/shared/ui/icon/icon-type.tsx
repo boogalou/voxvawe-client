@@ -28,6 +28,7 @@ import { ReactComponent as Typing } from 'shared/assets/icons/typing_.svg';
 import { ReactComponent as Group } from 'shared/assets/icons/group_.svg';
 import { ReactComponent as Camera } from 'shared/assets/icons/camera_.svg';
 import { ReactComponent as AddUser } from 'shared/assets/icons/user-add_.svg';
+import { ReactComponent as Edit } from 'shared/assets/icons/edit.svg';
 
 export type IconType =
   | 'send'
@@ -58,7 +59,8 @@ export type IconType =
   | 'typing'
   | 'group'
   | 'camera'
-  | 'add-user';
+  | 'add-user'
+  | 'edit';
 
 export const iconTypes = new Map([
   ['send', <Send key={getKey()} />],
@@ -90,4 +92,5 @@ export const iconTypes = new Map([
   ['group', <Group key={getKey()} />],
   ['camera', <Camera key={getKey()} />],
   ['add-user', <AddUser key={getKey()} />],
+  ['edit', <Edit key={getKey()} />],
 ]);

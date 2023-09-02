@@ -6,18 +6,16 @@ import { useAppDispatch, useAppSelector } from 'shared/hooks';
 import { LeftSidebar } from 'components/left-sidebar';
 import { RightSidebar } from 'components/right-sidebar';
 import { getAccessToken, getCurrentUserAsync } from 'entities/user';
-import { closeChat, getDialogsAsync, leaveRoomAsync } from "entities/dialog";
-import { useLocation } from "react-router-dom";
+import { getDialogsAsync } from 'entities/dialog';
+import { Settings } from 'components/left-sidebar/settings';
 
 const cx = cnBind.bind(styles);
 
-
-
 export const Im = () => {
-
   const dispatch = useAppDispatch();
   const { isOpen } = useAppSelector(state => state.dialogSlice);
   const { rightIsOpen } = useAppSelector(state => state.rightSidebarSlice);
+  const { settingsIsActive } = useAppSelector(state => state.leftSidebarSlice);
   const { accessToken } = useAppSelector(state => state.authSlice);
 
   useEffect(() => {
@@ -26,14 +24,13 @@ export const Im = () => {
   }, []);
 
   useEffect(() => {
-      dispatch(getAccessToken({ access_token: accessToken }));
+    dispatch(getAccessToken({ access_token: accessToken }));
   }, [accessToken]);
-
 
   return (
     <div className={cx('im')}>
       <aside className={cx('left-sidebar', { 'left-sidebar--active': isOpen })}>
-        <LeftSidebar />
+        {!settingsIsActive ? <LeftSidebar /> :  <Settings />  }
       </aside>
 
       <main

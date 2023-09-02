@@ -259,6 +259,6 @@ export function* dialogSagaWatcher(): Generator<any, void, any> {
   yield takeEvery(leaveRoomAsync.type, leaveRoomWorker, socket);
   yield takeEvery(sendMessageAsync.type, sendMessage, socket);
   yield takeEvery(setMessageIsReadAsync.type, updateMessageWorker, socket);
-  yield debounce(2000, typingTextAsync.type, notifyTypingWorker, socket);
+  yield debounce(200, typingTextAsync.type, notifyTypingWorker, socket);
   yield fork(fetchMessageWorker, socket);
 };

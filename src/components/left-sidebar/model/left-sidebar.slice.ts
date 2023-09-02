@@ -1,31 +1,45 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-
 export interface LeftSidebarSliceState {
   isFocus: boolean;
   isActive: boolean;
+  settingsIsActive: boolean;
+  isEditProfile: boolean;
 }
 
 const initialState: LeftSidebarSliceState = {
   isFocus: false,
   isActive: false,
+  settingsIsActive: false,
+  isEditProfile: false,
 };
 
 export const leftSidebarSlice = createSlice({
   name: 'leftSidebar',
   initialState,
   reducers: {
-    setIsActive(state, action: PayloadAction<boolean>) {
-      state.isActive = action.payload;
+    setIsActive(state, { payload }: PayloadAction<boolean>) {
+      state.isActive = payload;
     },
 
-    setIsFocus(state, action: PayloadAction<boolean>) {
-      state.isFocus = action.payload;
+    setIsFocus(state, { payload }: PayloadAction<boolean>) {
+      state.isFocus = payload;
     },
 
-    createGroup() {},
-  }
+    setSettingsIsActive(state, { payload }: PayloadAction<boolean>) {
+      state.settingsIsActive = payload;
+    },
+
+    setIsEditProfileActive(state, { payload }: PayloadAction<boolean>) {
+      state.isEditProfile = payload;
+    }
+  },
 });
 
-export const { setIsActive, setIsFocus } = leftSidebarSlice.actions;
+export const {
+  setIsActive,
+  setIsFocus,
+  setSettingsIsActive,
+  setIsEditProfileActive,
+} = leftSidebarSlice.actions;
 export default leftSidebarSlice.reducer;

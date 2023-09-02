@@ -111,38 +111,40 @@ export const MessageBox = () => {
   }, [selectedEmoji]);
 
   return (
-    <div className={cx('message-box')}>
-      <div className={cx('message-box__container')} tabIndex={0}>
-        <div className={cx('message-box__icon')}>
-          <EmojiButton />
-        </div>
-        <div className={cx('message-box__textarea')}>
-          <Textarea
-            onKeyDown={keyboardSendMessageHandler}
-            className={cx('message-box__input')}
-            onChange={onChangeTextInputHandler}
-            value={isOpen ? '' : textValue}
-            rows={1}
-            ref={textAreaRef}
-            placeholder={'Message...'}
+    <>
+      <div className={cx('message-box')}>
+        <div className={cx('message-box__container')} tabIndex={0}>
+          <div className={cx('message-box__icon')}>
+            <EmojiButton />
+          </div>
+          <div className={cx('message-box__textarea')}>
+            <Textarea
+              onKeyDown={keyboardSendMessageHandler}
+              className={cx('message-box__input')}
+              onChange={onChangeTextInputHandler}
+              value={isOpen ? '' : textValue}
+              rows={1}
+              ref={textAreaRef}
+              placeholder={'Message...'}
+            />
+          </div>
+          <div className={cx('message-box__icon')}>
+            <AttachButton ref={attachButtonRef} onClick={handleClickOnAttachButton} />
+          </div>
+
+          <UploadFileMenu
+            attachButtonRef={attachButtonRef}
+            attachButtonIsPressed={attachButtonIsPressed}
+            setAttachButtonIsPressed={setAttachButtonIsPressed}
+            handleFileSelect={handleFileSelect}
           />
         </div>
-        <div className={cx('message-box__icon')}>
-          <AttachButton ref={attachButtonRef} onClick={handleClickOnAttachButton} />
-        </div>
-
-        <UploadFileMenu
-          attachButtonRef={attachButtonRef}
-          attachButtonIsPressed={attachButtonIsPressed}
-          setAttachButtonIsPressed={setAttachButtonIsPressed}
-          handleFileSelect={handleFileSelect}
+        <SendButton
+          onClickSendText={clickSendMessageHandler}
+          onClickSendVoice={sendVoiceMessageButtonHandler}
+          buttonType={buttonType}
         />
       </div>
-      <SendButton
-        onClickSendText={clickSendMessageHandler}
-        onClickSendVoice={sendVoiceMessageButtonHandler}
-        buttonType={buttonType}
-      />
       <Portal>
         <Modal className={cx('attach-modal')} isOpen={fileList ? isOpen : false}>
           <ModalContent
@@ -156,6 +158,7 @@ export const MessageBox = () => {
           />
         </Modal>
       </Portal>
-    </div>
+    </>
+
   );
 };

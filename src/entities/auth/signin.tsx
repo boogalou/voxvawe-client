@@ -1,14 +1,14 @@
-import React, { FC, FormEvent, useEffect } from "react";
+import React, { FC, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import cnBind from 'classnames/bind';
 import styles from './auth.module.scss';
-import { Icon, IconButton, Input, useAppDispatch, useAppSelector } from "../../shared";
-import { loginRequestAsync, rejected } from "./model";
+import { Icon, IconButton, Input, useAppDispatch, useAppSelector } from '../../shared';
+import { loginRequestAsync, rejected } from './model';
 import { useShowPasswordToggle } from './lib/use-show-password';
 import { routes } from 'shared/constants';
 import { useFormik } from 'formik';
-import { validationRulesLoginForm } from "entities/auth/validation-rules";
+import { validationRulesLoginForm } from 'entities/auth/validation-rules';
 
 const cx = cnBind.bind(styles);
 
@@ -30,7 +30,7 @@ export const Signin: FC = () => {
   const { isLoading, isAuth, error } = useAppSelector(state => state.authSlice);
   const [showPassword, togglePassword] = useShowPasswordToggle(false);
 
-  const formik = useFormik({
+  const formik= useFormik({
     initialValues,
 
     onSubmit: loginData => {

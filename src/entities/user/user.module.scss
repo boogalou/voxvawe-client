@@ -1,0 +1,246 @@
+@import "src/app/index";
+
+.user {
+  $this: &;
+
+  display: flex;
+  flex-direction: column;
+  padding: 5px 5px;
+  height: 100%;
+  row-gap: 40px;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__header-title {
+    font-size: 18px;
+    color: var(--color-primary-font);
+  }
+
+  &__button {
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    background-color: transparent;
+    padding: 6px;
+    border: none;
+
+    svg {
+      vertical-align: bottom;
+      stroke: var(--color-icon-primary);
+      height: 28px;
+      width: 28px;
+    }
+
+    &--fake {
+      visibility: hidden;
+    }
+  }
+
+  &__change-userpic {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+  }
+
+  &__avatar-wrapper {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    overflow: hidden;
+  }
+
+  &__icon-badge {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    left: 0;
+    bottom: 70px;
+    align-items: center;
+    width: 100%;
+    height: 70px;
+    background-color: rgba(255, 255, 255, .5);
+    transform: translateY(100%);
+
+    svg {
+      width: 32px;
+      height: 32px;
+    }
+  }
+
+  &__avatar-title {
+    text-align: center;
+    font-size: 14px;
+    color: var(--color-primary-font);
+    margin-top: 15px;
+  }
+}
+
+.input {
+  display: none;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  row-gap: 45px;
+  padding: 15px;
+
+
+  &__footer {
+    display: flex;
+    flex-direction: column;
+    row-gap: 20px;
+  }
+
+  &__field {
+    &:focus-within .field__icon svg {
+      stroke: #4070f4;
+    }
+  }
+}
+
+.field {
+  position: relative;
+  height: 50px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+
+
+  &__input {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    padding: 0 20px;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    color: var(--color-primary-font);
+    border-radius: 6px;
+    border-bottom: 2px solid var(--color-chat-input-bg);;
+    border-top: 2px solid transparent;
+    transition: all 0.2s ease;
+    background-color: var(--color-chat-input-bg);
+
+    &:is(:focus) {
+      border-bottom-color: var(--color-chat-selected);
+    }
+  }
+
+  &--error {
+    position: absolute;
+    font-size: 14px;
+    top: -20px;
+    color: tomato;
+  }
+
+  &__icon {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #999;
+    transition: all 0.2s ease;
+
+    &--eye {
+      right: 0;
+      cursor: pointer;
+    }
+
+    svg {
+      width: 23px;
+      height: 23px;
+    }
+
+  }
+
+  &__error {
+    &--active {
+      font-size: 12px;
+      position: absolute;
+      top: -20px;
+      left: 0;
+      color: tomato;
+    }
+  }
+}
+
+.submit {
+  &__button {
+    cursor: pointer;
+    width: 100%;
+    height: 40px;
+    border: none;
+    color: var(--color-primary-font);
+    font-size: 17px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    border-radius: 6px;
+    background-color: var(--color-chat-selected);
+    transition: all 0.3s ease;
+
+
+    &:hover {
+      background-color: rgb(131, 165, 152, .70);
+    }
+  }
+
+  &__icon {
+    svg {
+      stroke: #fff;
+    }
+  }
+}
+
+
+.cropp-modal {
+  align-items: end;
+}
+
+.modal-content {
+  width: 100%;
+  height: 92%;
+
+}
+
+@include respond-to('tablet') {
+  .cropp-modal {
+    align-items: center;
+    justify-content: center;
+  }
+
+  .modal-content {
+    width: 800px;
+    height: 600px;
+    display: flex;
+    align-items: start;
+  }
+}
+
+@include respond-to(desktop) {
+  .user {
+    &__button {
+      &:hover {
+        background-color: var(--color-chat-hover);
+      }
+    }
+
+    &__avatar-wrapper {
+      &:hover .user__icon-badge {
+        transform: translateY(0);
+        transition: transform 0.3s ease;
+      }
+    }
+
+    &__icon-badge {
+      bottom: 0;
+      transform: translateY(100%);
+    }
+  }
+}

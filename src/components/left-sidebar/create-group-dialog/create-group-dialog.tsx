@@ -121,8 +121,8 @@ export const CreateGroupDialog: FC<ICreateGroupDialogProps> = ({ handleCloseModa
             <label className={cx('field__label')}>
               <IconInput
                 className={cx('field__attach')}
-                type="file"
                 typeIcon={'camera'}
+                type="file"
                 accept="image/jpeg, image/png, image/gif"
                 onChange={handleFileSelect}
               />

@@ -1,6 +1,14 @@
 import { call, fork, put, take, takeLatest } from 'redux-saga/effects';
 import { EventChannel, eventChannel } from 'redux-saga';
-import { disconnectSocket, ERROR_RESPONSE, getAccessToken, getCurrentUserAsync, OFFLINE, ONLINE } from "./user.actions";
+import {
+  ERROR_RESPONSE,
+  getAccessToken,
+  getCurrentUserAsync,
+  OFFLINE,
+  ONLINE,
+  updateUserImageAsync,
+  updateUserProfileAsync,
+} from './user.actions';
 
 import { AxiosResponse } from 'axios';
 import { IUser } from 'shared/types';
@@ -34,6 +42,32 @@ function* getCurrentUserWorker() {
   }
 }
 
+function* updateUserProfileWorker({ payload }: ReturnType<typeof updateUserProfileAsync>) {
+  console.log(payload);
+  try {
+    yield put(startLoading(true));
+    const response: AxiosResponse<IUser> = yield call(userService.updateProfile, payload);
+    yield put(dataReceived(response.data));
+    yield put(finishLoading(false));
+  } catch (err) {
+    console.log(err);
+    yield put(finishLoading(false));
+  }
+}
+
+function* updateUserImageWorker({ payload }: ReturnType<typeof updateUserImageAsync>) {
+  console.log(payload);
+  try {
+    yield put(startLoading(true));
+    const response: AxiosResponse<IUser> = yield call(userService.updateUserImage, payload);
+    yield put(dataReceived(response.data));
+    yield put(finishLoading(false));
+  } catch (err) {
+    console.log(err);
+    yield put(finishLoading(false));
+  }
+}
+
 function createSocketChannel(socket: Socket) {
   return eventChannel(emit => {
     const eventHandler = (payload: IStatusUpdateResponse) => {
@@ -51,7 +85,6 @@ function createSocketChannel(socket: Socket) {
     return () => {
       socket.off(ONLINE, eventHandler);
       socket.off(OFFLINE, eventHandler);
-
     };
   });
 }
@@ -76,7 +109,6 @@ function* fetchUserStatusWorker(socket: Socket): Generator<any, void, any> {
           default:
             console.log('default case');
         }
-
       } catch (error) {
         console.log(error);
       }
@@ -87,12 +119,11 @@ function* fetchUserStatusWorker(socket: Socket): Generator<any, void, any> {
 function* handleAccessToken(action: ReturnType<typeof getAccessToken>): Generator<any, void, any> {
   const socket = yield call(connectSocket, action);
   yield fork(fetchUserStatusWorker, socket);
-
 }
-
-
 
 export function* userSagaWatcher(): Generator<any, void, any> {
   yield takeLatest(getCurrentUserAsync.type, getCurrentUserWorker);
   yield takeLatest(getAccessToken.type, handleAccessToken);
+  yield takeLatest(updateUserProfileAsync.type, updateUserProfileWorker);
+  yield takeLatest(updateUserImageAsync.type, updateUserImageWorker);
 }

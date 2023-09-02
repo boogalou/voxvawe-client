@@ -19,6 +19,9 @@ class DialogService {
 
 
   public async uploadAttachments(file: FormData): Promise<AxiosResponse> {
+    for (const entry of file.entries()) {
+      console.log(entry);
+    }
     return await apiService.post('/upload/image', file);
   }
 }

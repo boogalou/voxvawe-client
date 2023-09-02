@@ -17,7 +17,7 @@ export const LeftSidebar = () => {
   const { isFocus, isActive } = useAppSelector(state => state.leftSidebarSlice);
   const { isOpen, handleOpenModal, handleCloseModal} = useHandleActiveModal()
   return (
-    <div>
+    <>
       <Header className={cx('left-sidebar__header')}>
         <MainMenu handleOpenModal={handleOpenModal} />
         <SearchBar />
@@ -30,6 +30,6 @@ export const LeftSidebar = () => {
           {<CreateGroupDialog handleCloseModal={handleCloseModal} />}
         </Modal>
       </Portal>
-    </div>
+    </>
   );
 };

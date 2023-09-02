@@ -6,7 +6,7 @@ import { Dropdown, Icon, IconButton } from 'shared/ui';
 import { ThemeSwitcher } from 'components/left-sidebar/theme-switch';
 import { useAppDispatch, useAppSelector } from 'shared/hooks';
 import { logoutRequestAsync } from 'entities/auth';
-import { setIsActive, setIsFocus } from 'components/left-sidebar/model/left-sidebar.slice';
+import { setIsActive, setIsFocus, setSettingsIsActive } from "components/left-sidebar/model/left-sidebar.slice";
 import { clearCurrentContact, clearSearch, resetContactsState } from 'entities/contact';
 import { resetDialogsState } from 'entities/dialog';
 import { resetMessagesState } from 'entities/message';
@@ -65,12 +65,12 @@ export const MainMenu: FC<MainMenuProps> = ({handleOpenModal}) => {
 
   const handleMenuItemClick =  (id: number) => {
     setIsPressed(false);
-    if (id === 5) {
-      closeAllSocketConnection();
-      dispatch(resetDialogsState());
-      dispatch(resetContactsState());
-      dispatch(resetMessagesState());
-      dispatch(logoutRequestAsync());
+    if (id === 1) {
+      dispatch(setIsActive(true));
+    }
+
+    if (id === 3) {
+      dispatch(setSettingsIsActive(true))
     }
 
     if (id === 4) {
@@ -79,8 +79,12 @@ export const MainMenu: FC<MainMenuProps> = ({handleOpenModal}) => {
       }
     }
 
-    if (id === 1) {
-      dispatch(setIsActive(true));
+    if (id === 5) {
+      closeAllSocketConnection();
+      dispatch(resetDialogsState());
+      dispatch(resetContactsState());
+      dispatch(resetMessagesState());
+      dispatch(logoutRequestAsync());
     }
   };
 
