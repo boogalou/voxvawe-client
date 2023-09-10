@@ -7,3 +7,4 @@ export { getInitials } from './get-initials';
 export { playSoundOnNewMessage } from './play-sound-on-new-message';
 export { requestNotificationPermission } from './request-notification-permission';
 export { createNotification } from './create-notification';
+export { getFormData } from './get-form-data';

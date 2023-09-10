@@ -1,0 +1,41 @@
+@import 'src/app/index';
+
+.stop-record {
+  $this: &;
+  display: none;
+
+
+  &--visibility {
+    display: flex;
+    width: 3.125rem;
+    height: 3.125rem;
+    border-radius: 50%;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-primary);
+
+
+    svg {
+      fill: var(--color-danger);
+      stroke: var(--color-danger);
+      width: 16px;
+      vertical-align: bottom;
+    }
+  }
+
+  &__button--visibility {
+    width: 100%;
+    height: 100%;
+    border-radius: 500%;
+    background-color: transparent;
+    border: none;
+  }
+}
+
+@include respond-to(desktop) {
+  .stop-record--visibility {
+    &:hover {
+      background-color: var(--color-chat-hover);
+    }
+  }
+}

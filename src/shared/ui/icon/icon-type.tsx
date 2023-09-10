@@ -29,6 +29,9 @@ import { ReactComponent as Group } from 'shared/assets/icons/group_.svg';
 import { ReactComponent as Camera } from 'shared/assets/icons/camera_.svg';
 import { ReactComponent as AddUser } from 'shared/assets/icons/user-add_.svg';
 import { ReactComponent as Edit } from 'shared/assets/icons/edit.svg';
+import { ReactComponent as StopRecord } from 'shared/assets/icons/stop-record_.svg';
+import { ReactComponent as Play } from 'shared/assets/icons/play_.svg';
+import { ReactComponent as Pause } from 'shared/assets/icons/pause_.svg';
 
 export type IconType =
   | 'send'
@@ -60,7 +63,10 @@ export type IconType =
   | 'group'
   | 'camera'
   | 'add-user'
-  | 'edit';
+  | 'edit'
+  | 'stop-record'
+  | 'play'
+  | 'pause';
 
 export const iconTypes = new Map([
   ['send', <Send key={getKey()} />],
@@ -93,4 +99,7 @@ export const iconTypes = new Map([
   ['camera', <Camera key={getKey()} />],
   ['add-user', <AddUser key={getKey()} />],
   ['edit', <Edit key={getKey()} />],
+  ['stop-record', <StopRecord key={getKey()} />],
+  ['play', <Play key={getKey()} />],
+  ['pause', <Pause key={getKey()} />],
 ]);

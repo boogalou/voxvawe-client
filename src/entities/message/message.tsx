@@ -7,6 +7,7 @@ import { format } from 'date-fns';
 import { InMessage } from 'shared/types/message.interface';
 import Modal from 'shared/ui/modal';
 import { useOnClickOutside } from 'usehooks-ts';
+import { VoiceMessage } from 'entities/message/voice-message';
 
 const cx = cnBind.bind(styles);
 
@@ -17,6 +18,7 @@ export const Message: FC<InMessage> = ({
   is_read,
   sent_at,
   attachments,
+  voice_message,
 }) => {
   const messageRef = useRef(null);
 
@@ -47,7 +49,13 @@ export const Message: FC<InMessage> = ({
               <img src={attachments[0].mediumSizeUrl} alt="" className={cx('message__preview')} />
             </div>
           ) : null}
-          <p className={cx('message__text')}>{content}</p>
+          {voice_message ? (
+           <div  className={cx('message__voice')}>
+             <VoiceMessage { ...voice_message } />
+           </div>
+          ) : (
+            <p className={cx('message__text')}>{content}</p>
+          )}
 
           <div className={cx('message__info')}>
             <div className={cx('message__time')}>{sentAt}</div>

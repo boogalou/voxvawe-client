@@ -1,3 +1,5 @@
+import { IVoiceMessageData } from "shared/types";
+
 export interface IMessage {
   id: number;
   chat_id: number;
@@ -19,6 +21,7 @@ export interface IOutMessage {
   content: string;
   sent_at: Date;
   attachments: FormData | null;
+  voice_message: FormData | null;
 }
 
 export interface InMessage {
@@ -31,10 +34,18 @@ export interface InMessage {
   edit_at: Date | null;
   is_read: boolean;
   is_delivered: boolean;
-  attachments: Attachments[] | [];
+  attachments: IAttachments[] | [];
+  voice_message: IVoiceMessageData | null;
 }
 
-export interface Attachments {
+export interface IVoiceData {
+  duration: number;
+  waveform: number[]
+  link_ogg: string;
+
+}
+
+export interface IAttachments {
   id: number;
   ownerId: number;
   largeSizeUrl: string;

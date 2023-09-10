@@ -1,0 +1,29 @@
+@import 'src/app/index';
+
+.voice {
+  $this: &;
+  display: flex;
+  align-items: center;
+  column-gap: 15px;
+
+  &__control {
+    border-radius: 50%;
+    background-color: var(--color-chat-selected);
+  }
+
+  &__button-play {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    svg {
+      width: 20px;
+      height: 20px;
+      vertical-align: bottom;
+      stroke: var(--color-play-button);
+      fill: var(--color-play-button);
+    }
+  }
+}

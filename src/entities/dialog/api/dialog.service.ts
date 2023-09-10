@@ -17,12 +17,14 @@ class DialogService {
     return await apiService.post('/dialogs/add-member', data)
   }
 
-
-  public async uploadAttachments(file: FormData): Promise<AxiosResponse> {
-    for (const entry of file.entries()) {
-      console.log(entry);
-    }
+  public async uploadImages(file: FormData): Promise<AxiosResponse> {
+    console.log(file);
     return await apiService.post('/upload/image', file);
+  }
+
+  public async uploadVoice(file: FormData): Promise<AxiosResponse> {
+    console.log(file);
+    return await apiService.post('/upload/voice', file);
   }
 }
 

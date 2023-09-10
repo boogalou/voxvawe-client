@@ -1,7 +1,7 @@
 import React, { ChangeEvent, KeyboardEvent, useEffect, useRef, useState } from 'react';
 import cnBind from 'classnames/bind';
 import styles from './message-box.module.scss';
-import { Portal, Textarea } from 'shared/ui';
+import { IconButton, Portal, Textarea } from 'shared/ui';
 import { EmojiButton } from './ui/emoji-button';
 import { AttachButton } from './ui/attach-button';
 import { SendButton } from './ui/send-button/send-button';
@@ -14,24 +14,31 @@ import { ModalContent } from 'components/chat/modal-content';
 import { useSelectedUploadFiles } from 'shared/hooks';
 import { IOutMessage } from 'shared/types/message.interface';
 import { typingTextAsync } from 'entities/dialog/api/dialog.actions';
+import { StopRecordButton } from 'components/chat/message-box/ui/stop-record-button';
+import { RecordTimer } from 'components/chat/message-box/ui/record-timer';
+import { getFormData } from 'shared/lib';
+import { useRecorder } from 'components/chat/message-box/hooks/use-recorder';
 
 const cx = cnBind.bind(styles);
 
 export const MessageBox = () => {
   const dispatch = useAppDispatch();
   const senderId = useAppSelector(state => state.userSlice.user.account_id);
-  const recipient = useAppSelector(state => state.dialogSlice.currentDialog.members.filter(member => member.account_id !== senderId));
-  const {id: chatId } = useAppSelector(state => state.dialogSlice.currentDialog);
+  const recipient = useAppSelector(state =>
+    state.dialogSlice.currentDialog.members.filter(member => member.account_id !== senderId)
+  );
+  const { id: chatId } = useAppSelector(state => state.dialogSlice.currentDialog);
   const { selectedEmoji } = useAppSelector(state => state.messageInputSlice);
 
+  const attachButtonRef = useRef<HTMLDivElement>(null);
   const [textValue, setTextValue] = useState('');
-  const [attachments, setAttachment] = useState<FormData | null>(null);
-
   const textAreaRef = useResizeTextarea(textValue);
-  const buttonType = textValue ? 'send' : 'microphone';
-
+  const [attachments, setAttachment] = useState<FormData | null>(null);
   const [attachButtonIsPressed, setAttachButtonIsPressed] = useState(false);
-
+  const [stopRecordButtonIsVisible, setStopRecordButtonIsVisible] = useState(false);
+  const [microphoneButtonIsPressed, setMicrophoneButtonIsPressed] = useState(false);
+  const [audioFormData, setAudioFormData] = useState<FormData | null>(null);
+  const { startRecording, stopRecord, cancelRecording, audioData } = useRecorder();
   const recipientId = recipient.map(recipient => recipient.account_id);
 
   const newMessage: IOutMessage = {
@@ -41,12 +48,11 @@ export const MessageBox = () => {
     content: textValue,
     sent_at: new Date(),
     attachments,
+    voice_message: audioFormData,
   };
 
-  const attachButtonRef = useRef<HTMLDivElement>(null);
-
   const keyboardSendMessageSettings = {
-    default: false,
+    default: true,
   };
   const keyboardSendMessageHandler = (evt: KeyboardEvent<HTMLTextAreaElement>): void => {
     if (keyboardSendMessageSettings.default) {
@@ -67,16 +73,32 @@ export const MessageBox = () => {
       }
     }
   };
-  const clickSendMessageHandler = (): void => {
+
+  const clickSendMessageHandler = async () => {
     dispatch(sendMessageAsync(newMessage));
     setTextValue('');
     clearSelectedFiles();
     setAttachment(null);
     handleCloseModal();
   };
-  const sendVoiceMessageButtonHandler = () => {
-    console.log('voiceMessage');
+
+  const sendVoiceMessageHandler = async () => {
+    await stopRecord();
+    setMicrophoneButtonIsPressed(prevState => !prevState);
+    setStopRecordButtonIsVisible(prevState => !prevState);
   };
+  const startRecordVoiceHandler = async () => {
+    setMicrophoneButtonIsPressed(prevState => !prevState);
+    setStopRecordButtonIsVisible(prevState => !prevState);
+    await startRecording();
+  };
+
+  const stopRecordVoiceHandler = () => {
+    cancelRecording();
+    setStopRecordButtonIsVisible(prevState => !prevState);
+    setMicrophoneButtonIsPressed(prevState => !prevState);
+  };
+
   const onChangeTextInputHandler = (evt: ChangeEvent<HTMLTextAreaElement>): void => {
     const text = evt.target.value;
     setTextValue(text);
@@ -110,40 +132,75 @@ export const MessageBox = () => {
     }
   }, [selectedEmoji]);
 
+  useEffect(() => {
+    audioData ? setAudioFormData(getFormData(audioData)) : setAudioFormData(null);
+  }, [audioData]);
+
+  useEffect(() => {
+    if (audioFormData) {
+      dispatch(sendMessageAsync(newMessage));
+    }
+    setAudioFormData(null);
+  }, [audioFormData]);
+
   return (
     <>
       <div className={cx('message-box')}>
-        <div className={cx('message-box__container')} tabIndex={0}>
-          <div className={cx('message-box__icon')}>
-            <EmojiButton />
-          </div>
-          <div className={cx('message-box__textarea')}>
-            <Textarea
-              onKeyDown={keyboardSendMessageHandler}
-              className={cx('message-box__input')}
-              onChange={onChangeTextInputHandler}
-              value={isOpen ? '' : textValue}
-              rows={1}
-              ref={textAreaRef}
-              placeholder={'Message...'}
-            />
-          </div>
-          <div className={cx('message-box__icon')}>
-            <AttachButton ref={attachButtonRef} onClick={handleClickOnAttachButton} />
-          </div>
+        <div className={cx('message-box__container', {'message-box__container--timer' : microphoneButtonIsPressed})} tabIndex={0}>
+          {microphoneButtonIsPressed ? (
+            <RecordTimer microphoneButtonIsPressed={microphoneButtonIsPressed} />
+          ) : (
+            <>
+              <div className={cx('message-box__icon')}>
+                <EmojiButton />
+              </div>
+              <div className={cx('message-box__textarea')}>
+                <Textarea
+                  onKeyDown={keyboardSendMessageHandler}
+                  className={cx('message-box__input')}
+                  onChange={onChangeTextInputHandler}
+                  value={isOpen ? '' : textValue}
+                  rows={1}
+                  ref={textAreaRef}
+                  placeholder={'Message...'}
+                />
+              </div>
 
-          <UploadFileMenu
-            attachButtonRef={attachButtonRef}
-            attachButtonIsPressed={attachButtonIsPressed}
-            setAttachButtonIsPressed={setAttachButtonIsPressed}
-            handleFileSelect={handleFileSelect}
-          />
+              <div className={cx('message-box__icon')}>
+                <AttachButton ref={attachButtonRef} onClick={handleClickOnAttachButton} />
+              </div>
+              <UploadFileMenu
+                attachButtonRef={attachButtonRef}
+                attachButtonIsPressed={attachButtonIsPressed}
+                setAttachButtonIsPressed={setAttachButtonIsPressed}
+                handleFileSelect={handleFileSelect}
+              />
+            </>
+          )}
         </div>
-        <SendButton
-          onClickSendText={clickSendMessageHandler}
-          onClickSendVoice={sendVoiceMessageButtonHandler}
-          buttonType={buttonType}
-        />
+
+        <div className={cx('message-box__controls')}>
+          {microphoneButtonIsPressed ? (
+            <div className={cx('message-box__voice')}>
+              <StopRecordButton
+                isVisible={stopRecordButtonIsVisible}
+                onClick={stopRecordVoiceHandler}
+              />
+
+              <IconButton
+                className={cx('message-box__send-voice')}
+                typeIcon={'send'}
+                onClick={sendVoiceMessageHandler}
+              />
+            </div>
+          ) : (
+            <SendButton
+              onClick={clickSendMessageHandler}
+              onClickRecord={startRecordVoiceHandler}
+              textValue={textValue}
+            />
+          )}
+        </div>
       </div>
       <Portal>
         <Modal className={cx('attach-modal')} isOpen={fileList ? isOpen : false}>
@@ -159,6 +216,5 @@ export const MessageBox = () => {
         </Modal>
       </Portal>
     </>
-
   );
 };

@@ -19,17 +19,12 @@ export const Chat = () => {
   const { account_id: accountId } = useAppSelector(state => state.userSlice.user);
   const { status } = useAppSelector(state => state.messageSlice);
 
-  console.log('popstateHandler: ', chatId, accountId);
-
   useEffect(() => {
     if (!isClose && location.pathname === '/') {
-      console.log('popstateHandler: ', chatId, accountId);
       dispatch(leaveRoomAsync({ chatId, accountId }));
       dispatch(closeChat(false));
     }
   }, [isClose, location]);
-
-
 
   useEffect(() => {
     window.history.replaceState({}, document.title, '/');

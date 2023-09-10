@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import styles from 'pages/im/im.module.scss';
 
-export const useToggleTheme = (initialState: string) => {
+export const useToggleTheme = (initialState?: string) => {
   const storedTheme = localStorage.getItem('theme');
   const [theme, setTheme] = useState(storedTheme ? JSON.parse(storedTheme) : initialState);
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Toggle } from "shared/ui";
-import { useToggleTheme } from './hooks/use-toggle-theme';
+import { useToggleTheme } from "./hooks/use-toggle-theme";
+
 
 
 export const ThemeSwitcher = () => {

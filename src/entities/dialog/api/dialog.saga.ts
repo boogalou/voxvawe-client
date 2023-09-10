@@ -41,7 +41,7 @@ import { connectSocket } from 'shared/services/socket/connect-socket';
 import { IDialog } from 'shared/types';
 import { store } from 'app/store';
 import { playSoundOnNewMessage } from 'shared/lib';
-import { Attachments } from 'shared/types/message.interface';
+import { IAttachments } from 'shared/types/message.interface';
 
 function* getDialogsWorker() {
   try {
@@ -61,8 +61,8 @@ function* createGroupDataWorker({ payload }: ReturnType<typeof createGroupDataAs
     const formDataFile = new FormData();
     formDataFile.append('file', file, file.name);
     yield put(startLoading('loading'));
-    const response: AxiosResponse<Attachments[]> = yield call(
-      dialogService.uploadAttachments,
+    const response: AxiosResponse<IAttachments[]> = yield call(
+      dialogService.uploadImages,
       formDataFile
     );
 
@@ -95,46 +95,43 @@ function* addNewMemberWorker({ payload }: ReturnType<typeof addNewMemberToGroupA
 function* connectToRoom(socket: Socket, { payload }: ReturnType<typeof connectToRoomAsync>) {
   try {
     if (socket) {
-      console.log(payload);
       yield call([socket, socket.emit], JOIN_PRIVATE_ROOM, payload);
     }
   } catch (error) {
     console.log(error);
   }
-};
+}
 
 function* leaveRoomWorker(socket: Socket, { payload }: ReturnType<typeof leaveRoomAsync>) {
-
   try {
     if (socket && payload.chatId) {
-      console.log('leaveRoomWorker');
       yield call([socket, socket.emit], LEAVE_PRIVATE_ROOM, payload);
     }
   } catch (error) {
     console.log(error);
   }
-};
+}
 
-function* sendMessage(socket: Socket, action: ReturnType<typeof sendMessageAsync>) {
+function* sendMessage(socket: Socket, { payload }: ReturnType<typeof sendMessageAsync>) {
   try {
-    if (socket) {
-      console.log('dialog saga sendMessage: ', action.payload);
-      if (action.payload.attachments) {
-        const response: AxiosResponse = yield call(
-          dialogService.uploadAttachments,
-          action.payload.attachments
-        );
+    if (socket && payload.voice_message) {
+      const response: AxiosResponse = yield call(dialogService.uploadVoice, payload.voice_message);
+      payload.voice_message = yield response.data;
+      yield call([socket, socket.emit], SEND_MESSAGE, payload);
+      return;
+    }
 
-        action.payload.attachments = yield response.data;
-        yield call([socket, socket.emit], SEND_MESSAGE, action.payload);
-      } else {
-        yield call([socket, socket.emit], SEND_MESSAGE, action.payload);
-      }
+    if (socket && payload.attachments) {
+      const response: AxiosResponse = yield call(dialogService.uploadImages, payload.attachments);
+      payload.attachments = yield response.data;
+      yield call([socket, socket.emit], SEND_MESSAGE, payload);
+    } else {
+      yield call([socket, socket.emit], SEND_MESSAGE, payload);
     }
   } catch (error) {
     console.log(error);
   }
-};
+}
 
 function* notifyTypingWorker(socket: Socket, action: ReturnType<typeof typingTextAsync>) {
   try {
@@ -144,20 +141,20 @@ function* notifyTypingWorker(socket: Socket, action: ReturnType<typeof typingTex
   } catch (err) {
     console.log(err);
   }
-};
+}
 
 function* updateMessageWorker(socket: Socket, action: ReturnType<typeof setMessageIsReadAsync>) {
   if (socket) {
     yield call([socket, socket.emit], SET_MESSAGE_STATUS, action.payload);
   }
-};
+}
 
 function* notificationWorker({ payload }: MessageResponse) {
   const accountId = store.getState().userSlice.user.account_id;
   if (payload.sender_id !== accountId) {
     yield call(playSoundOnNewMessage);
   }
-};
+}
 
 function createSocketChannel(socket: Socket): EventChannel<any> {
   return eventChannel(emit => {
@@ -169,30 +166,26 @@ function createSocketChannel(socket: Socket): EventChannel<any> {
       emit(new Error(errorEvent.message));
     };
 
-    // const disconnectHandler = (reason: string) => {
-    //   emit({ type: reason });
-    // }
-
     socket.on(JOINED_PRIVATE_ROOM, eventHandler);
     socket.on(NEW_MESSAGE, eventHandler);
-    socket.on("CHAT:NEW_UNREAD_MESSAGE", eventHandler);
+    socket.on('CHAT:NEW_UNREAD_MESSAGE', eventHandler);
     socket.on(TYPING_NOTIFY, eventHandler);
     socket.on(GET_MESSAGE_STATUS, eventHandler);
     socket.on(LEFT_PRIVATE_ROOM, eventHandler);
     socket.on(ERROR_RESPONSE, errorHandler);
     socket.on(ERROR_CONNECT, errorHandler);
-    // socket.on(ERROR_DISCONNECT, (reason) => disconnectHandler(reason));
+
 
     return () => {
       socket.off(JOINED_PRIVATE_ROOM, eventHandler);
       socket.off(NEW_MESSAGE, eventHandler);
-      socket.off("CHAT:NEW_UNREAD_MESSAGE", eventHandler);
+      socket.off('CHAT:NEW_UNREAD_MESSAGE', eventHandler);
       socket.off(TYPING_NOTIFY, eventHandler);
       socket.off(GET_MESSAGE_STATUS, eventHandler);
       socket.off(LEFT_PRIVATE_ROOM, eventHandler);
     };
   });
-};
+}
 
 function* fetchMessageWorker(socket: Socket): Generator<any, void, any> {
   if (socket) {
@@ -200,7 +193,6 @@ function* fetchMessageWorker(socket: Socket): Generator<any, void, any> {
     while (true) {
       try {
         const response: MessageResponse = yield take(socketChannel);
-        console.log('response.type:', response.type);
         switch (response.type) {
           case JOINED_PRIVATE_ROOM:
             console.log(response.payload);
@@ -215,7 +207,7 @@ function* fetchMessageWorker(socket: Socket): Generator<any, void, any> {
             yield call(notificationWorker, response);
             break;
 
-          case "CHAT:NEW_UNREAD_MESSAGE":
+          case 'CHAT:NEW_UNREAD_MESSAGE':
             yield put(addMessage(response.payload));
             yield call(notificationWorker, response);
             break;
@@ -228,16 +220,7 @@ function* fetchMessageWorker(socket: Socket): Generator<any, void, any> {
             yield put(setMessageIsRead(response.payload));
             break;
 
-          // case ERROR_CONNECT:
-          //   yield takeEvery(connectToRoomAsync.type, connectToRoom, socket);
-          //   break;
-          //
-          // case ERROR_DISCONNECT:
-          //   yield takeEvery(connectToRoomAsync.type, connectToRoom, socket);
-          //   break;
-          //   TODO сделать реконнект
-
-          default:
+            default:
             console.log('default case');
         }
       } catch (error) {
@@ -245,7 +228,7 @@ function* fetchMessageWorker(socket: Socket): Generator<any, void, any> {
       }
     }
   }
-};
+}
 
 export function* dialogSagaWatcher(): Generator<any, void, any> {
   yield takeEvery(getDialogsAsync.type, getDialogsWorker);
@@ -261,4 +244,4 @@ export function* dialogSagaWatcher(): Generator<any, void, any> {
   yield takeEvery(setMessageIsReadAsync.type, updateMessageWorker, socket);
   yield debounce(200, typingTextAsync.type, notifyTypingWorker, socket);
   yield fork(fetchMessageWorker, socket);
-};
+}

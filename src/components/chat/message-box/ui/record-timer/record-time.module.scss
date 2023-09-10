@@ -1,0 +1,31 @@
+@import 'src/app/index';
+
+.record-timer {
+  $this: &;
+
+  display: flex;
+  align-items: center;
+  column-gap: 5px;
+
+  &__display {
+    width: 80px;
+    color: var(--color-primary-font);
+  }
+
+  &__indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    animation: blink 3s linear infinite;
+    background-color: var(--color-danger);
+  }
+}
+
+@keyframes blink {
+  0%, 50% {
+    opacity: 1;
+  }
+  25%, 75% {
+    opacity: 0;
+  }
+}

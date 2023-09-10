@@ -5,7 +5,8 @@
   max-width: 800px;
   margin: 0 auto;
   display: flex;
-  gap: 0 15px;
+  align-items: center;
+  gap: 0 5px;
   padding: 0 10px;
   position: relative;
 
@@ -25,10 +26,17 @@
     &:focus-within {
       border: 2px solid var(--color-chat-selected);
     }
+
+    &--timer {
+      display: flex;
+      justify-content: end;
+      height: 55px;
+
+    }
   }
 
   &__icon {
-    width: 24px;
+    width: max-content;
     height: 24px;
     border-radius: 50%;
     align-self: end;
@@ -61,6 +69,27 @@
     }
   }
 
+  &__controls {
+    display: flex;
+    column-gap: 5px;
+  }
+
+  &__voice {
+    display: flex;
+    column-gap: 5px;
+  }
+
+  &__send-voice {
+    width: 3.125rem;
+    height: 3.125rem;
+    border-radius: 50%;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-chat-selected);
+  }
+
 }
 
 .attach-modal {
@@ -77,6 +106,24 @@
 @include respond-to(desktop) {
   .message-box {
     margin-bottom: 30px;
+
+    &__send-voice {
+      background-color: var(--color-primary);
+
+      svg {
+        stroke: var(--color-icon-primary);
+      }
+
+      &:hover {
+        background-color: var(--color-chat-selected);
+
+        svg {
+          stroke: var(--color-primary);
+        }
+      }
+    }
   }
+
+
 
 }
