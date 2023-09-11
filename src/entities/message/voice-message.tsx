@@ -58,16 +58,20 @@ export const VoiceMessage: FC<IVoiceMessageProps> = ({ duration, link_ogg, wavef
       </div>
 
       <WaveformVisualizer
+        // className={cx('')}
         waveform={waveform}
-        svgWidth={300}
+        svgWidth={200}
         svgHeight={30}
         currentTime={currentTimeAudioFile}
         duration={durationAudioFile}
       />
 
-
-
-      <audio onLoadedMetadata={loadMetaDataHandler} onTimeUpdate={updateCurrentTimeHandler} ref={audioRef} src={link_ogg} />
+      <audio
+        onLoadedMetadata={loadMetaDataHandler}
+        onTimeUpdate={updateCurrentTimeHandler}
+        ref={audioRef}
+        src={link_ogg}
+      />
     </div>
   );
 };

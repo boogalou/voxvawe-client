@@ -183,8 +183,8 @@ export const MessageBox = () => {
           {microphoneButtonIsPressed ? (
             <div className={cx('message-box__voice')}>
               <StopRecordButton
-                isVisible={stopRecordButtonIsVisible}
                 onClick={stopRecordVoiceHandler}
+                isVisible={stopRecordButtonIsVisible}
               />
 
               <IconButton

@@ -31,14 +31,16 @@ export const useRecorder = () => {
   const stopRecord = async () => {
     if (mediaRecorder) {
       mediaRecorder.stop();
-      setMediaRecorder(null); // Очистить mediaRecorder после остановки записи
+      setMediaRecorder(null);
     }
   };
 
   const cancelRecording = () => {
     if (mediaRecorder) {
+      mediaRecorder.ondataavailable = null;
       mediaRecorder.stop();
-      setMediaRecorder(null); // Очистить mediaRecorder после отмены записи
+      setMediaRecorder(null);
+      setAudioData(null);
     }
   };
 
@@ -47,6 +49,6 @@ export const useRecorder = () => {
     startRecording,
     stopRecord,
     cancelRecording,
-    audioData, // Теперь вы можете использовать audioData в компоненте для работы с записанным аудио
+    audioData,
   };
 };
