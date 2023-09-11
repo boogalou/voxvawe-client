@@ -41,7 +41,11 @@ export const Message: FC<InMessage> = ({
     >
       <div className={cx('message__inner')}>
         <div className={cx('message__avatar')}>
-          <Avatar className={cx('message__avatar-img')} avatarImg={senderMember?.avatar} />
+          <Avatar
+            className={cx('message__avatar-img')}
+            avatarImg={senderMember?.avatar}
+            username={senderMember?.username}
+          />
         </div>
         <div className={cx('message__body')}>
           {attachments && attachments.length > 0 ? (

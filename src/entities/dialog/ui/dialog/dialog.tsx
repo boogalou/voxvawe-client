@@ -28,8 +28,8 @@ export const Dialog: FC<IDialog> = ({
   const { currentDialog } = useAppSelector(state => state.dialogSlice);
   const [touchedDialog, setTouchedDialog] = useState<number[]>([]);
   const dateLastMessageTime = formatTimePassed(lastMessageTime);
-  const avatarPlaceholder = generateColor('1596987564231');
-  const initials = getInitials(username);
+
+
 
   const clickOnDialogTab = () => {
     dispatch(setCurrentDialogAction({ chatId }));
@@ -52,8 +52,7 @@ export const Dialog: FC<IDialog> = ({
             <Avatar
               avatarImg={avatar}
               isOnline={!is_group ? is_online : false}
-              avatarPlaceholder={avatarPlaceholder}
-              initials={initials}
+              username={username}
             />
           </div>
           <div className={cx('dialog__name')}>{username}</div>

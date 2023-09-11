@@ -33,8 +33,6 @@ export const ChatInfo = () => {
   }, [isTyping]);
 
   const lastSeen = formatTimePassed(member?.last_seen);
-  const avatarPlaceholder = generateColor(member?.account_id);
-  const initials = getInitials(username!);
 
   const handleOnClick = () => {
     dispatch(openRightSidebar(true));
@@ -45,7 +43,10 @@ export const ChatInfo = () => {
       <SwitchPanel />
       <div className={cx('chat-info__link')}>
         <div className={cx('chat-info__avatar')}>
-          <Avatar avatarImg={ avatar } avatarPlaceholder={avatarPlaceholder} initials={initials}/>
+          <Avatar
+            avatarImg={ avatar }
+            username={username}
+          />
         </div>
         <div className={cx('chat-info__info')}>
           <div className={cx('chat-info__name')}>{ username }</div>

@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import cnBind from 'classnames/bind';
 import styles from './avatar.module.scss';
+import { generateColor, getInitials } from "shared/lib";
 
 const cx = cnBind.bind(styles);
 
@@ -10,15 +11,15 @@ export interface AvatarProps {
   accountId?: string;
   username?: string;
   isOnline?: boolean;
-  avatarPlaceholder?: string
-  initials?: string[];
+
 }
 
-export const Avatar: FC<AvatarProps> = ({ avatarImg, accountId = '', username = '', isOnline, avatarPlaceholder, initials }) => {
+export const Avatar: FC<AvatarProps> = ({ avatarImg, accountId = '', username = '', isOnline }) => {
 
   const handleOnClick = () => {};
 
-  
+  const initials = getInitials(username);
+  const avatarPlaceholder = generateColor(username);
   
   return (
     <div className={cx('avatar')} onClick={handleOnClick}>
