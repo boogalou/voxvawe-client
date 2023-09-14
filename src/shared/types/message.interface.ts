@@ -46,8 +46,12 @@ export interface IVoiceData {
 }
 
 export interface IAttachments {
-  id: number;
-  ownerId: number;
-  largeSizeUrl: string;
-  mediumSizeUrl: string;
+  width: number;
+  height: number;
+  type: 'y';
+  url: string;
+  // id: number;
+  // ownerId: number;
+  // largeSizeUrl: string;
+  // mediumSizeUrl: string;
 }

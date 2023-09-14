@@ -68,7 +68,7 @@ function* createGroupDataWorker({ payload }: ReturnType<typeof createGroupDataAs
 
     const groupData = {
       ...payload,
-      files: response.data[0].mediumSizeUrl,
+      files: response.data[0].url,
     };
 
     yield call(dialogService.createGroup, groupData);

@@ -50,7 +50,7 @@ export const Message: FC<InMessage> = ({
         <div className={cx('message__body')}>
           {attachments && attachments.length > 0 ? (
             <div className={cx('message__image')} onClick={handleOpenModal}>
-              <img src={attachments[0].mediumSizeUrl} alt="" className={cx('message__preview')} />
+              <img src={attachments[0].url} alt="" className={cx('message__preview')} />
             </div>
           ) : null}
           {voice_message ? (
@@ -79,7 +79,7 @@ export const Message: FC<InMessage> = ({
               <div className={cx('message-modal__image-container')}>
                 <img
                   className={cx('message-modal__image')}
-                  src={attachments[0].largeSizeUrl}
+                  src={attachments[0].url}
                   alt=""
                 />
               </div>
