@@ -13,7 +13,7 @@ export interface ModalContentProps {
   clearSelectedFiles: () => void;
   handleCloseModal: () => void;
   setTextValue: Dispatch<SetStateAction<string>>;
-  clickSendMessageHandler: () => void;
+  clickSendMessageHandler: (evt: React.MouseEvent) => void;
 }
 
 export const ModalContent: FC<ModalContentProps> = ({
