@@ -9,14 +9,10 @@ import {
 import { AxiosResponse } from 'axios';
 import { InMessage } from 'shared/types';
 
-function* getLatestMessagesWorker(action: ReturnType<typeof getLatestMessagesAsync>) {
+function* getLatestMessagesWorker({ payload }: ReturnType<typeof getLatestMessagesAsync>) {
   try {
     yield put(startLoading());
-
-    const response: AxiosResponse<{ chat_id: number; messages: InMessage[] }> = yield call(
-      messagesService.getLatestMessages,
-      action.payload
-    );
+    const response: AxiosResponse = yield call(messagesService.getLatestMessages, payload);
     yield put(dataReceived(response.data));
     yield put(finishLoading());
   } catch (error) {

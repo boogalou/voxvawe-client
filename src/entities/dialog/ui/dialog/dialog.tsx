@@ -36,7 +36,7 @@ export const Dialog: FC<IDialog> = ({
     dispatch(moveFrontMiddleColumn(true));
     dispatch(connectToRoomAsync({ chatId, accountId}));
     if (!touchedDialog.includes(chatId)) {
-      dispatch(getLatestMessagesAsync(chatId));
+      dispatch(getLatestMessagesAsync({ chatId, page: 1 }));
       setTouchedDialog(prevState => [...prevState, chatId]);
     }
   };

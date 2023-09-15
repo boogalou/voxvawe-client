@@ -1,11 +1,13 @@
 import { AxiosResponse } from 'axios';
 import { apiService } from 'shared/services';
-import { IMessage } from "@/src/shared";
+import { IMessage } from "shared/types";
+
 
 class MessageService {
-  public async getLatestMessages(chatId: number): Promise<AxiosResponse> {
-    const count = 20;
-    return await apiService.get<IMessage[]>(`/messages/latest?chatId=${ chatId }&count=${count}`);
+  public async getLatestMessages({ chatId, page, limit = 25 }: { chatId: number, page: number, limit?: number }): Promise<AxiosResponse> {
+    return await apiService.get<IMessage[]>(
+      `/messages/latest?chatId=${ chatId }&page=${ page }&limit=${ limit }`
+    );
   }
 }
 

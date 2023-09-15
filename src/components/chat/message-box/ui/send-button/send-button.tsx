@@ -6,7 +6,7 @@ import { IconButton } from 'shared/ui';
 const cx = cnBind.bind(styles);
 
 export interface SendButtonProps {
-  onClick: (evt: MouseEvent) => void;
+  onClick: (evt: React.MouseEvent) => void;
   onClickRecord: () => void;
   textValue: string;
 

@@ -1,11 +1,12 @@
-import React, { FC, useRef } from 'react';
+import React, { FC, useRef, useState } from "react";
 import cnBind from 'classnames/bind';
 import styles from './chat-box.module.scss';
 import { useAppDispatch, useAppSelector, useScrollBottom } from 'shared/hooks';
-import { Message } from 'entities/message';
+import { getLatestMessagesAsync, Message } from "entities/message";
 import { Icon } from 'shared/ui';
 import { useSetMessageIsRead } from './hooks/use-set-message-is-read';
 import { setMessageIsReadAsync } from 'entities/dialog';
+import { useInfiniteScrollMessageHistory } from "components/chat/chat-box/hooks/use-infinite-scroll-message-history";
 
 const cx = cnBind.bind(styles);
 
@@ -15,10 +16,11 @@ export const ChatBox: FC = () => {
   const { id: chatId } = useAppSelector(state => state.dialogSlice.currentDialog);
   const { account_id: accountId } = useAppSelector(state => state.userSlice.user);
   const messagesMap = useAppSelector(state => state.messageSlice.messages);
+  const {currentPage, limit} = useAppSelector(state => state.messageSlice);
 
   const messages = messagesMap[String(chatId)];
 
-  const handleIntersection: IntersectionObserverCallback = (entries, observer) => {
+  const messageIntersectionHandler: IntersectionObserverCallback = (entries, observer) => {
     entries.forEach(entry => {
       if (entry?.isIntersecting) {
         const messageId = entry?.target.getAttribute('data-message-sender-id');
@@ -38,7 +40,7 @@ export const ChatBox: FC = () => {
   };
 
   useSetMessageIsRead(
-    handleIntersection,
+    messageIntersectionHandler,
     {
       root: messageListRef?.current,
       threshold: 0.5,
@@ -46,9 +48,27 @@ export const ChatBox: FC = () => {
     messages
   );
 
+
+  const loadMessageHistory: IntersectionObserverCallback = ([entry], observer) => {
+    if (entry.isIntersecting) {
+      console.log('entry.target: ', entry.target);
+      let page = currentPage;
+      page += 1;
+      dispatch(getLatestMessagesAsync({chatId, page, limit}))
+      observer.unobserve(entry.target);
+    }
+  }
+
+  useInfiniteScrollMessageHistory(loadMessageHistory, {}, messages, messageListRef);
+
+
+
+
   if (messages) {
     useScrollBottom(messageListRef, messages);
   }
+
+
 
   return chatId ? (
     <div
