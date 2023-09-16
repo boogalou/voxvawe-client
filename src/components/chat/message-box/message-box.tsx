@@ -75,8 +75,9 @@ export const MessageBox = () => {
   };
 
   const clickSendMessageHandler = async (evt: React.MouseEvent) => {
-    evt.preventDefault()
+    evt.preventDefault();
     dispatch(sendMessageAsync(newMessage));
+    textAreaRef.current!.focus();
     setTextValue('');
     clearSelectedFiles();
     setAttachment(null);
