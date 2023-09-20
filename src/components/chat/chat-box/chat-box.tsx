@@ -1,11 +1,12 @@
-import React, { FC, useRef } from 'react';
+import React, { FC, useEffect, useRef } from "react";
 import cnBind from 'classnames/bind';
 import styles from './chat-box.module.scss';
-import { useAppDispatch, useAppSelector, useScrollBottom } from 'shared/hooks';
-import { Message } from 'entities/message';
+import { useAppDispatch, useAppSelector, useScroll } from "shared/hooks";
 import { Icon } from 'shared/ui';
 import { useSetMessageIsRead } from './hooks/use-set-message-is-read';
 import { setMessageIsReadAsync } from 'entities/dialog';
+import { getLatestMessagesAsync, Message } from 'entities/message';
+import { useInfiniteScrollMessageHistory } from 'components/chat/chat-box/hooks/use-infinite-scroll-message-history';
 
 const cx = cnBind.bind(styles);
 
@@ -15,10 +16,12 @@ export const ChatBox: FC = () => {
   const { id: chatId } = useAppSelector(state => state.dialogSlice.currentDialog);
   const { account_id: accountId } = useAppSelector(state => state.userSlice.user);
   const messagesMap = useAppSelector(state => state.messageSlice.messages);
+  const {currentPage, limit, hasMore} = useAppSelector(state => state.messageSlice);
 
   const messages = messagesMap[String(chatId)];
 
-  const handleIntersection: IntersectionObserverCallback = (entries, observer) => {
+  const {scrollToTopThird, scrollToBottom } = useScroll(messageListRef);
+  const messageIntersectionHandler: IntersectionObserverCallback = (entries, observer) => {
     entries.forEach(entry => {
       if (entry?.isIntersecting) {
         const messageId = entry?.target.getAttribute('data-message-sender-id');
@@ -37,26 +40,33 @@ export const ChatBox: FC = () => {
     });
   };
 
-  useSetMessageIsRead(
-    handleIntersection,
-    {
+  useSetMessageIsRead(messageIntersectionHandler, {
       root: messageListRef?.current,
-      threshold: 0.5,
-    },
-    messages
-  );
+      threshold: 1.0,
+    }, messages);
 
-  if (messages) {
-    useScrollBottom(messageListRef, messages);
-  }
+  const loadHistoryHandler = useInfiniteScrollMessageHistory<HTMLDivElement>(() => {
+    if (hasMore) {
+        let page = currentPage;
+        page += 1;
+        dispatch(getLatestMessagesAsync({ chatId, page, limit }));
+      }
+    }, [])
+
+
+  useEffect(() => {
+    scrollToTopThird();
+  }, [loadHistoryHandler]);
+
+  // useEffect(() => {
+  //   scrollToBottom()
+  // }, []);
+
 
   return chatId ? (
-    <div
-      className={cx('chat-box', { 'chat-box--nomessages': messages.length <= 0 })}
-      ref={messageListRef}
-    >
+    <div className={cx('chat-box', { 'chat-box--nomessages': messages.length <= 0 })} ref={messageListRef}>
       {messages && messages.length > 0 ? (
-        messages.map(message => <Message key={message.id} {...message} />)
+        messages.map((message, index) => <Message key={message.id} {...message} ref={index === 0 ? loadHistoryHandler : null}/> )
       ) : (
         <>
           <Icon className={cx('chat-box__placeholder-icon')} typeIcon="chat-placeholder" />

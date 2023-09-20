@@ -1,7 +1,11 @@
 @import 'src/app/index';
 
 .dialogs {
-height: 100%;
+  height: 100vh;
+  overflow-y: auto;
+  list-style: none;
+
+
   &__preloader {
     @include preloader();
 
