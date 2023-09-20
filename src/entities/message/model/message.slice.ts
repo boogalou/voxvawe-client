@@ -7,6 +7,7 @@ export interface MessageState {
   currentPage: number;
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
   error: string | null;
+  hasMore: boolean;
 }
 
 const initialState: MessageState = {
@@ -15,6 +16,7 @@ const initialState: MessageState = {
   currentPage: 0,
   status: 'idle',
   error: null,
+  hasMore: false,
 };
 
 const messageSlice = createSlice({
@@ -49,7 +51,7 @@ const messageSlice = createSlice({
       state.error = payload;
     },
 
-    dataReceived(state, { payload } : PayloadAction<{ chat_id: number; messages: InMessage[]}>) {
+    dataReceived(state, { payload } : PayloadAction<{ chat_id: number; messages: InMessage[], hasMore: boolean}>) {
       const chatId = String(payload.chat_id);
       if (!state.messages[chatId]) {
         state.messages[chatId] = [];
@@ -62,11 +64,13 @@ const messageSlice = createSlice({
         console.log('добавились в начало');
         state.messages[chatId].unshift(...payload.messages)
         state.currentPage += 1;
+        state.hasMore = payload.hasMore;
         return;
       }
 
       state.messages[chatId].push(...payload.messages);
       state.currentPage += 1;
+      state.hasMore = payload.hasMore;
     },
 
     resetMessagesState() {

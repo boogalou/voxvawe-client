@@ -3,7 +3,8 @@ import * as Yup from "yup";
 
 // export const validPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]+$/;
 export const validPassword = /^[a-zA-Z\d!@#$%^&*]+$/;
-export const validName = /^[a-zA-Z0-9_-]+$/;
+export const validName = /^[a-zA-Z0-9-_\s]+$/;
+
 
 
 export const validationRulesRegistrationForm  = Yup.object().shape({
@@ -11,8 +12,8 @@ export const validationRulesRegistrationForm  = Yup.object().shape({
     .required('Имя обязательно для заполнения')
     .min(4, 'минимальное колисчество симвлов для имени - 4 ')
     .max(20, 'Привышено максимальное значение для имени. Максимум - 50 символов')
-    .matches(/^\S*$/, 'Имя не должно содержать пробелы')
     .matches(validName, 'Разрешены только латинские буквы, цифры, "-" и "_"'),
+    // .matches(/^\S*$/, 'Имя не должно содержать пробелы')
   email: Yup.string()
     .required('Email обязателен для заполнения')
     .email('Введите корректный адрес электронной почты'),

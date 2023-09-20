@@ -18,11 +18,7 @@ export interface IButtonProps
   onClick?: (evt: React.MouseEvent) => void;
 }
 
-export const Button = forwardRef(
-  (
-    { className, text, children, onClick, ...restProps }: IButtonProps,
-    ref: ForwardedRef<HTMLButtonElement>
-  ) => {
+export const Button = forwardRef(({ className, text, children, onClick, ...restProps }: IButtonProps, ref: ForwardedRef<HTMLButtonElement>) => {
     return (
       <button
         className={cx(className)}

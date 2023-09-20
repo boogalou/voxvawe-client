@@ -1,13 +1,28 @@
-import { RefObject, useEffect } from "react";
-import { InMessage } from "@/src/shared";
+import { DependencyList, useCallback, useRef } from 'react';
 
-export function useInfiniteScrollMessageHistory(callback: IntersectionObserverCallback, options: { [key: string]: unknown }, deps: InMessage[], messageListRef: RefObject<HTMLDivElement>) {
-  useEffect(() => {
-    console.log(deps.length);
-    const infiniteObserver = new IntersectionObserver(callback, options);
+export function useInfiniteScrollMessageHistory<T extends HTMLElement>(
+  callback: () => void,
+  deps: DependencyList
+) {
+  const observer = useRef<IntersectionObserver | null>(null);
 
-    if (messageListRef.current && messageListRef.current?.firstChild) {
-      infiniteObserver.observe(messageListRef.current.firstChild as Element);
-    }
-  }, [deps]);
+  const cbRef = useCallback(
+    (node: T) => {
+      if (deps.every(Boolean)) {
+        observer.current?.disconnect();
+        observer.current = new IntersectionObserver(entries => {
+          if (entries[0].isIntersecting) {
+            observer.current?.unobserve(node);
+            callback();
+          }
+        });
+        if (node) {
+          observer.current?.observe(node);
+        }
+      }
+    },
+    [deps, callback]
+  );
+
+  return cbRef;
 }

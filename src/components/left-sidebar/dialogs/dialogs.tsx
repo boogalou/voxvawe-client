@@ -26,7 +26,7 @@ export const Dialogs: FC = () => {
   });
 
   return (
-    <ul className={cx('dialogs')}>
+    <ul className={ cx('dialogs') }>
       {status === 'loading' ? (
         <Preloader className={cx('dialogs__preloader')} />
       ) : (
