@@ -5,14 +5,16 @@ export function useScroll(messageListRef: RefObject<HTMLDivElement>) {
     if (messageListRef && messageListRef.current) {
       messageListRef.current.scrollTop = messageListRef.current.scrollHeight;
     }
+
+
   };
 
-  const scrollToTopThird = () => {
+  const scrollToLastNewMessage = (limit: number) => {
     if (messageListRef && messageListRef.current) {
       messageListRef.current.scrollTop = messageListRef.current.scrollHeight / 3;
     }
   };
 
-  return { scrollToBottom, scrollToTopThird };
+  return { scrollToBottom, scrollToLastNewMessage  };
 }
 

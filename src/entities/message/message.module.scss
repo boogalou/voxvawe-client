@@ -4,6 +4,7 @@
   $this: &;
   display: flex;
   flex-direction: row;
+  margin-bottom: 0.625rem;
 
 
 
@@ -12,6 +13,7 @@
     grid-template-columns: auto 1fr;
     max-width: 35em;
     column-gap: 10px;
+    padding: 0 10px;
   }
 
   &__avatar {
