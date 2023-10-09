@@ -53,12 +53,12 @@ function* authCheckSagaWorker() {
   try {
     yield put(startLoading());
     const response: AxiosResponse<IAuthResponseData> = yield call(authService.checkAuth);
+    console.log(response.data);
     yield put(dataReceived(response.data));
     yield put(finishLoading());
     yield put(setIsAuth());
   } catch (err) {
     if (axios.isAxiosError(err)) {
-      console.warn(err.response?.data.message);
       yield put(rejected(err.response?.data.message));
       yield put(finishLoading());
     }

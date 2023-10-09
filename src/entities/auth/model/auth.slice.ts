@@ -41,6 +41,10 @@ const authSlice = createSlice({
       state.isLoading = false;
     },
 
+    updateToken(state, action: PayloadAction<{ access_token: string }>) {
+      state.accessToken = action.payload.access_token
+    },
+
     rejected(state, action: PayloadAction<IErrorResponse | null>) {
       state.error = action.payload;
     },
@@ -53,7 +57,8 @@ export const {
   rejected,
   finishLoading,
   setIsAuth,
-  resetAuthState
+  resetAuthState,
+  updateToken,
 } =
   authSlice.actions;
 export default authSlice.reducer;
