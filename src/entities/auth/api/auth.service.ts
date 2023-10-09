@@ -12,11 +12,11 @@ class AuthService {
   }
 
   public async checkAuth() {
-    const response =  await axios.get<IAuthResponseData>(`${import.meta.env.VITE_API_URL}/refresh`, {
+    const response =  await axios.get<IAuthResponseData>(
+      `${import.meta.env.VITE_API_URL}/refresh`, {
       withCredentials: true,
     });
 
-    console.log(response.data);
     return response;
   }
 

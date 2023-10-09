@@ -1,20 +1,10 @@
-import React, {
-  FC,
-  ForwardedRef,
-  forwardRef,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import React, { FC, useCallback, useRef, useState } from 'react';
 import cnBind from 'classnames/bind';
 import styles from './chat-box.module.scss';
-import { useAppDispatch, useAppSelector, useScroll } from 'shared/hooks';
-import { Icon } from 'shared/ui';
+import { useAppDispatch, useAppSelector } from 'shared/hooks';
 import { useSetMessageIsRead } from './hooks/use-set-message-is-read';
 import { setMessageIsReadAsync } from 'entities/dialog';
 import { getLatestMessagesAsync, Message } from 'entities/message';
-import { useInfiniteScrollMessageHistory } from 'components/chat/chat-box/hooks/use-infinite-scroll-message-history';
 import { Virtuoso } from 'react-virtuoso';
 
 const cx = cnBind.bind(styles);
@@ -69,15 +59,11 @@ export const ChatBox: FC = () => {
 
   return chatId ? (
     <div
-      style={{
-        height: '98%',
-        maxWidth: '800px',
-        margin: '0 auto',
-      }}
+      className={cx('chat-box')}
       ref={messageListRef}
     >
       <Virtuoso
-        style={{ maxWidth: '800px', margin: '0 auto', overflowX: 'hidden' }}
+        className={cx('virtuoso')}
         firstItemIndex={firstMessageIndex}
         initialTopMostItemIndex={limit - 1}
         startReached={loadHistoryHandler}

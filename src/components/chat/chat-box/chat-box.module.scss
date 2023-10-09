@@ -1,15 +1,16 @@
 @import 'src/app/index';
 
 .chat-box {
-  display: flex;
-  flex-direction: column;
-  gap: 0.625rem 0;
+  //display: flex;
+  //flex-direction: column;
+  //gap: 0.625rem 0;
   overflow-y: auto;
   overflow-x: hidden;
   height: 100%;
   max-width: 800px;
   margin: 0 auto;
   padding: 0.925rem;
+
 
   &--nomessages {
     align-items: center;
@@ -36,11 +37,26 @@
       }
     }
   }
+}
 
+.virtuoso {
+  max-width: 800px;
+  margin: 0 auto;
+  overflow-x: hidden;
+
+  &::-webkit-scrollbar {
+    visibility: hidden;
+  }
 }
 
 
 
 @include respond-to(deskotp) {
-  padding: 0;
+  .virtuoso {
+    overflow-y: hidden;
+    scrollbar-gutter: stable;
+    &:hover {
+      overflow-y: auto;
+    }
+  }
 }

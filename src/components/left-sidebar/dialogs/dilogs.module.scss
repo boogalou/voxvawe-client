@@ -2,12 +2,26 @@
 
 .dialogs {
   height: 100vh;
+  padding: 0 4px;
   overflow-y: auto;
   list-style: none;
 
+  &::-webkit-scrollbar {
+   visibility: hidden;
+  }
 
   &__preloader {
     @include preloader();
 
+  }
+}
+
+@include respond-to(desktop) {
+  .dialogs {
+    overflow-y: hidden;
+    scrollbar-gutter: stable;
+    &:hover {
+      overflow-y: auto;
+    }
   }
 }
